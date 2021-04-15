@@ -1,5 +1,5 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilGrid from "../../utils/util.grid";
 import utilityGrid from '../../utils/utility.grid';
 
 class KnowledgeArticlesGridConsole {
@@ -13,17 +13,25 @@ class KnowledgeArticlesGridConsole {
         hamburgerFilterIcon: '[rx-view-component-id="a9dfa448-2900-4a2b-a230-503f4a0ac12e"] .rx-record-grid-toolbar__item .d-icon-ellipsis',
         removeAssignedToMeFilter: '.d-tag-remove-button',
         knowledgeArticleGridConsoleGuid: '0df18e99-4315-457c-aef0-3abc96fb08ee',
-        recommendedArticleLink: '.at-data-cell button',
+        recommendedArticleLink: '.at-data-row a',
         filter: '.d-icon-left-filter',
         applyFilter: '.advanced-filter__actions-buttons .m-start-4',
         removeFilter: '.advanced-filter__actions-buttons button',
         tableValue: '.c-header-container [class="c-header-name"]',
         getAccessText: '[rx-view-component-id="234d397b-5a98-400a-8c72-9de75e6659d9"]',
+        LineOfBuisnessText: '[rx-view-component-id="c94e04ed-5bbe-4139-ba0c-2b19aa0ab348"] button'
     }
 
     async searchAndOpenKnowledgeArticle(knowledgeId: string): Promise<void> {
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(knowledgeId);
+    }
+
+    async getLineOfBuisnessText(): Promise<string> {
+        return await $(this.selectors.LineOfBuisnessText).getText();
+    }
+
+    async isLineOfBuisnessEnable(): Promise<boolean> {
+        return await $(this.selectors.LineOfBuisnessText).isEnabled();
     }
 
     async getKnowledgeArticleConsoleTitle(): Promise<string> {
@@ -39,7 +47,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async clearGridSearchBox(): Promise<void> {
-        await utilGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -112,6 +120,11 @@ class KnowledgeArticlesGridConsole {
     async applyFilter(fieldName: string, textValue: string, type: string): Promise<void> {
         await utilityGrid.addFilter(fieldName, textValue, type);
     }
+
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.knowledgeArticleGridConsoleGuid, labelName);
+    }
+
 }
 
 export default new KnowledgeArticlesGridConsole();

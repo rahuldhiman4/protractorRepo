@@ -1,0 +1,3095 @@
+Number,Type,Folders
+3405,P1 - CTQ,Batch 1
+3406,P1 - CTQ,Batch 1
+3407,P2 - Regression,Knowledge Management
+3408,P1 - CTQ,DWP-BWF Integration
+3409,P2 - Regression,Notifications
+3410,P0 - Smoke,Batch 1
+3411,P1 - CTQ,Task Approval
+3412,P0 - Smoke,Batch 1
+3413,P1 - CTQ,Case Approval
+3414,P2 - Regression,Notifications
+3415,P1 - CTQ,Notifications
+3416,P1 - CTQ,Notifications
+3417,P2 - Regression,Notifications
+3418,P1 - CTQ,Notifications
+3419,P2 - Regression,Batch 1
+3420,P1 - CTQ,Notifications
+3421,P2 - Regression,Notifications
+3422,P1 - CTQ,Notifications
+3423,P2 - Regression,Notifications
+3424,P1 - CTQ,Email
+3425,P1 - CTQ,Email
+3426,P2 - Regression,Batch 1
+3427,P2 - Regression,Batch 1
+3428,P1 - CTQ,Batch 1
+3429,P2 - Regression,Batch 1
+3430,P2 - Regression,Batch 1
+3431,P2 - Regression,Batch 1
+3432,P1 - CTQ,Batch 1
+3433,P1 - CTQ,Email
+3434,P1 - CTQ,Create Case Page
+3435,P1 - CTQ,Create Case Page
+3436,P1 - CTQ,Social
+3437,P1 - CTQ,Social
+3438,P1 - CTQ,Social
+3439,P1 - CTQ,Social
+3440,P1 - CTQ,Social
+3441,P1 - CTQ,Social
+3442,P1 - CTQ,Social
+3443,P1 - CTQ,Social
+3444,P1 - CTQ,Social
+3445,P1 - CTQ,Social
+3446,P1 - CTQ,Social
+3447,P1 - CTQ,Social
+3448,P1 - CTQ,Social
+3449,P0 - Smoke,Foundation
+3450,P0 - Smoke,Batch 1
+3451,P1 - CTQ,Foundation
+3452,P1 - CTQ,Global Notification
+3453,P1 - CTQ,Global Notification
+3454,P1 - CTQ,Global Notification
+3455,P2 - Regression,Global Notification
+3456,P2 - Regression,Global Notification
+3457,P2 - Regression,Social
+3458,P1 - CTQ,Global Notification
+3459,P2 - Regression,Global Notification
+3460,P2 - Regression,Global Notification
+3461,P2 - Regression,Global Notification
+3462,P1 - CTQ,Social
+3463,P1 - CTQ,Global Notification
+3464,P1 - CTQ,Global Notification
+3465,P1 - CTQ,Task Management
+3466,P1 - CTQ,Content Package
+3467,P2 - Regression,Email
+3468,P2 - Regression,Create Case Page
+3469,P2 - Regression,Batch 1
+3470,P2 - Regression,Task Approval
+3471,P2 - Regression,Task Approval
+3472,P2 - Regression,Batch 1
+3473,P1 - CTQ,Task Approval
+3474,P1 - CTQ,Task Approval
+3475,P1 - CTQ,Task Approval
+3476,P1 - CTQ,Task Approval
+3477,P0 - Smoke,Global Notification
+3478,P2 - Regression,Global Notification
+3479,P2 - Regression,Global Notification
+3480,P2 - Regression,Global Notification
+3481,P2 - Regression,Global Notification
+3482,P1 - CTQ,Global Notification
+3483,P1 - CTQ,Global Notification
+3484,P2 - Regression,Create Case Page
+3485,P1 - CTQ,PDF Generation
+3486,P1 - CTQ,Configuration
+3487,P2 - Regression,Create Case Page
+3488,P2 - Regression,Create Case Page
+3489,P2 - Regression,Create Case Page
+3490,P2 - Regression,Create Case Page
+3491,P2 - Regression,Create Case Page
+3492,P0 - Smoke,Batch 1
+3493,P0 - Smoke,Batch 1
+3494,P2 - Regression,Task Management
+3495,P2 - Regression,Task Management
+3496,P2 - Regression,Create Case Page
+3497,P2 - Regression,Create Case Page
+3498,P2 - Regression,Create Case Page
+3499,P2 - Regression,Batch 1
+3500,P2 - Regression,Task Approval
+3501,P1 - CTQ,Task Approval
+3502,P1 - CTQ,Task Approval
+3503,P2 - Regression,Case Approval
+3504,P2 - Regression,Case Approval
+3505,P2 - Regression,Case Approval
+3506,P0 - Smoke,Email
+3507,P0 - Smoke,Email
+3508,P1 - CTQ,Create Case Page
+3509,P2 - Regression,Batch 1
+3510,P2 - Regression,Batch 1
+3511,P1 - CTQ,Batch 1
+3512,P2 - Regression,Batch 1
+3513,P0 - Smoke,Case Approval
+3514,P2 - Regression,Task Approval
+3515,P1 - CTQ,Knowledge Management
+3516,P2 - Regression,Task Management
+3517,P2 - Regression,Create Case Page
+3518,P2 - Regression,Create Case Page
+3519,P0 - Smoke,Create Case Page
+3520,P1 - CTQ,Create Case Page
+3521,P1 - CTQ,Task Management
+3522,P1 - CTQ,Create Case Page
+3523,P1 - CTQ,Create Case Page
+3524,P1 - CTQ,Task Management
+3525,P1 - CTQ,Task Management
+3526,P1 - CTQ,Task Management
+3527,P1 - CTQ,Create Case Page
+3528,P1 - CTQ,Create Case Page
+3529,P1 - CTQ,Task Management
+3530,P1 - CTQ,Create Case Page
+3531,P2 - Regression,Email
+3532,P1 - CTQ,Live Chat
+3533,P1 - CTQ,BWF Connector
+3534,P2 - Regression,Service Level Management
+3535,P2 - Regression,Service Level Management
+3536,P2 - Regression,"Localization, Task Approval"
+3537,P2 - Regression,Batch 1
+3538,P2 - Regression,Batch 1
+3539,P0 - Smoke,Task Approval
+3540,P1 - CTQ,Dynamic Data
+3541,P2 - Regression,Batch 1
+3542,P2 - Regression,Task Approval
+3543,P1 - CTQ,Case Approval
+3544,P2 - Regression,Task Approval
+3545,P2 - Regression,Task Approval
+3546,P2 - Regression,Case Approval
+3547,P2 - Regression,Case Approval
+3548,P2 - Regression,Task Approval
+3549,P0 - Smoke,Task Approval
+3550,P2 - Regression,Task Approval
+3551,P2 - Regression,Foundation
+3552,P2 - Regression,Task Approval
+3553,P2 - Regression,Task Approval
+3554,P2 - Regression,Task Approval
+3555,P1 - CTQ,Task Approval
+3556,P1 - CTQ,Task Approval
+3557,P2 - Regression,Task Approval
+3558,P2 - Regression,Create Case Page
+3559,P2 - Regression,Content Package
+3560,P1 - CTQ,Email
+3561,P1 - CTQ,PDF Generation
+3562,P2 - Regression,Service Level Management
+3563,P2 - Regression,Email
+3564,P1 - CTQ,Email
+3565,P1 - CTQ,Batch 1
+3566,P2 - Regression,PDF Generation
+3567,P2 - Regression,DWP-BWF Integration
+3568,P2 - Regression,PDF Generation
+3569,P1 - CTQ,Create Case Page
+3570,P1 - CTQ,Create Case Page
+3571,P2 - Regression,Global Notification
+3572,P2 - Regression,Notifications
+3573,P1 - CTQ,Batch 1
+3574,P1 - CTQ,Batch 1
+3575,P2 - Regression,Batch 1
+3576,P2 - Regression,Batch 1
+3577,P2 - Regression,Knowledge Management
+3578,P1 - CTQ,Foundation
+3579,P2 - Regression,Social
+3580,P2 - Regression,Social
+3581,P2 - Regression,Social
+3582,P2 - Regression,Social
+3583,P2 - Regression,Task Approval
+3584,P2 - Regression,Task Approval
+3585,P2 - Regression,Task Approval
+3586,P0 - Smoke,Task Approval
+3587,P0 - Smoke,Task Approval
+3588,P0 - Smoke,Task Approval
+3589,P1 - CTQ,Task Approval
+3590,P0 - Smoke,Task Approval
+3591,P0 - Smoke,Task Approval
+3592,P0 - Smoke,Task Approval
+3593,P2 - Regression,Case Approval
+3594,P2 - Regression,Dynamic Data
+3595,P2 - Regression,Batch 1
+3596,P2 - Regression,Batch 1
+3597,P2 - Regression,Email
+3598,P2 - Regression,Batch 1
+3599,P2 - Regression,Batch 1
+3600,P2 - Regression,Batch 1
+3601,P2 - Regression,Batch 1
+3602,P2 - Regression,Batch 1
+3603,P2 - Regression,Dynamic Data
+3604,P2 - Regression,Dynamic Data
+3605,P2 - Regression,Dynamic Data
+3606,P2 - Regression,Dynamic Data
+3607,P2 - Regression,Dynamic Data
+3608,P2 - Regression,Dynamic Data
+3609,P2 - Regression,Dynamic Data
+3610,P2 - Regression,Dynamic Data
+3611,P2 - Regression,Dynamic Data
+3612,P2 - Regression,Dynamic Data
+3613,P2 - Regression,Dynamic Data
+3614,P2 - Regression,Social
+3615,P2 - Regression,Social
+3616,P2 - Regression,Social
+3617,P2 - Regression,Social
+3618,P2 - Regression,Social
+3619,P2 - Regression,Configuration
+3620,P2 - Regression,Dynamic Data
+3621,P2 - Regression,Dynamic Data
+3622,P2 - Regression,Dynamic Data
+3623,P2 - Regression,Dynamic Data
+3624,P2 - Regression,Create Case Page
+3625,P1 - CTQ,Reports
+3626,P2 - Regression,Knowledge Approval
+3627,P2 - Regression,"Knowledge Approval, Knowledge Management"
+3628,P2 - Regression,Knowledge Approval
+3629,P2 - Regression,Knowledge Approval
+3630,P2 - Regression,Knowledge Approval
+3631,P2 - Regression,Knowledge Approval
+3632,P2 - Regression,Knowledge Approval
+3633,P2 - Regression,Knowledge Approval
+3634,P2 - Regression,Knowledge Approval
+3635,P2 - Regression,Knowledge Approval
+3636,P2 - Regression,Knowledge Approval
+3637,P2 - Regression,Knowledge Approval
+3638,P2 - Regression,Knowledge Approval
+3639,P2 - Regression,Knowledge Approval
+3640,P2 - Regression,Knowledge Approval
+3641,P2 - Regression,Knowledge Approval
+3642,P2 - Regression,Knowledge Approval
+3643,P2 - Regression,Knowledge Approval
+3644,P2 - Regression,Knowledge Approval
+3645,P2 - Regression,Knowledge Approval
+3646,P2 - Regression,Knowledge Approval
+3647,P2 - Regression,Knowledge Approval
+3648,P2 - Regression,Knowledge Approval
+3649,P2 - Regression,Knowledge Approval
+3650,P2 - Regression,Knowledge Approval
+3651,P2 - Regression,Knowledge Approval
+3652,P2 - Regression,Live Chat
+3653,P2 - Regression,Live Chat
+3654,P2 - Regression,Live Chat
+3655,P2 - Regression,DWP-BWF Integration
+3656,P2 - Regression,DWP-BWF Integration
+3657,P2 - Regression,DWP-BWF Integration
+3658,P2 - Regression,DWP-BWF Integration
+3659,P2 - Regression,DWP-BWF Integration
+3660,P1 - CTQ,Knowledge Management
+3661,P1 - CTQ,Task Management
+3662,P1 - CTQ,Create Case Page
+3663,P1 - CTQ,Knowledge Management
+3664,P1 - CTQ,Knowledge Management
+3665,P1 - CTQ,Knowledge Management
+3666,P1 - CTQ,Knowledge Management
+3667,P1 - CTQ,Task Management
+3668,P1 - CTQ,Task Management
+3669,P1 - CTQ,Task Management
+3670,P1 - CTQ,Task Management
+3671,P1 - CTQ,Task Management
+3672,P1 - CTQ,Task Management
+3673,P1 - CTQ,Task Management
+3674,P1 - CTQ,Create Case Page
+3675,P1 - CTQ,Create Case Page
+3676,P1 - CTQ,Create Case Page
+3677,P1 - CTQ,Create Case Page
+3678,P1 - CTQ,Live Chat
+3679,P1 - CTQ,Create Case Page
+3680,P1 - CTQ,Create Case Page
+3681,P2 - Regression,Live Chat
+3682,P2 - Regression,Case Reports
+3683,P1 - CTQ,Create Case Page
+3684,P1 - CTQ,Email
+3685,P0 - Smoke,Email
+3686,P1 - CTQ,Email
+3687,P1 - CTQ,Create Case Page
+3688,P2 - Regression,Knowledge Management
+3689,P2 - Regression,Knowledge Management
+3690,P2 - Regression,Knowledge Approval
+3691,P2 - Regression,Knowledge Approval
+3692,P2 - Regression,Knowledge Approval
+3693,P2 - Regression,Knowledge Approval
+3694,P2 - Regression,Knowledge Approval
+3695,P2 - Regression,Case Reports
+3696,P2 - Regression,Case Reports
+3697,P2 - Regression,Batch 1
+3698,P2 - Regression,Knowledge Management
+3699,P2 - Regression,DWP-BWF Integration
+3700,P2 - Regression,Batch 1
+3701,P2 - Regression,Batch 1
+3702,P2 - Regression,Batch 1
+3703,P2 - Regression,Knowledge Management
+3704,P2 - Regression,Batch 1
+3705,P2 - Regression,Batch 1
+3706,P2 - Regression,Batch 1
+3707,P1 - CTQ,Batch 1
+3708,P1 - CTQ,Batch 1
+3709,P2 - Regression,Create Case Page
+3710,P2 - Regression,Create Case Page
+3711,P1 - CTQ,Create Case Page
+3712,P2 - Regression,Batch 1
+3713,P1 - CTQ,Create Case Page
+3714,P2 - Regression,Batch 1
+3715,P1 - CTQ,Knowledge Management
+3716,P0 - Smoke,Social
+3717,P1 - CTQ,Create Case Page
+3718,P2 - Regression,Batch 1
+3719,P2 - Regression,Batch 1
+3720,P2 - Regression,Create Case Page
+3721,P2 - Regression,DWP-BWF Integration
+3722,P2 - Regression,Batch 1
+3723,P1 - CTQ,Foundation
+3724,P1 - CTQ,Live Chat
+3725,P1 - CTQ,Live Chat
+3726,P1 - CTQ,Live Chat
+3727,P1 - CTQ,Live Chat
+3728,P1 - CTQ,Live Chat
+3729,P1 - CTQ,Live Chat
+3730,P2 - Regression,DWP-BWF Integration
+3731,P2 - Regression,DWP-BWF Integration
+3732,P2 - Regression,Batch 1
+3733,P1 - CTQ,Configuration
+3734,P1 - CTQ,Batch 1
+3735,P1 - CTQ,Batch 1
+3736,P1 - CTQ,Batch 1
+3737,P1 - CTQ,Batch 1
+3738,P1 - CTQ,DWP-BWF Integration
+3739,P2 - Regression,Batch 1
+3740,P2 - Regression,Knowledge Management
+3741,P2 - Regression,Batch 1
+3742,P2 - Regression,Batch 1
+3743,P2 - Regression,Batch 1
+3744,P2 - Regression,Batch 1
+3745,P2 - Regression,Batch 1
+3746,P2 - Regression,Batch 1
+3747,P2 - Regression,Batch 1
+3748,P2 - Regression,Batch 1
+3749,P2 - Regression,Batch 1
+3750,P2 - Regression,Batch 1
+3751,P2 - Regression,Batch 1
+3752,P2 - Regression,Social
+3753,P2 - Regression,Batch 1
+3754,P2 - Regression,Batch 1
+3755,P1 - CTQ,Batch 1
+3756,P1 - CTQ,Batch 1
+3757,P1 - CTQ,Batch 1
+3758,P1 - CTQ,Batch 1
+3759,P1 - CTQ,Email
+3760,P1 - CTQ,Batch 1
+3761,P1 - CTQ,Batch 1
+3762,P1 - CTQ,Foundation
+3763,P0 - Smoke,Foundation
+3764,P0 - Smoke,Social
+3768,P2 - Regression,Case Reports
+3769,P0 - Smoke,Foundation
+3770,P0 - Smoke,Foundation
+3771,P0 - Smoke,Foundation
+3772,P0 - Smoke,Foundation
+3773,P0 - Smoke,Foundation
+3774,P2 - Regression,Email
+3775,P2 - Regression,Create Case Page
+3776,P2 - Regression,Case Reports
+3777,P2 - Regression,Case Reports
+3778,P2 - Regression,Case Reports
+3779,P2 - Regression,Case Reports
+3780,P2 - Regression,Case Reports
+3781,P0 - Smoke,Knowledge Management
+3782,P0 - Smoke,Knowledge Management
+3783,P2 - Regression,Email
+3784,P2 - Regression,Knowledge Reports
+3785,P2 - Regression,Case Reports
+3786,P2 - Regression,Reports
+3787,P1 - CTQ,Knowledge Management
+3788,P1 - CTQ,Knowledge Management
+3789,P1 - CTQ,Knowledge Management
+3790,P1 - CTQ,Batch 1
+3791,P1 - CTQ,Knowledge Management
+3792,P0 - Smoke,Knowledge Management
+3793,P0 - Smoke,Knowledge Management
+3794,P0 - Smoke,Knowledge Management
+3795,P1 - CTQ,Knowledge Management
+3796,P0 - Smoke,Knowledge Management
+3797,P1 - CTQ,Batch 1
+3798,P1 - CTQ,Batch 1
+3799,P1 - CTQ,Batch 1
+3800,P1 - CTQ,Batch 1
+3801,P1 - CTQ,Batch 1
+3802,P1 - CTQ,Batch 1
+3803,P1 - CTQ,Batch 1
+3804,P1 - CTQ,Batch 1
+3805,P1 - CTQ,Batch 1
+3806,P1 - CTQ,Batch 1
+3807,P1 - CTQ,Batch 1
+3808,P1 - CTQ,Batch 1
+3809,P1 - CTQ,Batch 1
+3810,P1 - CTQ,Batch 1
+3811,P2 - Regression,Knowledge Management
+3812,P0 - Smoke,DWP-BWF Integration
+3813,P2 - Regression,"Create Case Page, DWP-BWF Integration"
+3814,P2 - Regression,Batch 1
+3815,P2 - Regression,Batch 1
+3816,P2 - Regression,Batch 1
+3817,P2 - Regression,Batch 1
+3818,P2 - Regression,Service Level Management
+3819,P2 - Regression,Service Level Management
+3820,P2 - Regression,Batch 1
+3821,P2 - Regression,Batch 1
+3822,P2 - Regression,PDF Generation
+3823,P2 - Regression,PDF Generation
+3824,P2 - Regression,PDF Generation
+3825,P2 - Regression,PDF Generation
+3826,P2 - Regression,PDF Generation
+3827,P2 - Regression,Global Notification
+3828,P2 - Regression,Global Notification
+3829,P2 - Regression,Global Notification
+3830,P2 - Regression,Global Notification
+3831,P2 - Regression,Batch 1
+3832,P2 - Regression,Batch 1
+3833,P2 - Regression,Batch 1
+3834,P2 - Regression,Batch 1
+3835,P2 - Regression,Batch 1
+3836,P2 - Regression,Batch 1
+3837,P2 - Regression,Batch 1
+3838,P2 - Regression,Batch 1
+3839,P2 - Regression,Batch 1
+3840,P2 - Regression,Batch 1
+3841,P2 - Regression,Email
+3842,P1 - CTQ,Email
+3843,P1 - CTQ,Email
+3844,P2 - Regression,Email
+3845,P2 - Regression,Email
+3846,P1 - CTQ,Email
+3847,P2 - Regression,Batch 1
+3848,P2 - Regression,Batch 1
+3849,P2 - Regression,Batch 1
+3850,P2 - Regression,Batch 1
+3851,P2 - Regression,Batch 1
+3852,P2 - Regression,Batch 1
+3853,P2 - Regression,Batch 1
+3854,P2 - Regression,DWP-BWF Integration
+3855,P1 - CTQ,DWP-BWF Integration
+3856,P1 - CTQ,DWP-BWF Integration
+3857,P1 - CTQ,DWP-BWF Integration
+3858,P1 - CTQ,DWP-BWF Integration
+3859,P1 - CTQ,DWP-BWF Integration
+3860,P2 - Regression,Batch 1
+3861,P2 - Regression,Batch 1
+3862,P2 - Regression,Batch 1
+3863,P2 - Regression,Batch 1
+3864,P2 - Regression,Batch 1
+3865,P2 - Regression,Global Notification
+3866,P2 - Regression,Global Notification
+3867,P2 - Regression,Global Notification
+3868,P2 - Regression,Global Notification
+3869,P2 - Regression,Global Notification
+3870,P2 - Regression,"Global Notification, PDF Generation"
+3871,P2 - Regression,Global Notification
+3872,P2 - Regression,Global Notification
+3873,P2 - Regression,Batch 1
+3874,P2 - Regression,Batch 1
+3875,P2 - Regression,Batch 1
+3876,P2 - Regression,Batch 1
+3877,P2 - Regression,Foundation
+3878,P1 - CTQ,Foundation
+3879,P0 - Smoke,Foundation
+3880,P0 - Smoke,Foundation
+3881,P0 - Smoke,Foundation
+3882,P0 - Smoke,Notifications
+3883,P0 - Smoke,Foundation
+3884,P1 - CTQ,Foundation
+3885,P2 - Regression,Batch 1
+3886,P2 - Regression,Batch 1
+3887,P2 - Regression,DWP-BWF Integration
+3888,P2 - Regression,DWP-BWF Integration
+3889,P2 - Regression,"DWP-BWF Integration, Knowledge Management"
+3890,P2 - Regression,"DWP-BWF Integration, Knowledge Management"
+3891,P2 - Regression,"DWP-BWF Integration, Knowledge Management"
+3892,P2 - Regression,"DWP-BWF Integration, Knowledge Management"
+3893,P2 - Regression,"DWP-BWF Integration, Knowledge Management"
+3894,P2 - Regression,"DWP-BWF Integration, Knowledge Management"
+3895,P0 - Smoke,Copy Notification
+3896,P0 - Smoke,Copy Notification
+3897,P2 - Regression,Copy Notification
+3898,P1 - CTQ,Copy Notification
+3899,P2 - Regression,Localization
+3900,P2 - Regression,Localization
+3901,P2 - Regression,Batch 1
+3902,P2 - Regression,Batch 1
+3903,P2 - Regression,Batch 1
+3904,P2 - Regression,Knowledge Management
+3905,P2 - Regression,Batch 1
+3906,P2 - Regression,Email
+3907,P2 - Regression,Email
+3908,P1 - CTQ,Email
+3909,P1 - CTQ,Email
+3910,P0 - Smoke,Email
+3911,P1 - CTQ,Email
+3912,P0 - Smoke,Email
+3913,P2 - Regression,Batch 1
+3914,P2 - Regression,Batch 1
+3915,P2 - Regression,Batch 1
+3916,P1 - CTQ,Batch 1
+3917,P2 - Regression,Batch 1
+3918,P2 - Regression,Batch 1
+3919,P2 - Regression,Batch 1
+3920,P2 - Regression,Batch 1
+3921,P2 - Regression,Batch 1
+3922,P2 - Regression,Batch 1
+3923,P2 - Regression,Batch 1
+3924,P2 - Regression,Quick Case
+3925,P2 - Regression,Quick Case
+3926,P2 - Regression,Quick Case
+3927,P2 - Regression,Quick Case
+3928,P2 - Regression,Quick Case
+3929,P2 - Regression,Batch 1
+3930,P2 - Regression,Service Level Management
+3931,P1 - CTQ,Assignment
+3932,P2 - Regression,Task Management
+3933,P1 - CTQ,Assignment
+3934,P1 - CTQ,Assignment
+3935,P2 - Regression,Task Management
+3936,P2 - Regression,Content Package
+3937,P2 - Regression,Content Package
+3938,P2 - Regression,Content Package
+3939,P2 - Regression,Content Package
+3940,P2 - Regression,Content Package
+3941,P2 - Regression,Content Package
+3942,P1 - CTQ,Flowsets
+3943,P2 - Regression,Service Level Management
+3944,P2 - Regression,Create Case Page
+3945,P2 - Regression,Create Case Page
+3946,P2 - Regression,Configuration
+3947,P1 - CTQ,Email
+3948,P1 - CTQ,Email
+3949,P2 - Regression,Email
+3950,P0 - Smoke,Email
+3951,P2 - Regression,Batch 1
+3952,P0 - Smoke,Email
+3953,P2 - Regression,Reports
+3954,P0 - Smoke,Logging-Licensing
+3955,P1 - CTQ,Create Case Page
+3956,P1 - CTQ,Create Case Page
+3957,P1 - CTQ,Create Case Page
+3958,P1 - CTQ,Assignment
+3959,P1 - CTQ,Assignment
+3960,P2 - Regression,Live Chat
+3961,P2 - Regression,Live Chat
+3962,P2 - Regression,Batch 1
+3963,P2 - Regression,Batch 1
+3964,P2 - Regression,Batch 1
+3965,P2 - Regression,Global Notification
+3966,P2 - Regression,Global Notification
+3967,P2 - Regression,Global Notification
+3968,P2 - Regression,Global Notification
+3969,P2 - Regression,Global Notification
+3970,P2 - Regression,Global Notification
+3971,P2 - Regression,Social
+3972,P2 - Regression,Social
+3973,P2 - Regression,Social
+3974,P2 - Regression,Social
+3975,P2 - Regression,Social
+3976,P2 - Regression,Notifications
+3977,P2 - Regression,Social
+3978,P2 - Regression,Notifications
+3979,P0 - Smoke,DWP-BWF Integration
+3980,P1 - CTQ,DWP-BWF Integration
+3981,P1 - CTQ,DWP-BWF Integration
+3982,P2 - Regression,DWP-BWF Integration
+3983,P1 - CTQ,DWP-BWF Integration
+3984,P0 - Smoke,DWP-BWF Integration
+3985,P1 - CTQ,DWP-BWF Integration
+3986,P1 - CTQ,DWP-BWF Integration
+3987,P1 - CTQ,Logging-Licensing
+3988,P1 - CTQ,Case Reports
+3989,P0 - Smoke,"Case Reports, Logging-Licensing"
+3990,P1 - CTQ,Assignment
+3991,P1 - CTQ,"Assignment, Create Case Page"
+3992,P1 - CTQ,Create Case Page
+3993,P2 - Regression,Batch 1
+3994,P2 - Regression,Batch 1
+3995,P0 - Smoke,Case Reports
+3996,P1 - CTQ,Create Case Page
+3997,P1 - CTQ,Create Case Page
+3998,P1 - CTQ,Create Case Page
+3999,P0 - Smoke,Create Case Page
+4000,P0 - Smoke,Create Case Page
+4001,P2 - Regression,Batch 1
+4002,P2 - Regression,Assignment
+4003,P2 - Regression,Configuration
+4004,P2 - Regression,Dynamic Data
+4005,P2 - Regression,Configuration
+4006,P2 - Regression,Dynamic Data
+4007,P2 - Regression,Configuration
+4008,P2 - Regression,Configuration
+4009,P2 - Regression,Global Notification
+4010,P1 - CTQ,Social
+4011,P2 - Regression,Dynamic Data
+4012,P2 - Regression,Social
+4013,P1 - CTQ,Social
+4014,P1 - CTQ,Social
+4015,P2 - Regression,Configuration
+4016,P2 - Regression,Configuration
+4017,P2 - Regression,Configuration
+4018,P2 - Regression,Configuration
+4019,P2 - Regression,Configuration
+4020,P2 - Regression,Configuration
+4021,P2 - Regression,Configuration
+4022,P2 - Regression,Create Case Page
+4023,P1 - CTQ,Global Notification
+4024,P1 - CTQ,Global Notification
+4025,P0 - Smoke,Case Edits
+4026,P1 - CTQ,Case Edits
+4027,P1 - CTQ,Dynamic Data
+4028,P1 - CTQ,Dynamic Data
+4029,P1 - CTQ,Dynamic Data
+4030,P1 - CTQ,Dynamic Data
+4031,P2 - Regression,Case Edits
+4032,P1 - CTQ,Dynamic Data
+4033,P1 - CTQ,Dynamic Data
+4034,P2 - Regression,Live Chat
+4035,P2 - Regression,Live Chat
+4036,P2 - Regression,Live Chat
+4037,P2 - Regression,Live Chat
+4038,P2 - Regression,Live Chat
+4039,P1 - CTQ,Live Chat
+4040,P1 - CTQ,Live Chat
+4041,P2 - Regression,Live Chat
+4042,P2 - Regression,Live Chat
+4043,P1 - CTQ,Live Chat
+4044,P1 - CTQ,Live Chat
+4045,P1 - CTQ,Live Chat
+4046,P1 - CTQ,Live Chat
+4047,P1 - CTQ,Live Chat
+4048,P0 - Smoke,Live Chat
+4049,P1 - CTQ,Live Chat
+4050,P2 - Regression,Live Chat
+4051,P2 - Regression,Live Chat
+4052,P2 - Regression,Live Chat
+4053,P2 - Regression,Live Chat
+4054,P1 - CTQ,Live Chat
+4055,P2 - Regression,Case Edits
+4056,P1 - CTQ,Live Chat
+4057,P1 - CTQ,Live Chat
+4058,P1 - CTQ,Dynamic Data
+4059,P2 - Regression,Live Chat
+4060,P0 - Smoke,Dynamic Data
+4061,P2 - Regression,Dynamic Data
+4062,P2 - Regression,Dynamic Data
+4063,P0 - Smoke,Dynamic Data
+4064,P0 - Smoke,Dynamic Data
+4065,P0 - Smoke,Dynamic Data
+4066,P0 - Smoke,Dynamic Data
+4067,P0 - Smoke,Dynamic Data
+4068,P2 - Regression,Dynamic Data
+4069,P0 - Smoke,Dynamic Data
+4070,P0 - Smoke,Foundation
+4071,P2 - Regression,Batch 1
+4072,P2 - Regression,Dynamic Data
+4073,P2 - Regression,Task Management
+4074,P2 - Regression,"Case Edits, Content Package"
+4075,P2 - Regression,Case Edits
+4076,P2 - Regression,Case Edits
+4077,P2 - Regression,Case Edits
+4078,P2 - Regression,Case Edits
+4079,P2 - Regression,Case Edits
+4080,P2 - Regression,Case Edits
+4081,P2 - Regression,Case Edits
+4082,P2 - Regression,Case Edits
+4083,P2 - Regression,Batch 1
+4084,P2 - Regression,Case Edits
+4085,P2 - Regression,Configuration
+4086,P0 - Smoke,Case Edits
+4087,P2 - Regression,Social
+4088,P2 - Regression,Case Edits
+4089,P2 - Regression,Case Edits
+4090,P2 - Regression,Case Edits
+4091,P2 - Regression,Social
+4092,P2 - Regression,Batch 1
+4093,P2 - Regression,Case Edits
+4094,P2 - Regression,Case Edits
+4095,P2 - Regression,Case Edits
+4096,P1 - CTQ,Social
+4097,P2 - Regression,Dynamic Data
+4098,P2 - Regression,Dynamic Data
+4099,P2 - Regression,Case Edits
+4100,P2 - Regression,Case Edits
+4101,P2 - Regression,Case Edits
+4102,P2 - Regression,Case Edits
+4103,P2 - Regression,Case Edits
+4104,P2 - Regression,Case Edits
+4105,P2 - Regression,Case Edits
+4106,P2 - Regression,Case Edits
+4107,P2 - Regression,Case Edits
+4108,P2 - Regression,Case Edits
+4109,P2 - Regression,Case Edits
+4110,P2 - Regression,Case Edits
+4111,P2 - Regression,Case Edits
+4112,P2 - Regression,Case Edits
+4113,P0 - Smoke,Reports
+4114,P2 - Regression,Migration
+4115,P2 - Regression,Migration
+4116,P2 - Regression,Migration
+4117,P2 - Regression,Case Edits
+4118,P2 - Regression,Case Edits
+4119,P2 - Regression,Case Edits
+4120,P2 - Regression,Case Edits
+4121,P2 - Regression,Case Edits
+4122,P2 - Regression,Configuration
+4123,P2 - Regression,Case Edits
+4124,P2 - Regression,Case Edits
+4125,P1 - CTQ,Social
+4126,P1 - CTQ,Social
+4127,P1 - CTQ,Social
+4128,P1 - CTQ,Social
+4129,P2 - Regression,Social
+4130,P2 - Regression,Case Edits
+4131,P2 - Regression,Service Level Management
+4132,P2 - Regression,Service Level Management
+4133,P1 - CTQ,Batch 1
+4134,P1 - CTQ,Global Notification
+4135,P1 - CTQ,Global Notification
+4136,P2 - Regression,Case Edits
+4137,P2 - Regression,Case Edits
+4138,P2 - Regression,Case Edits
+4139,P2 - Regression,Case Edits
+4140,P2 - Regression,Batch 1
+4141,P2 - Regression,Case Edits
+4142,P0 - Smoke,Batch 1
+4143,P0 - Smoke,Batch 1
+4144,P2 - Regression,Case Edits
+4145,P2 - Regression,Case Edits
+4146,P2 - Regression,Case Edits
+4147,P2 - Regression,Social
+4148,P1 - CTQ,Notifications
+4149,P1 - CTQ,Notifications
+4150,P1 - CTQ,Notifications
+4151,P1 - CTQ,Notifications
+4152,P2 - Regression,Notifications
+4153,P2 - Regression,Notifications
+4154,P1 - CTQ,Notifications
+4155,P1 - CTQ,Notifications
+4156,P2 - Regression,Notifications
+4157,P1 - CTQ,Notifications
+4158,P2 - Regression,Notifications
+4159,P1 - CTQ,Notifications
+4160,P1 - CTQ,Notifications
+4161,P1 - CTQ,Notifications
+4162,P1 - CTQ,Notifications
+4163,P2 - Regression,Notifications
+4164,P2 - Regression,Notifications
+4165,P1 - CTQ,Notifications
+4166,P1 - CTQ,Notifications
+4167,P1 - CTQ,Notifications
+4168,P1 - CTQ,Notifications
+4169,P1 - CTQ,Notifications
+4170,P1 - CTQ,Notifications
+4171,P1 - CTQ,Notifications
+4172,P1 - CTQ,Notifications
+4173,P1 - CTQ,Notifications
+4174,P1 - CTQ,Notifications
+4175,P1 - CTQ,Notifications
+4176,P1 - CTQ,Notifications
+4177,P1 - CTQ,Notifications
+4178,P1 - CTQ,Notifications
+4179,P1 - CTQ,Notifications
+4180,P1 - CTQ,Notifications
+4181,P1 - CTQ,Notifications
+4182,P1 - CTQ,Notifications
+4183,P1 - CTQ,Notifications
+4184,P1 - CTQ,Notifications
+4185,P1 - CTQ,Notifications
+4186,P1 - CTQ,Notifications
+4187,P1 - CTQ,Notifications
+4188,P1 - CTQ,Notifications
+4189,P2 - Regression,Notifications
+4190,P1 - CTQ,Notifications
+4191,P1 - CTQ,Notifications
+4192,P1 - CTQ,Notifications
+4193,P1 - CTQ,Notifications
+4194,P2 - Regression,Batch 1
+4195,P2 - Regression,Configuration
+4196,P2 - Regression,Configuration
+4197,P2 - Regression,Configuration
+4198,P0 - Smoke,Case Edits
+4199,P1 - CTQ,Notifications
+4200,P1 - CTQ,Notifications
+4201,P0 - Smoke,Case Edits
+4202,P0 - Smoke,Case Edits
+4203,P0 - Smoke,Case Edits
+4204,P1 - CTQ,Notifications
+4205,P1 - CTQ,Notifications
+4206,P0 - Smoke,Batch 1
+4207,P1 - CTQ,Notifications
+4208,P1 - CTQ,Notifications
+4209,P1 - CTQ,Notifications
+4210,P1 - CTQ,Social
+4211,P1 - CTQ,Social
+4212,P2 - Regression,Social
+4213,P1 - CTQ,Social
+4214,P1 - CTQ,Social
+4215,P0 - Smoke,Social
+4216,P1 - CTQ,Social
+4217,P0 - Smoke,Knowledge Management
+4218,P0 - Smoke,Knowledge Management
+4219,P1 - CTQ,Social
+4220,P1 - CTQ,Social
+4221,P1 - CTQ,Social
+4222,P1 - CTQ,Social
+4223,P0 - Smoke,Social
+4224,P2 - Regression,Social
+4225,P0 - Smoke,Social
+4226,P0 - Smoke,Social
+4227,P1 - CTQ,Social
+4228,P1 - CTQ,Social
+4229,P1 - CTQ,Social
+4230,P2 - Regression,Social
+4231,P1 - CTQ,Social
+4232,P1 - CTQ,Social
+4233,P1 - CTQ,Social
+4234,P0 - Smoke,Social
+4235,P0 - Smoke,Social
+4236,P1 - CTQ,Social
+4237,P1 - CTQ,Social
+4238,P1 - CTQ,Social
+4239,P1 - CTQ,Social
+4240,P1 - CTQ,Social
+4241,P1 - CTQ,Social
+4242,P1 - CTQ,Notifications
+4243,P1 - CTQ,Case Approval
+4244,P1 - CTQ,Case Approval
+4245,P1 - CTQ,Case Approval
+4246,P1 - CTQ,Case Approval
+4247,P1 - CTQ,Case Approval
+4248,P1 - CTQ,Case Approval
+4249,P2 - Regression,Case Edits
+4250,P2 - Regression,Case Edits
+4251,P2 - Regression,Case Edits
+4252,P2 - Regression,Social
+4253,P1 - CTQ,Social
+4254,P1 - CTQ,Social
+4255,P1 - CTQ,Social
+4256,P1 - CTQ,Case Edits
+4257,P1 - CTQ,Case Approval
+4258,P1 - CTQ,Global Notification
+4259,P1 - CTQ,Case Edits
+4260,P1 - CTQ,Case Edits
+4261,P1 - CTQ,Case Edits
+4262,P1 - CTQ,Case Edits
+4263,P1 - CTQ,Case Approval
+4264,P1 - CTQ,Case Approval
+4265,P1 - CTQ,Case Approval
+4266,P0 - Smoke,Case Approval
+4267,P0 - Smoke,Case Approval
+4268,P0 - Smoke,Case Approval
+4269,P0 - Smoke,Case Approval
+4270,P1 - CTQ,Case Approval
+4271,P1 - CTQ,Case Approval
+4272,P1 - CTQ,Case Approval
+4273,P1 - CTQ,Case Approval
+4274,P1 - CTQ,Case Approval
+4275,P2 - Regression,Case Edits
+4276,P1 - CTQ,Localization
+4277,P0 - Smoke,Foundation
+4278,P2 - Regression,Case Edits
+4279,P2 - Regression,Case Edits
+4280,P2 - Regression,Service Level Management
+4281,P2 - Regression,Case Edits
+4282,P2 - Regression,Case Edits
+4283,P2 - Regression,Case Edits
+4284,P2 - Regression,Case Edits
+4285,P2 - Regression,Case Edits
+4286,P2 - Regression,Case Edits
+4287,P2 - Regression,"Create Case Page, Knowledge Management"
+4288,P1 - CTQ,Create Case Page
+4289,P2 - Regression,"Create Case Page, Global Notification"
+4290,P1 - CTQ,Create Case Page
+4291,P2 - Regression,Search
+4292,P2 - Regression,Search
+4293,P2 - Regression,Search
+4294,P2 - Regression,Search
+4295,P2 - Regression,Search
+4296,P2 - Regression,Search
+4297,P2 - Regression,Search
+4298,P2 - Regression,Case Edits
+4299,P2 - Regression,Case Edits
+4300,P2 - Regression,Batch 1
+4301,P2 - Regression,Batch 1
+4302,P1 - CTQ,Batch 1
+4303,P2 - Regression,Case Edits
+4304,P1 - CTQ,Batch 1
+4305,P1 - CTQ,Batch 1
+4306,P1 - CTQ,Batch 1
+4307,P2 - Regression,Search
+4308,P2 - Regression,Service Level Management
+4309,P2 - Regression,Service Level Management
+4310,P2 - Regression,Service Level Management
+4311,P2 - Regression,Service Level Management
+4312,P2 - Regression,Service Level Management
+4313,P2 - Regression,Service Level Management
+4314,P2 - Regression,Service Level Management
+4315,P2 - Regression,Service Level Management
+4316,P2 - Regression,Service Level Management
+4317,P2 - Regression,Service Level Management
+4318,P2 - Regression,Service Level Management
+4319,P2 - Regression,Service Level Management
+4320,P2 - Regression,Service Level Management
+4321,P2 - Regression,Service Level Management
+4322,P2 - Regression,Service Level Management
+4323,P2 - Regression,Service Level Management
+4324,P2 - Regression,Service Level Management
+4325,P2 - Regression,Case Edits
+4326,P2 - Regression,Case Edits
+4327,P2 - Regression,Case Edits
+4328,P2 - Regression,Case Edits
+4329,P2 - Regression,Case Edits
+4330,P2 - Regression,Case Edits
+4331,P2 - Regression,Batch 1
+4332,P2 - Regression,Case Edits
+4333,P2 - Regression,Search
+4334,P2 - Regression,Search
+4335,P1 - CTQ,Case Edits
+4336,P1 - CTQ,Case Edits
+4337,P1 - CTQ,Case Edits
+4338,P1 - CTQ,Case Edits
+4339,P1 - CTQ,"Case Edits, Watchlists"
+4340,P1 - CTQ,Case Edits
+4341,P1 - CTQ,Case Edits
+4342,P2 - Regression,Social
+4343,P1 - CTQ,Case Edits
+4344,P2 - Regression,Localization
+4345,P1 - CTQ,Social
+4346,P1 - CTQ,Social
+4347,P1 - CTQ,Case Edits
+4348,P1 - CTQ,Global Notification
+4349,P0 - Smoke,Case Approval
+4350,P1 - CTQ,Case Edits
+4351,P2 - Regression,Case Edits
+4352,P1 - CTQ,Case Approval
+4353,P1 - CTQ,Global Notification
+4354,P2 - Regression,Global Notification
+4355,P1 - CTQ,Global Notification
+4356,P2 - Regression,Global Notification
+4357,P2 - Regression,Case Approval
+4358,P1 - CTQ,Global Notification
+4359,P1 - CTQ,Localization
+4360,P1 - CTQ,Case Edits
+4361,P1 - CTQ,Batch 1
+4362,P1 - CTQ,Task Management
+4363,P1 - CTQ,Knowledge Management
+4364,P0 - Smoke,Case Edits
+4365,P1 - CTQ,Case Edits
+4366,P1 - CTQ,Case Edits
+4367,P1 - CTQ,Case Edits
+4368,P1 - CTQ,Case Edits
+4369,P1 - CTQ,Case Edits
+4370,P2 - Regression,Social
+4371,P0 - Smoke,Case Approval
+4372,P1 - CTQ,Case Edits
+4373,P2 - Regression,Case Edits
+4374,P2 - Regression,Case Edits
+4375,P2 - Regression,"Case Edits, Notifications"
+4376,P2 - Regression,Case Edits
+4377,P1 - CTQ,Batch 1
+4378,P2 - Regression,DWP-BWF Integration
+4379,P2 - Regression,Service Level Management
+4380,P2 - Regression,Service Level Management
+4381,P2 - Regression,Service Level Management
+4382,P1 - CTQ,Case Edits
+4383,P2 - Regression,Assignment
+4384,P2 - Regression,Assignment
+4385,P2 - Regression,Assignment
+4386,P2 - Regression,Assignment
+4387,P2 - Regression,Social
+4388,P2 - Regression,Case Edits
+4389,P1 - CTQ,Assignment
+4390,P2 - Regression,Case Edits
+4391,P2 - Regression,Case Edits
+4392,P2 - Regression,Case Edits
+4393,P2 - Regression,Case Edits
+4394,P1 - CTQ,Case Edits
+4395,P1 - CTQ,Case Edits
+4396,P2 - Regression,Configuration
+4397,P1 - CTQ,Case Edits
+4398,P1 - CTQ,Assignment
+4399,P2 - Regression,Configuration
+4400,P2 - Regression,Configuration
+4401,P2 - Regression,Configuration
+4402,P2 - Regression,Configuration
+4403,P2 - Regression,Configuration
+4404,P2 - Regression,Configuration
+4405,P2 - Regression,Case Edits
+4406,P2 - Regression,Assignment
+4407,P2 - Regression,Case Edits
+4408,P2 - Regression,Social
+4409,P2 - Regression,Assignment
+4410,P1 - CTQ,Task Management
+4411,P1 - CTQ,Social
+4412,P1 - CTQ,Case Approval
+4413,P1 - CTQ,Cognitive Capabilities
+4414,P1 - CTQ,Case Edits
+4415,P1 - CTQ,Assignment
+4416,P1 - CTQ,Service Level Management
+4417,P0 - Smoke,Batch 2
+4418,P0 - Smoke,Knowledge Management
+4419,P0 - Smoke,Task Management
+4420,P0 - Smoke,Case Edits
+4421,P0 - Smoke,Task Management
+4422,P0 - Smoke,Case Edits
+4423,P2 - Regression,Case Edits
+4424,P2 - Regression,Batch 2
+4425,P1 - CTQ,Case Creation
+4426,P2 - Regression,Batch 2
+4427,P2 - Regression,Batch 2
+4428,P0 - Smoke,Batch 2
+4429,P2 - Regression,Assignment
+4430,P2 - Regression,Assignment
+4431,P2 - Regression,Assignment
+4432,P2 - Regression,Assignment
+4433,P2 - Regression,Assignment
+4434,P2 - Regression,Assignment
+4435,P2 - Regression,Assignment
+4436,P1 - CTQ,Assignment
+4437,P2 - Regression,"508, Knowledge Management"
+4438,P2 - Regression,508
+4439,P2 - Regression,Dynamic Data
+4440,P2 - Regression,Batch 2
+4441,P2 - Regression,Batch 2
+4442,P2 - Regression,Batch 2
+4443,P2 - Regression,Dynamic Data
+4444,P2 - Regression,Assignment
+4445,P2 - Regression,Dynamic Data
+4446,P2 - Regression,Dynamic Data
+4447,P2 - Regression,Dynamic Data
+4448,P2 - Regression,Dynamic Data
+4449,P2 - Regression,Assignment
+4450,P2 - Regression,508
+4451,P2 - Regression,Assignment
+4452,P2 - Regression,Assignment
+4453,P2 - Regression,Dynamic Data
+4454,P2 - Regression,Dynamic Data
+4455,P2 - Regression,Dynamic Data
+4456,P2 - Regression,PDF Generation
+4457,P2 - Regression,PDF Generation
+4458,P1 - CTQ,PDF Generation
+4459,P2 - Regression,PDF Generation
+4460,P2 - Regression,PDF Generation
+4461,P1 - CTQ,PDF Generation
+4462,P1 - CTQ,PDF Generation
+4463,P2 - Regression,Dynamic Data
+4464,P2 - Regression,BWF Connector
+4465,P2 - Regression,Dynamic Data
+4466,P2 - Regression,Dynamic Data
+4467,P2 - Regression,Dynamic Data
+4468,P2 - Regression,Dynamic Data
+4469,P2 - Regression,Dynamic Data
+4470,P2 - Regression,Dynamic Data
+4471,P1 - CTQ,PDF Generation
+4472,P2 - Regression,PDF Generation
+4473,P2 - Regression,Dynamic Data
+4474,P2 - Regression,Dynamic Data
+4475,P2 - Regression,Dynamic Data
+4476,P2 - Regression,Dynamic Data
+4477,P2 - Regression,Dynamic Data
+4478,P2 - Regression,Dynamic Data
+4479,P0 - Smoke,"Create Case Page, Dynamic Data"
+4480,P2 - Regression,Dynamic Data
+4481,P2 - Regression,"Create Case Page, Dynamic Data"
+4482,P2 - Regression,Dynamic Data
+4483,P2 - Regression,"Dynamic Data, PDF Generation"
+4484,P2 - Regression,"Create Case Page, PDF Generation"
+4485,P2 - Regression,"Create Case Page, PDF Generation"
+4486,P2 - Regression,"Create Case Page, Dynamic Data"
+4487,P2 - Regression,"Create Case Page, Dynamic Data"
+4488,P2 - Regression,"Create Case Page, Dynamic Data"
+4489,P2 - Regression,"Create Case Page, Dynamic Data"
+4490,P2 - Regression,Assignment
+4491,P2 - Regression,Case Creation
+4492,P2 - Regression,Dynamic Data
+4493,P2 - Regression,"Create Case Page, Dynamic Data"
+4494,P2 - Regression,"Create Case Page, Task Management"
+4495,P2 - Regression,"Create Case Page, Task Management"
+4496,P2 - Regression,"Create Case Page, Task Management"
+4497,P2 - Regression,"Create Case Page, Task Management"
+4498,P2 - Regression,"Create Case Page, Task Management"
+4499,P0 - Smoke,"Create Case Page, Task Management"
+4500,P2 - Regression,Task Management
+4501,P2 - Regression,Task Management
+4502,P2 - Regression,Task Management
+4503,P2 - Regression,Task Management
+4504,P2 - Regression,Task Management
+4505,P2 - Regression,508
+4506,P2 - Regression,508
+4507,P2 - Regression,508
+4508,P2 - Regression,508
+4509,P2 - Regression,508
+4510,P2 - Regression,PDF Generation
+4511,P2 - Regression,Localization
+4512,P2 - Regression,PDF Generation
+4513,P1 - CTQ,PDF Generation
+4514,P1 - CTQ,PDF Generation
+4515,P1 - CTQ,PDF Generation
+4516,P0 - Smoke,PDF Generation
+4517,P0 - Smoke,"Create Case Page, Global Notification"
+4518,P1 - CTQ,Custom Notification
+4519,P1 - CTQ,"Email, Global Notification"
+4520,P1 - CTQ,"Email, Global Notification"
+4521,P1 - CTQ,"Email, Global Notification"
+4522,P1 - CTQ,"Email, Global Notification"
+4523,P0 - Smoke,Global Notification
+4524,P1 - CTQ,Migration
+4525,P2 - Regression,"Case Creation, Case Edits"
+4526,P2 - Regression,Task Management
+4527,P1 - CTQ,Task Management
+4528,P2 - Regression,Task Management
+4529,P2 - Regression,Task Management
+4530,P1 - CTQ,Task Management
+4531,P1 - CTQ,Task Management
+4532,P0 - Smoke,Task Management
+4533,P0 - Smoke,Task Management
+4534,P2 - Regression,Migration
+4535,P1 - CTQ,Migration
+4536,P2 - Regression,Task Management
+4537,P2 - Regression,Task Management
+4538,P2 - Regression,Task Management
+4539,P2 - Regression,Task Management
+4540,P2 - Regression,Task Management
+4541,P2 - Regression,Task Management
+4542,P2 - Regression,"Create Case Page, Task Management"
+4543,P2 - Regression,"Create Case Page, Task Management"
+4544,P2 - Regression,"Create Case Page, Task Management"
+4545,P1 - CTQ,Assignment
+4546,P1 - CTQ,Assignment
+4547,P2 - Regression,Assignment
+4548,P2 - Regression,Assignment
+4549,P2 - Regression,Assignment
+4550,P2 - Regression,Social
+4551,P2 - Regression,Case Edits
+4552,P2 - Regression,Case Edits
+4553,P2 - Regression,Case Edits
+4554,P2 - Regression,Case Edits
+4555,P2 - Regression,Case Edits
+4556,P2 - Regression,Case Edits
+4557,P2 - Regression,Case Edits
+4558,P2 - Regression,Dynamic Data
+4559,P2 - Regression,Task Management
+4560,P2 - Regression,Case Edits
+4561,P1 - CTQ,Task Management
+4562,P1 - CTQ,Case Creation
+4563,P1 - CTQ,Case Creation
+4564,P2 - Regression,Task Management
+4565,P2 - Regression,Task Management
+4566,P2 - Regression,Task Management
+4567,P2 - Regression,Task Management
+4568,P1 - CTQ,Task Management
+4569,P1 - CTQ,Task Management
+4570,P1 - CTQ,Task Management
+4571,P1 - CTQ,Dynamic Data
+4572,P0 - Smoke,Dynamic Data
+4573,P2 - Regression,Batch 2
+4574,P1 - CTQ,Dynamic Data
+4575,P0 - Smoke,Global Notification
+4576,P0 - Smoke,Global Notification
+4577,P0 - Smoke,Global Notification
+4578,P0 - Smoke,Global Notification
+4579,P0 - Smoke,Global Notification
+4580,P2 - Regression,Case Approval
+4581,P2 - Regression,Case Approval
+4582,P0 - Smoke,Case Creation
+4583,P2 - Regression,Batch 2
+4584,P2 - Regression,Batch 2
+4585,P2 - Regression,Batch 2
+4586,P2 - Regression,Batch 2
+4587,P2 - Regression,Global Notification
+4588,P2 - Regression,Global Notification
+4589,P2 - Regression,Global Notification
+4590,P2 - Regression,Global Notification
+4591,P1 - CTQ,"Case Approval, Social"
+4592,P2 - Regression,"Case Edits, Social"
+4593,P2 - Regression,Batch 2
+4594,P2 - Regression,Batch 2
+4595,P0 - Smoke,Batch 2
+4596,P0 - Smoke,Batch 2
+4597,P2 - Regression,Case Approval
+4598,P1 - CTQ,Dynamic Data
+4599,P1 - CTQ,DWP-BWF Integration
+4600,P1 - CTQ,Dynamic Data
+4601,P1 - CTQ,Dynamic Data
+4602,P1 - CTQ,Dynamic Data
+4603,P1 - CTQ,Dynamic Data
+4604,P1 - CTQ,Dynamic Data
+4605,P1 - CTQ,Dynamic Data
+4606,P2 - Regression,Custom Status
+4607,P2 - Regression,Custom Status
+4608,P2 - Regression,Custom Status
+4609,P2 - Regression,Localization
+4610,P0 - Smoke,Custom Status
+4611,P0 - Smoke,Custom Status
+4612,P0 - Smoke,Custom Status
+4613,P2 - Regression,Custom Status
+4614,P0 - Smoke,Custom Status
+4615,P2 - Regression,Custom Status
+4616,P2 - Regression,Custom Status
+4617,P2 - Regression,Custom Status
+4618,P2 - Regression,Custom Status
+4619,P2 - Regression,Task Management
+4620,P2 - Regression,Localization
+4621,P1 - CTQ,Dynamic Data
+4622,P2 - Regression,"Case Approval, Task Management"
+4623,P2 - Regression,Case Creation
+4624,P2 - Regression,Case Creation
+4625,P2 - Regression,Case Creation
+4626,P2 - Regression,"Case Approval, Case Creation"
+4627,P2 - Regression,"Case Approval, Case Creation"
+4628,P2 - Regression,"Case Creation, Knowledge Management"
+4629,P2 - Regression,Case Creation
+4630,P2 - Regression,Case Creation
+4631,P2 - Regression,Case Creation
+4632,P2 - Regression,Case Creation
+4633,P2 - Regression,Task Management
+4634,P2 - Regression,Case Creation
+4635,P2 - Regression,"Custom Status, Knowledge Management"
+4636,P2 - Regression,"Knowledge Management, Task Management"
+4637,P2 - Regression,"DWP-BWF Integration, Knowledge Management"
+4638,P2 - Regression,"BWF Connector, Knowledge Management"
+4639,P1 - CTQ,"Case Approval, DWP-BWF Integration"
+4640,P1 - CTQ,"Case Approval, DWP-BWF Integration"
+4641,P1 - CTQ,"Case Approval, Custom Status"
+4642,P1 - CTQ,"Case Approval, Custom Status"
+4643,P2 - Regression,"Case Approval, Case Creation"
+4644,P2 - Regression,"Case Approval, Case Creation"
+4645,P2 - Regression,"Case Approval, Knowledge Management"
+4646,P0 - Smoke,"Case Approval, Dynamic Data"
+4647,P0 - Smoke,"Case Approval, Dynamic Data"
+4648,P2 - Regression,"Case Approval, Document Library"
+4649,P2 - Regression,"Case Approval, Document Library"
+4650,P2 - Regression,"Case Approval, Document Library"
+4651,P2 - Regression,"Case Approval, Document Library"
+4652,P2 - Regression,"Case Approval, Document Library"
+4653,P2 - Regression,"Case Approval, Document Library"
+4654,P2 - Regression,"Case Approval, Document Library"
+4655,P2 - Regression,"Case Approval, Document Library"
+4656,P2 - Regression,"Case Approval, Document Library"
+4657,P2 - Regression,"Case Approval, Document Library"
+4658,P2 - Regression,"Case Approval, Document Library"
+4659,P2 - Regression,"Case Approval, Document Library"
+4660,P2 - Regression,"Case Approval, Document Library"
+4661,P2 - Regression,"Case Approval, Document Library"
+4662,P2 - Regression,"Case Approval, Document Library"
+4663,P2 - Regression,"Case Approval, Knowledge Management"
+4664,P2 - Regression,"Case Approval, Case Creation"
+4665,P2 - Regression,"Case Approval, Localization"
+4666,P2 - Regression,"Case Approval, Localization"
+4667,P2 - Regression,"Case Approval, Create Case Page"
+4668,P2 - Regression,"Case Creation, Knowledge Management"
+4669,P1 - CTQ,"Knowledge Management, Service Level Management"
+4670,P2 - Regression,"Knowledge Management, Service Level Management"
+4671,P0 - Smoke,Knowledge Management
+4672,P0 - Smoke,"Case Creation, Knowledge Management"
+4673,P0 - Smoke,"Create Case Page, Knowledge Management"
+4674,P0 - Smoke,"Create Case Page, Knowledge Management"
+4675,P0 - Smoke,"Case Creation, Knowledge Management"
+4676,P0 - Smoke,"Create Case Page, Custom Status"
+4677,P0 - Smoke,"Create Case Page, Custom Status"
+4678,P2 - Regression,"Create Case Page, Custom Status"
+4679,P1 - CTQ,"Create Case Page, Custom Status"
+4680,P1 - CTQ,"Create Case Page, Custom Status"
+4681,P1 - CTQ,"Create Case Page, DWP-BWF Integration"
+4682,P0 - Smoke,"Create Case Page, Custom Status"
+4683,P2 - Regression,"Create Case Page, Custom Status"
+4684,P1 - CTQ,"Create Case Page, Custom Status"
+4685,P2 - Regression,Create Case Page
+4686,P0 - Smoke,"Dynamic Data, Knowledge Management"
+4687,P1 - CTQ,"Custom Status, Knowledge Management"
+4688,P1 - CTQ,"Custom Status, Knowledge Management"
+4689,P2 - Regression,"Custom Status, Knowledge Management"
+4690,P2 - Regression,"Knowledge Management, Localization"
+4691,P0 - Smoke,"Dynamic Data, Knowledge Management"
+4692,P2 - Regression,"Dynamic Data, Knowledge Management"
+4693,P0 - Smoke,"Dynamic Data, Knowledge Management"
+4694,P1 - CTQ,"Dynamic Data, Knowledge Management"
+4695,P0 - Smoke,"Dynamic Data, Knowledge Management"
+4696,P0 - Smoke,"Dynamic Data, Knowledge Management"
+4697,P2 - Regression,"BWF Connector, Knowledge Management"
+4698,P1 - CTQ,"BWF Connector, Knowledge Management"
+4699,P0 - Smoke,"BWF Connector, Knowledge Management"
+4700,P1 - CTQ,"BWF Connector, Knowledge Management"
+4701,P2 - Regression,"Knowledge Management, Task Management"
+4702,P2 - Regression,"Case Creation, Knowledge Management"
+4703,P2 - Regression,"Case Creation, Knowledge Management"
+4704,P2 - Regression,"Case Reports, Knowledge Management"
+4705,P0 - Smoke,"Email, Knowledge Management"
+4706,P0 - Smoke,"Email, Knowledge Management"
+4707,P0 - Smoke,"Email, Knowledge Management"
+4708,P0 - Smoke,"Global Notification, Knowledge Management"
+4709,P1 - CTQ,"Dynamic Data, Knowledge Management"
+4710,P0 - Smoke,"Email, Knowledge Management"
+4711,P0 - Smoke,Email
+4712,P0 - Smoke,Custom Notification
+4713,P0 - Smoke,Email
+4714,P2 - Regression,Task Management
+4715,P2 - Regression,Task Management
+4716,P2 - Regression,Task Management
+4717,P2 - Regression,"Case Creation, Dynamic Data"
+4718,P2 - Regression,"Case Creation, Dynamic Data"
+4719,P2 - Regression,"Knowledge Management, Task Management"
+4720,P2 - Regression,"Knowledge Management, Localization"
+4721,P1 - CTQ,"Dynamic Data, Knowledge Management"
+4722,P1 - CTQ,"Knowledge Management, Localization"
+4723,P1 - CTQ,"Knowledge Management, Localization"
+4724,P2 - Regression,"Knowledge Management, Localization"
+4725,P1 - CTQ,"Dynamic Data, Knowledge Management"
+4726,P1 - CTQ,"Dynamic Data, Knowledge Management"
+4727,P1 - CTQ,"Dynamic Data, Knowledge Management"
+4728,P0 - Smoke,"Dynamic Data, Knowledge Management"
+4729,P0 - Smoke,"Create Case Page, Dynamic Data"
+4730,P2 - Regression,"Case Creation, Create Case Page"
+4731,P2 - Regression,"Create Case Page, Task Management"
+4732,P2 - Regression,"Case Creation, Create Case Page"
+4733,P2 - Regression,"Case Creation, Create Case Page"
+4734,P2 - Regression,"Case Creation, Create Case Page"
+4735,P2 - Regression,"Case Creation, Create Case Page"
+4736,P2 - Regression,"Case Creation, Create Case Page"
+4737,P2 - Regression,Task Management
+4738,P2 - Regression,Task Management
+4739,P2 - Regression,"Case Creation, Create Case Page"
+4740,P0 - Smoke,Document Library
+4741,P0 - Smoke,Document Library
+4742,P2 - Regression,Task Management
+4743,P0 - Smoke,Document Library
+4744,P2 - Regression,Batch 2
+4745,P2 - Regression,Document Library
+4746,P0 - Smoke,Document Library
+4747,P0 - Smoke,Document Library
+4748,P0 - Smoke,Document Library
+4749,P2 - Regression,Case Creation
+4750,P0 - Smoke,Document Library
+4751,P0 - Smoke,Document Library
+4752,P0 - Smoke,Document Library
+4753,P0 - Smoke,Document Library
+4754,P0 - Smoke,Document Library
+4755,P0 - Smoke,Document Library
+4756,P0 - Smoke,Document Library
+4757,P0 - Smoke,Document Library
+4758,P0 - Smoke,Document Library
+4759,P0 - Smoke,Document Library
+4760,P0 - Smoke,Document Library
+4761,P0 - Smoke,Document Library
+4762,P0 - Smoke,Document Library
+4763,P0 - Smoke,Document Library
+4764,P0 - Smoke,Document Library
+4765,P0 - Smoke,Document Library
+4766,P0 - Smoke,Document Library
+4767,P0 - Smoke,Document Library
+4768,P0 - Smoke,Document Library
+4769,P0 - Smoke,Document Library
+4770,P0 - Smoke,Document Library
+4771,P0 - Smoke,Document Library
+4772,P0 - Smoke,Document Library
+4773,P0 - Smoke,Document Library
+4774,P0 - Smoke,Document Library
+4775,P0 - Smoke,Document Library
+4776,P0 - Smoke,Document Library
+4777,P0 - Smoke,Document Library
+4778,P0 - Smoke,Dynamic Data
+4779,P0 - Smoke,Document Library
+4780,P0 - Smoke,Document Library
+4781,P0 - Smoke,Document Library
+4782,P0 - Smoke,Document Library
+4783,P0 - Smoke,Document Library
+4784,P0 - Smoke,Document Library
+4785,P0 - Smoke,Document Library
+4786,P0 - Smoke,Document Library
+4787,P0 - Smoke,Document Library
+4788,P0 - Smoke,"Case Edits, Document Library"
+4789,P0 - Smoke,"Case Edits, Document Library"
+4790,P0 - Smoke,"Case Edits, Document Library"
+4791,P0 - Smoke,"Case Edits, Document Library"
+4792,P0 - Smoke,"Case Edits, Document Library"
+4793,P0 - Smoke,"Case Edits, Document Library"
+4794,P1 - CTQ,DWP-BWF Integration
+4795,P0 - Smoke,"Case Edits, Document Library"
+4796,P1 - CTQ,DWP-BWF Integration
+4797,P0 - Smoke,"Case Edits, Document Library"
+4798,P0 - Smoke,DWP-BWF Integration
+4799,P0 - Smoke,DWP-BWF Integration
+4800,P0 - Smoke,"Case Edits, Document Library"
+4801,P0 - Smoke,DWP-BWF Integration
+4802,P0 - Smoke,DWP-BWF Integration
+4803,P1 - CTQ,DWP-BWF Integration
+4804,P0 - Smoke,"Create Case Page, DWP-BWF Integration"
+4805,P2 - Regression,"Create Case Page, DWP-BWF Integration"
+4806,P1 - CTQ,"Create Case Page, DWP-BWF Integration"
+4807,P1 - CTQ,DWP-BWF Integration
+4808,P1 - CTQ,DWP-BWF Integration
+4809,P1 - CTQ,DWP-BWF Integration
+4810,P1 - CTQ,"Case Approval, DWP-BWF Integration"
+4811,P0 - Smoke,DWP-BWF Integration
+4812,P2 - Regression,DWP-BWF Integration
+4813,P1 - CTQ,DWP-BWF Integration
+4814,P0 - Smoke,Global Notification
+4815,P1 - CTQ,Service Level Management
+4816,P2 - Regression,Service Level Management
+4817,P1 - CTQ,Global Notification
+4818,P0 - Smoke,Dynamic Data
+4819,P1 - CTQ,Dynamic Data
+4820,P1 - CTQ,Dynamic Data
+4821,P0 - Smoke,DWP-BWF Integration
+4822,P0 - Smoke,Global Notification
+4823,P1 - CTQ,Dynamic Data
+4824,P1 - CTQ,Dynamic Data
+4825,P1 - CTQ,Dynamic Data
+4826,P1 - CTQ,Dynamic Data
+4827,P2 - Regression,Dynamic Data
+4828,P0 - Smoke,Dynamic Data
+4829,P0 - Smoke,Global Notification
+4830,P0 - Smoke,Dynamic Data
+4831,P0 - Smoke,Dynamic Data
+4832,P2 - Regression,Dynamic Data
+4833,P0 - Smoke,Global Notification
+4834,P2 - Regression,Dynamic Data
+4835,P0 - Smoke,Dynamic Data
+4836,P1 - CTQ,Dynamic Data
+4837,P1 - CTQ,Dynamic Data
+4838,P1 - CTQ,Dynamic Data
+4839,P1 - CTQ,Dynamic Data
+4840,P1 - CTQ,Dynamic Data
+4841,P1 - CTQ,Dynamic Data
+4842,P1 - CTQ,Dynamic Data
+4843,P0 - Smoke,Dynamic Data
+4844,P1 - CTQ,Dynamic Data
+4845,P1 - CTQ,Dynamic Data
+4846,P1 - CTQ,Dynamic Data
+4847,P1 - CTQ,Dynamic Data
+4848,P1 - CTQ,Dynamic Data
+4849,P0 - Smoke,Dynamic Data
+4850,P2 - Regression,Dynamic Data
+4851,P2 - Regression,Dynamic Data
+4852,P0 - Smoke,Dynamic Data
+4853,P0 - Smoke,Dynamic Data
+4854,P0 - Smoke,Dynamic Data
+4855,P0 - Smoke,Dynamic Data
+4856,P0 - Smoke,Dynamic Data
+4857,P0 - Smoke,Dynamic Data
+4858,P0 - Smoke,Dynamic Data
+4859,P2 - Regression,Dynamic Data
+4860,P2 - Regression,Dynamic Data
+4861,P0 - Smoke,Dynamic Data
+4862,P2 - Regression,Dynamic Data
+4863,P1 - CTQ,Dynamic Data
+4864,P1 - CTQ,Dynamic Data
+4865,P1 - CTQ,Dynamic Data
+4866,P1 - CTQ,Dynamic Data
+4867,P1 - CTQ,Dynamic Data
+4868,P1 - CTQ,Dynamic Data
+4869,P0 - Smoke,Dynamic Data
+4870,P0 - Smoke,Dynamic Data
+4871,P0 - Smoke,Dynamic Data
+4872,P1 - CTQ,Dynamic Data
+4873,P0 - Smoke,Dynamic Data
+4874,P2 - Regression,Dynamic Data
+4875,P0 - Smoke,Dynamic Data
+4876,P0 - Smoke,Dynamic Data
+4877,P1 - CTQ,Dynamic Data
+4878,P2 - Regression,Dynamic Data
+4879,P0 - Smoke,Dynamic Data
+4880,P2 - Regression,Localization
+4881,P2 - Regression,Document Library
+4882,P2 - Regression,Document Library
+4883,P2 - Regression,Document Library
+4884,P2 - Regression,Document Library
+4885,P2 - Regression,Document Library
+4886,P2 - Regression,Document Library
+4887,P2 - Regression,Document Library
+4888,P2 - Regression,Document Library
+4889,P2 - Regression,Document Library
+4890,P2 - Regression,Document Library
+4891,P2 - Regression,Document Library
+4892,P2 - Regression,Document Library
+4893,P2 - Regression,Document Library
+4894,P2 - Regression,Document Library
+4895,P2 - Regression,Document Library
+4896,P1 - CTQ,Document Library
+4897,P1 - CTQ,Document Library
+4898,P1 - CTQ,Document Library
+4899,P1 - CTQ,Service Level Management
+4900,P0 - Smoke,Service Level Management
+4901,P1 - CTQ,Service Level Management
+4902,P1 - CTQ,Service Level Management
+4903,P2 - Regression,Service Level Management
+4904,P2 - Regression,Service Level Management
+4905,P2 - Regression,Service Level Management
+4906,P2 - Regression,Service Level Management
+4907,P0 - Smoke,Service Level Management
+4908,P0 - Smoke,Global Notification
+4909,P0 - Smoke,Global Notification
+4910,P0 - Smoke,Global Notification
+4911,P2 - Regression,Document Library
+4912,P2 - Regression,Document Library
+4913,P2 - Regression,Document Library
+4914,P1 - CTQ,Document Library
+4915,P1 - CTQ,Document Library
+4916,P1 - CTQ,Document Library
+4917,P1 - CTQ,"Case Approval, Document Library"
+4918,P1 - CTQ,"Case Approval, Document Library"
+4919,P0 - Smoke,"Case Approval, Service Level Management"
+4920,P0 - Smoke,Service Level Management
+4921,P2 - Regression,Document Library
+4922,P2 - Regression,Document Library
+4923,P2 - Regression,Document Library
+4924,P1 - CTQ,Document Library
+4925,P0 - Smoke,Document Library
+4926,P2 - Regression,Document Library
+4927,P2 - Regression,Document Library
+4928,P2 - Regression,Document Library
+4929,P2 - Regression,Localization
+4930,P2 - Regression,Task Management
+4931,P2 - Regression,Case Creation
+4932,P2 - Regression,Task Management
+4933,P2 - Regression,Case Creation
+4934,P0 - Smoke,Knowledge Management
+4935,P1 - CTQ,Task Management
+4936,P1 - CTQ,Case Creation
+4937,P1 - CTQ,Create Case Page
+4938,P1 - CTQ,"Create Case Page, Task Management"
+4939,P0 - Smoke,Task Management
+4940,P0 - Smoke,"Create Case Page, Dynamic Data"
+4941,P0 - Smoke,"Create Case Page, Task Management"
+4942,P0 - Smoke,Create Case Page
+4943,P0 - Smoke,"Create Case Page, Task Management"
+4944,P0 - Smoke,Create Case Page
+4945,P1 - CTQ,"Create Case Page, Custom Status"
+4946,P0 - Smoke,"Create Case Page, Custom Status"
+4947,P0 - Smoke,"Create Case Page, Custom Status"
+4948,P0 - Smoke,"Create Case Page, Custom Status"
+4949,P2 - Regression,"Create Case Page, Custom Status"
+4950,P0 - Smoke,"Create Case Page, Custom Status"
+4951,P2 - Regression,Case Reports
+4952,P2 - Regression,Case Reports
+4953,P2 - Regression,Case Reports
+4954,P2 - Regression,Batch 2
+4955,P2 - Regression,Batch 2
+4956,P2 - Regression,Batch 2
+4957,P2 - Regression,Batch 2
+4958,P2 - Regression,Batch 2
+4959,P2 - Regression,Task Management
+4960,P2 - Regression,Batch 2
+4961,P1 - CTQ,Create Case Page
+4962,P1 - CTQ,Create Case Page
+4963,P1 - CTQ,Create Case Page
+4964,P1 - CTQ,Create Case Page
+4965,P2 - Regression,Create Case Page
+4966,P1 - CTQ,Create Case Page
+4967,P2 - Regression,"Create Case Page, Localization"
+4968,P2 - Regression,"Create Case Page, Task Management"
+4969,P2 - Regression,"Create Case Page, Task Management"
+4970,P2 - Regression,"Create Case Page, Task Management"
+4971,P0 - Smoke,Task Management
+4972,P2 - Regression,Task Management
+4973,P2 - Regression,Task Management
+4974,P1 - CTQ,Task Management
+4975,P1 - CTQ,Task Management
+4976,P2 - Regression,Task Management
+4977,P2 - Regression,Task Management
+4978,P1 - CTQ,"Create Case Page, Service Level Management"
+4979,P2 - Regression,"Create Case Page, Service Level Management"
+4980,P1 - CTQ,"Cognitive Capabilities, Create Case Page"
+4981,P1 - CTQ,"Cognitive Capabilities, Create Case Page"
+4982,P1 - CTQ,"Case Approval, Create Case Page"
+4983,P1 - CTQ,"Case Approval, Create Case Page"
+4984,P2 - Regression,Create Case Page
+4985,P2 - Regression,"Create Case Page, Foundation"
+4986,P2 - Regression,"Create Case Page, Foundation"
+4987,P2 - Regression,"Create Case Page, Foundation"
+4988,P2 - Regression,"Create Case Page, Foundation"
+4989,P2 - Regression,"Create Case Page, Foundation"
+4990,P2 - Regression,"Create Case Page, Foundation"
+4991,P2 - Regression,"Create Case Page, Foundation"
+4992,P2 - Regression,"Create Case Page, Foundation"
+4993,P1 - CTQ,Create Case Page
+4994,P2 - Regression,"Create Case Page, Task Management"
+4995,P2 - Regression,"Create Case Page, Task Management"
+4996,P2 - Regression,"Cognitive Capabilities, Create Case Page"
+4997,P0 - Smoke,"Create Case Page, Task Management"
+4998,P2 - Regression,"Create Case Page, Foundation"
+4999,P2 - Regression,"Create Case Page, Foundation"
+5000,P2 - Regression,"Create Case Page, Foundation"
+5001,P2 - Regression,"Create Case Page, Foundation"
+5002,P2 - Regression,Foundation
+5003,P2 - Regression,Foundation
+5004,P2 - Regression,Foundation
+5005,P2 - Regression,Email
+5006,P2 - Regression,Create Case Page
+5007,P2 - Regression,Create Case Page
+5008,P2 - Regression,Create Case Page
+5009,P2 - Regression,Create Case Page
+5010,P1 - CTQ,"Create Case Page, Task Management"
+5011,P2 - Regression,"Configuration, Create Case Page"
+5012,P2 - Regression,Create Case Page
+5014,P1 - CTQ,Task Management
+5015,P2 - Regression,"Create Case Page, Task Management"
+5016,P2 - Regression,Create Case Page
+5017,P2 - Regression,Create Case Page
+5018,P2 - Regression,"Assignment, Create Case Page"
+5019,P2 - Regression,"Assignment, Create Case Page"
+5020,P2 - Regression,Create Case Page
+5021,P0 - Smoke,Create Case Page
+5022,P1 - CTQ,Create Case Page
+5023,P2 - Regression,"Case Creation, Create Case Page"
+5024,P2 - Regression,Create Case Page
+5025,P2 - Regression,Create Case Page
+5026,P0 - Smoke,Create Case Page
+5027,P2 - Regression,"Create Case Page, Foundation"
+5028,P2 - Regression,"Assignment, Create Case Page"
+5029,P1 - CTQ,Create Case Page
+5030,P1 - CTQ,"Create Case Page, Global Notification"
+5031,P1 - CTQ,"Create Case Page, Service Level Management"
+5032,P1 - CTQ,"Create Case Page, Service Level Management"
+5033,P2 - Regression,"Create Case Page, Notifications"
+5034,P1 - CTQ,Batch 2
+5035,P0 - Smoke,Case Approval
+5036,P1 - CTQ,DWP-BWF Integration
+5037,P1 - CTQ,Configuration
+5038,P2 - Regression,"Create Case Page, Flowsets"
+5039,P2 - Regression,Foundation
+5040,P2 - Regression,Create Case Page
+5041,P2 - Regression,Foundation
+5042,P2 - Regression,Foundation
+5043,P2 - Regression,"Foundation, Knowledge Management"
+5044,P2 - Regression,"Foundation, Knowledge Management"
+5045,P2 - Regression,"Foundation, Knowledge Management"
+5046,P2 - Regression,"Foundation, Knowledge Management"
+5047,P2 - Regression,"Foundation, Knowledge Management"
+5048,P2 - Regression,"Create Case Page, Knowledge Management"
+5049,P0 - Smoke,"Create Case Page, Knowledge Management"
+5050,P0 - Smoke,Create Case Page
+5051,P2 - Regression,Case Edits
+5052,P2 - Regression,Create Case Page
+5053,P2 - Regression,Localization
+5054,P2 - Regression,Case Edits
+5055,P2 - Regression,Case Edits
+5056,P2 - Regression,Case Edits
+5057,P2 - Regression,Case Edits
+5058,P2 - Regression,Case Edits
+5059,P2 - Regression,Case Edits
+5060,P2 - Regression,Case Edits
+5061,P2 - Regression,Case Edits
+5062,P2 - Regression,Case Edits
+5063,P2 - Regression,Case Edits
+5064,P1 - CTQ,Case Edits
+5065,P2 - Regression,Case Edits
+5066,P1 - CTQ,Case Edits
+5067,P1 - CTQ,Case Edits
+5068,P0 - Smoke,Case Edits
+5069,P2 - Regression,Case Edits
+5070,P2 - Regression,Case Edits
+5071,P2 - Regression,Case Edits
+5072,P2 - Regression,Case Edits
+5073,P1 - CTQ,Case Edits
+5074,P2 - Regression,Case Edits
+5075,P1 - CTQ,Case Edits
+5076,P2 - Regression,Case Edits
+5077,P2 - Regression,Case Edits
+5078,P2 - Regression,DWP-BWF Integration
+5079,P2 - Regression,DWP-BWF Integration
+5080,P2 - Regression,DWP-BWF Integration
+5081,P2 - Regression,DWP-BWF Integration
+5082,P1 - CTQ,DWP-BWF Integration
+5083,P2 - Regression,DWP-BWF Integration
+5084,P2 - Regression,Localization
+5085,P2 - Regression,Localization
+5086,P1 - CTQ,Case Approval
+5087,P2 - Regression,Case Approval
+5088,P2 - Regression,Case Approval
+5089,P2 - Regression,Case Approval
+5090,P2 - Regression,Case Approval
+5091,P0 - Smoke,Case Approval
+5092,P1 - CTQ,Case Approval
+5093,P2 - Regression,Batch 2
+5094,P2 - Regression,Assignment
+5095,P2 - Regression,"Email, Knowledge Management"
+5096,P2 - Regression,"Email, Knowledge Management"
+5097,P2 - Regression,"Email, Knowledge Management"
+5098,P2 - Regression,Localization
+5099,P2 - Regression,Localization
+5100,P2 - Regression,Localization
+5101,P2 - Regression,"Knowledge Management, Localization"
+5102,P2 - Regression,"Knowledge Management, Localization"
+5103,P2 - Regression,"Knowledge Management, Localization"
+5104,P1 - CTQ,Email
+5105,P2 - Regression,Assignment
+5106,P2 - Regression,Assignment
+5107,P2 - Regression,Assignment
+5108,P2 - Regression,Assignment
+5109,P2 - Regression,Assignment
+5110,P2 - Regression,Assignment
+5111,P2 - Regression,Assignment
+5112,P2 - Regression,Assignment
+5113,P2 - Regression,Email
+5114,P1 - CTQ,Email
+5115,P2 - Regression,"Email, Knowledge Management"
+5116,P2 - Regression,"Email, Knowledge Management"
+5117,P2 - Regression,"Email, Knowledge Management"
+5118,P2 - Regression,"Assignment, Knowledge Management"
+5119,P1 - CTQ,"Email, Knowledge Management"
+5120,P1 - CTQ,"Email, Knowledge Management"
+5121,P2 - Regression,"Email, Knowledge Management"
+5122,P2 - Regression,Email
+5123,P2 - Regression,Email
+5124,P0 - Smoke,Email
+5125,P1 - CTQ,Batch 2
+5126,P2 - Regression,Localization
+5127,P1 - CTQ,Email
+5128,P0 - Smoke,Email
+5129,P2 - Regression,"Assignment, Knowledge Management"
+5130,P2 - Regression,"Assignment, Knowledge Management"
+5131,P2 - Regression,Create Case Page
+5132,P1 - CTQ,"Assignment, Create Case Page"
+5133,P1 - CTQ,"Assignment, Create Case Page"
+5134,P1 - CTQ,"Assignment, Create Case Page"
+5135,P1 - CTQ,"Assignment, Create Case Page"
+5136,P1 - CTQ,"Assignment, Create Case Page"
+5137,P1 - CTQ,"Assignment, Knowledge Management"
+5138,P2 - Regression,Case Approval
+5139,P1 - CTQ,Case Approval
+5140,P2 - Regression,Case Approval
+5141,P2 - Regression,Case Approval
+5142,P2 - Regression,Case Approval
+5143,P2 - Regression,Case Approval
+5144,P1 - CTQ,Case Approval
+5145,P1 - CTQ,Case Approval
+5146,P1 - CTQ,Case Approval
+5147,P1 - CTQ,Case Approval
+5148,P2 - Regression,Case Approval
+5149,P2 - Regression,Case Approval
+5150,P2 - Regression,Case Approval
+5151,P2 - Regression,Case Approval
+5152,P2 - Regression,Case Approval
+5153,P2 - Regression,"Case Approval, Create Case Page"
+5154,P2 - Regression,"Case Approval, Create Case Page"
+5155,P2 - Regression,"Case Approval, Create Case Page"
+5156,P0 - Smoke,"Case Approval, Create Case Page"
+5157,P1 - CTQ,"Case Approval, Create Case Page"
+5158,P0 - Smoke,"Case Approval, Create Case Page"
+5159,P0 - Smoke,"Case Approval, Create Case Page"
+5160,P0 - Smoke,"Case Approval, Create Case Page"
+5161,P0 - Smoke,"Case Approval, Create Case Page"
+5162,P1 - CTQ,"Case Approval, Create Case Page"
+5163,P1 - CTQ,Case Approval
+5164,P1 - CTQ,Case Approval
+5165,P2 - Regression,Email
+5166,P0 - Smoke,Email
+5167,P0 - Smoke,Email
+5168,P2 - Regression,Email
+5169,P2 - Regression,Email
+5170,P2 - Regression,Email
+5171,P2 - Regression,Email
+5172,P2 - Regression,Email
+5173,P2 - Regression,Email
+5174,P2 - Regression,Email
+5175,P2 - Regression,Email
+5176,P2 - Regression,Email
+5177,P2 - Regression,Email
+5178,P2 - Regression,Email
+5179,P2 - Regression,"Email, Knowledge Management"
+5180,P2 - Regression,"Email, Knowledge Management"
+5181,P2 - Regression,"Email, Knowledge Management"
+5182,P1 - CTQ,"Email, Knowledge Management"
+5183,P2 - Regression,"Email, Knowledge Management"
+5184,P2 - Regression,Create Case Page
+5185,P2 - Regression,Create Case Page
+5186,P2 - Regression,Create Case Page
+5187,P2 - Regression,Create Case Page
+5188,P2 - Regression,Create Case Page
+5189,P2 - Regression,Create Case Page
+5190,P2 - Regression,Case Approval
+5191,P1 - CTQ,Create Case Page
+5192,P1 - CTQ,Case Approval
+5193,P1 - CTQ,Case Approval
+5194,P0 - Smoke,Case Approval
+5195,P0 - Smoke,Case Approval
+5196,P2 - Regression,Case Approval
+5197,P1 - CTQ,"Case Approval, Knowledge Management"
+5198,P2 - Regression,"Create Case Page, Knowledge Management"
+5199,P2 - Regression,"Global Notification, Knowledge Management"
+5200,P1 - CTQ,"Case Creation, Create Case Page"
+5201,P2 - Regression,"Create Case Page, Quick Case"
+5202,P2 - Regression,"Global Notification, Knowledge Management"
+5203,P2 - Regression,"Knowledge Management, Localization"
+5204,P2 - Regression,"Create Case Page, Knowledge Management, Quick Case"
+5205,P1 - CTQ,"Create Case Page, Knowledge Management, Quick Case"
+5206,P1 - CTQ,"Create Case Page, Knowledge Management, Quick Case"
+5207,P1 - CTQ,"Create Case Page, Knowledge Management"
+5208,P2 - Regression,"Create Case Page, Knowledge Management"
+5209,P1 - CTQ,"Create Case Page, Knowledge Management"
+5210,P2 - Regression,"Create Case Page, Knowledge Management"
+5211,P2 - Regression,"Create Case Page, Knowledge Management"
+5212,P2 - Regression,"Create Case Page, Knowledge Management"
+5213,P1 - CTQ,"Case Creation, Create Case Page"
+5214,P1 - CTQ,"Case Creation, Create Case Page"
+5215,P2 - Regression,"Case Creation, Create Case Page"
+5216,P1 - CTQ,"Case Creation, Create Case Page"
+5217,P2 - Regression,"Case Creation, Create Case Page"
+5218,P1 - CTQ,"Case Creation, Create Case Page"
+5219,P1 - CTQ,"Case Creation, Create Case Page"
+5220,P2 - Regression,"Case Creation, Create Case Page"
+5221,P1 - CTQ,"Case Creation, Create Case Page"
+5222,P2 - Regression,"Case Creation, Create Case Page"
+5223,P2 - Regression,"Create Case Page, Quick Case"
+5224,P2 - Regression,"Create Case Page, Quick Case"
+5225,P2 - Regression,"Create Case Page, Quick Case"
+5226,P1 - CTQ,"Create Case Page, Quick Case"
+5227,P1 - CTQ,"Create Case Page, Quick Case"
+5228,P2 - Regression,"Create Case Page, Quick Case"
+5229,P1 - CTQ,"Create Case Page, Quick Case"
+5230,P2 - Regression,"Create Case Page, Quick Case"
+5231,P1 - CTQ,"Create Case Page, Quick Case"
+5232,P2 - Regression,Email
+5233,P1 - CTQ,"Create Case Page, Quick Case"
+5234,P2 - Regression,"Create Case Page, Quick Case"
+5235,P1 - CTQ,"Create Case Page, Quick Case"
+5236,P2 - Regression,Create Case Page
+5237,P2 - Regression,Localization
+5238,P2 - Regression,Create Case Page
+5239,P2 - Regression,Create Case Page
+5240,P1 - CTQ,Create Case Page
+5241,P2 - Regression,Create Case Page
+5242,P0 - Smoke,Create Case Page
+5243,P2 - Regression,Create Case Page
+5244,P0 - Smoke,Create Case Page
+5245,P0 - Smoke,Create Case Page
+5246,P2 - Regression,"Create Case Page, Quick Case"
+5247,P0 - Smoke,Create Case Page
+5248,P2 - Regression,Task Management
+5249,P0 - Smoke,Email
+5250,P2 - Regression,Email
+5251,P1 - CTQ,Email
+5252,P2 - Regression,Batch 2
+5253,P2 - Regression,Batch 2
+5254,P1 - CTQ,Email
+5255,P0 - Smoke,Email
+5256,P2 - Regression,Email
+5257,P2 - Regression,Email
+5258,P2 - Regression,Email
+5259,P2 - Regression,Email
+5260,P2 - Regression,Batch 2
+5261,P2 - Regression,Batch 2
+5262,P2 - Regression,Batch 2
+5263,P2 - Regression,Batch 2
+5264,P2 - Regression,Batch 2
+5265,P2 - Regression,Batch 2
+5266,P1 - CTQ,Batch 2
+5267,P2 - Regression,Batch 2
+5268,P2 - Regression,Batch 2
+5269,P0 - Smoke,Batch 2
+5270,P2 - Regression,Batch 2
+5271,P2 - Regression,Task Management
+5272,P1 - CTQ,Task Management
+5273,P1 - CTQ,Batch 2
+5274,P2 - Regression,Email
+5275,P1 - CTQ,Global Notification
+5276,P1 - CTQ,Task Management
+5277,P2 - Regression,Email
+5278,P2 - Regression,Email
+5279,P2 - Regression,Email
+5280,P1 - CTQ,Batch 2
+5281,P2 - Regression,Email
+5282,P2 - Regression,Email
+5283,P1 - CTQ,Email
+5284,P0 - Smoke,Email
+5285,P2 - Regression,Email
+5286,P2 - Regression,Email
+5287,P2 - Regression,Email
+5288,P2 - Regression,Email
+5289,P2 - Regression,Email
+5290,P2 - Regression,Email
+5291,P2 - Regression,Email
+5292,P1 - CTQ,Batch 2
+5293,P2 - Regression,Global Notification
+5294,P0 - Smoke,Flowsets
+5295,P0 - Smoke,Flowsets
+5296,P2 - Regression,Flowsets
+5297,P1 - CTQ,Foundation
+5298,P1 - CTQ,Foundation
+5299,P1 - CTQ,Foundation
+5300,P1 - CTQ,Foundation
+5301,P1 - CTQ,Foundation
+5302,P1 - CTQ,Foundation
+5303,P1 - CTQ,Foundation
+5304,P1 - CTQ,Foundation
+5305,P1 - CTQ,Foundation
+5306,P1 - CTQ,Foundation
+5307,P1 - CTQ,Foundation
+5308,P1 - CTQ,Foundation
+5309,P0 - Smoke,Task Management
+5310,P0 - Smoke,Task Management
+5311,P0 - Smoke,Task Management
+5312,P0 - Smoke,Task Management
+5313,P1 - CTQ,Task Management
+5314,P2 - Regression,Task Management
+5315,P0 - Smoke,Task Management
+5316,P2 - Regression,Create Case Page
+5317,P0 - Smoke,Flowsets
+5318,P1 - CTQ,Email
+5319,P1 - CTQ,Task Management
+5320,P1 - CTQ,Flowsets
+5321,P1 - CTQ,Flowsets
+5322,P1 - CTQ,Flowsets
+5323,P2 - Regression,Flowsets
+5324,P2 - Regression,Flowsets
+5325,P0 - Smoke,Flowsets
+5326,P2 - Regression,Flowsets
+5327,P1 - CTQ,Flowsets
+5328,P2 - Regression,Flowsets
+5329,P0 - Smoke,Task Management
+5330,P0 - Smoke,Task Management
+5331,P2 - Regression,GDPR
+5332,P2 - Regression,GDPR
+5333,P2 - Regression,Logging-Licensing
+5334,P2 - Regression,GDPR
+5335,P2 - Regression,GDPR
+5336,P2 - Regression,Email
+5337,P2 - Regression,Email
+5338,P2 - Regression,DWP-BWF Integration
+5339,P1 - CTQ,BWF Connector
+5340,P1 - CTQ,BWF Connector
+5341,P1 - CTQ,BWF Connector
+5342,P1 - CTQ,DWP-BWF Integration
+5343,P2 - Regression,Email
+5344,P2 - Regression,Email
+5345,P2 - Regression,GDPR
+5346,P2 - Regression,GDPR
+5347,P2 - Regression,GDPR
+5348,P2 - Regression,GDPR
+5349,P2 - Regression,GDPR
+5350,P2 - Regression,GDPR
+5351,P1 - CTQ,Create Case Page
+5352,P2 - Regression,Localization
+5353,P2 - Regression,Global Notification
+5354,P2 - Regression,DWP-BWF Integration
+5355,P2 - Regression,Cognitive Capabilities
+5356,P2 - Regression,Create Case Page
+5357,P2 - Regression,Create Case Page
+5358,P2 - Regression,Create Case Page
+5359,P2 - Regression,Create Case Page
+5360,P2 - Regression,Create Case Page
+5361,P0 - Smoke,Cognitive Capabilities
+5362,P0 - Smoke,Cognitive Capabilities
+5363,P0 - Smoke,Cognitive Capabilities
+5364,P0 - Smoke,Cognitive Capabilities
+5365,P2 - Regression,Create Case Page
+5366,P2 - Regression,Notifications
+5367,P2 - Regression,Notifications
+5368,P2 - Regression,Create Case Page
+5369,P2 - Regression,Email
+5370,P2 - Regression,BWF Connector
+5371,P2 - Regression,Email
+5372,P2 - Regression,Email
+5373,P2 - Regression,Email
+5374,P2 - Regression,Batch 3
+5375,P2 - Regression,Create Case Page
+5376,P2 - Regression,Batch 3
+5377,P2 - Regression,Email
+5378,P0 - Smoke,Batch 3
+5379,P2 - Regression,Email
+5380,P0 - Smoke,Email
+5381,P0 - Smoke,Email
+5382,P2 - Regression,Email
+5383,P2 - Regression,Email
+5384,P2 - Regression,Case Edits
+5385,P2 - Regression,Case Edits
+5386,P1 - CTQ,Email
+5387,P0 - Smoke,Email
+5388,P0 - Smoke,Email
+5389,P0 - Smoke,Email
+5390,P1 - CTQ,Cognitive Capabilities
+5391,P2 - Regression,DWP-BWF Integration
+5392,P2 - Regression,DWP-BWF Integration
+5393,P2 - Regression,Create Case Page
+5394,P0 - Smoke,Cognitive Capabilities
+5395,P2 - Regression,Create Case Page
+5396,P2 - Regression,Create Case Page
+5397,P2 - Regression,Create Case Page
+5398,P2 - Regression,Create Case Page
+5399,P2 - Regression,Global Notification
+5400,P2 - Regression,Localization
+5401,P2 - Regression,Notifications
+5402,P2 - Regression,Create Case Page
+5403,P2 - Regression,Create Case Page
+5404,P2 - Regression,Cognitive Capabilities
+5405,P2 - Regression,Cognitive Capabilities
+5406,P0 - Smoke,Cognitive Capabilities
+5407,P0 - Smoke,Cognitive Capabilities
+5408,P2 - Regression,Cognitive Capabilities
+5409,P1 - CTQ,Cognitive Capabilities
+5410,P1 - CTQ,Cognitive Capabilities
+5411,P2 - Regression,"Cognitive Capabilities, Localization"
+5412,P1 - CTQ,Cognitive Capabilities
+5413,P1 - CTQ,Cognitive Capabilities
+5414,P1 - CTQ,Cognitive Capabilities
+5415,P1 - CTQ,Cognitive Capabilities
+5416,P1 - CTQ,Cognitive Capabilities
+5417,P1 - CTQ,Cognitive Capabilities
+5418,P0 - Smoke,Create Case Page
+5419,P2 - Regression,Create Case Page
+5420,P2 - Regression,Localization
+5421,P2 - Regression,Localization
+5422,P2 - Regression,Localization
+5423,P2 - Regression,Notifications
+5424,P2 - Regression,Notifications
+5425,P2 - Regression,Notifications
+5426,P1 - CTQ,Global Notification
+5427,P2 - Regression,Localization
+5428,P2 - Regression,Localization
+5429,P2 - Regression,Localization
+5430,P2 - Regression,Localization
+5431,P1 - CTQ,Global Notification
+5432,P2 - Regression,Localization
+5433,P1 - CTQ,Notifications
+5434,P2 - Regression,Localization
+5435,P2 - Regression,Localization
+5436,P2 - Regression,Localization
+5437,P2 - Regression,Cognitive Capabilities
+5438,P2 - Regression,Cognitive Capabilities
+5439,P2 - Regression,Localization
+5440,P2 - Regression,Cognitive Capabilities
+5441,P1 - CTQ,BWF Connector
+5442,P2 - Regression,Localization
+5443,P2 - Regression,Localization
+5444,P2 - Regression,Notifications
+5445,P2 - Regression,Localization
+5446,P2 - Regression,Global Notification
+5447,P2 - Regression,Global Notification
+5448,P0 - Smoke,Notifications
+5449,P2 - Regression,Localization
+5450,P2 - Regression,Localization
+5451,P2 - Regression,Localization
+5452,P2 - Regression,Localization
+5453,P2 - Regression,Localization
+5454,P2 - Regression,"Case Creation, Create Case Page"
+5455,P2 - Regression,Cognitive Capabilities
+5456,P2 - Regression,Global Notification
+5457,P2 - Regression,Global Notification
+5458,P2 - Regression,Global Notification
+5459,P0 - Smoke,Logging-Licensing
+5460,P1 - CTQ,Cognitive Capabilities
+5461,P1 - CTQ,Cognitive Capabilities
+5462,P2 - Regression,Email
+5463,P2 - Regression,Email
+5464,P2 - Regression,Email
+5465,P0 - Smoke,Email
+5466,P0 - Smoke,Email
+5467,P1 - CTQ,Email
+5468,P0 - Smoke,Email
+5469,P2 - Regression,Email
+5470,P1 - CTQ,Email
+5471,P1 - CTQ,Email
+5472,P1 - CTQ,Email
+5473,P1 - CTQ,Email
+5474,P1 - CTQ,Email
+5475,P1 - CTQ,Email
+5476,P0 - Smoke,Email
+5477,P2 - Regression,Email
+5478,P2 - Regression,Global Notification
+5479,P2 - Regression,Global Notification
+5480,P0 - Smoke,Email
+5481,P2 - Regression,Global Notification
+5482,P2 - Regression,Global Notification
+5483,P2 - Regression,"Cognitive Capabilities, Localization"
+5484,P1 - CTQ,Cognitive Capabilities
+5485,P1 - CTQ,Cognitive Capabilities
+5486,P2 - Regression,Cognitive Capabilities
+5487,P0 - Smoke,Cognitive Capabilities
+5488,P0 - Smoke,Cognitive Capabilities
+5489,P0 - Smoke,Cognitive Capabilities
+5490,P0 - Smoke,Cognitive Capabilities
+5491,P1 - CTQ,Cognitive Capabilities
+5492,P1 - CTQ,Cognitive Capabilities
+5493,P2 - Regression,Cognitive Capabilities
+5494,P1 - CTQ,Cognitive Capabilities
+5495,P1 - CTQ,Cognitive Capabilities
+5496,P1 - CTQ,Cognitive Capabilities
+5497,P0 - Smoke,Cognitive Capabilities
+5498,P1 - CTQ,Cognitive Capabilities
+5499,P2 - Regression,Email
+5500,P2 - Regression,Case Approval
+5501,P2 - Regression,Global Notification
+5502,P2 - Regression,Global Notification
+5503,P2 - Regression,Global Notification
+5504,P2 - Regression,Email
+5505,P2 - Regression,Email
+5506,P0 - Smoke,Email
+5507,P0 - Smoke,Email
+5508,P0 - Smoke,Email
+5509,P0 - Smoke,Email
+5510,P2 - Regression,Global Notification
+5511,P2 - Regression,DWP-BWF Integration
+5512,P2 - Regression,Global Notification
+5513,P2 - Regression,Global Notification
+5514,P2 - Regression,Global Notification
+5515,P0 - Smoke,Email
+5516,P1 - CTQ,Service Level Management
+5517,P1 - CTQ,Service Level Management
+5518,P1 - CTQ,Service Level Management
+5519,P1 - CTQ,Service Level Management
+5520,P1 - CTQ,Service Level Management
+5521,P1 - CTQ,Service Level Management
+5522,P1 - CTQ,Service Level Management
+5523,P2 - Regression,Service Level Management
+5524,P2 - Regression,Service Level Management
+5525,P0 - Smoke,Service Level Management
+5526,P2 - Regression,Global Notification
+5527,P0 - Smoke,Global Notification
+5528,P0 - Smoke,Global Notification
+5529,P0 - Smoke,Global Notification
+5530,P0 - Smoke,Global Notification
+5531,P2 - Regression,Create Case Page
+5532,P0 - Smoke,"KA: Searching, Knowledge Management"
+5533,P2 - Regression,"Create Case Page, Localization"
+5534,P2 - Regression,"Create Case Page, Localization"
+5535,P2 - Regression,"Create Case Page, Localization"
+5536,P2 - Regression,"Create Case Page, Localization"
+5537,P2 - Regression,"Create Case Page, Service Level Management"
+5538,P2 - Regression,"Create Case Page, Knowledge Management"
+5539,P2 - Regression,"Create Case Page, Knowledge Management"
+5540,P2 - Regression,"Create Case Page, Knowledge Management"
+5541,P2 - Regression,"BWF Connector, Knowledge Management"
+5542,P1 - CTQ,"Create Case Page, Knowledge Management"
+5543,P1 - CTQ,"Create Case Page, Knowledge Management"
+5544,P1 - CTQ,Task Management
+5545,P2 - Regression,Service Level Management
+5546,P2 - Regression,Task Management
+5547,P2 - Regression,Localization
+5548,P2 - Regression,Localization
+5549,P2 - Regression,Task Management
+5550,P2 - Regression,Task Management
+5551,P2 - Regression,Task Management
+5552,P2 - Regression,Task Management
+5553,P2 - Regression,Task Management
+5554,P2 - Regression,Task Management
+5555,P2 - Regression,Task Management
+5556,P2 - Regression,Task Management
+5557,P1 - CTQ,Task Management
+5558,P1 - CTQ,Task Management
+5559,P1 - CTQ,Task Management
+5560,P2 - Regression,Task Management
+5561,P2 - Regression,Task Management
+5562,P2 - Regression,Task Management
+5563,P2 - Regression,Task Management
+5564,P0 - Smoke,Task Management
+5565,P0 - Smoke,Task Management
+5566,P2 - Regression,Task Management
+5567,P0 - Smoke,Task Management
+5568,P2 - Regression,Task Management
+5569,P2 - Regression,Task Management
+5570,P2 - Regression,Task Management
+5571,P0 - Smoke,Task Management
+5572,P0 - Smoke,Task Management
+5573,P1 - CTQ,Create Case Page
+5574,P2 - Regression,Service Level Management
+5575,P2 - Regression,Task Management
+5576,P1 - CTQ,Create Case Page
+5577,P1 - CTQ,Create Case Page
+5578,P2 - Regression,Create Case Page
+5579,P2 - Regression,Batch 3
+5580,P2 - Regression,Service Level Management
+5581,P2 - Regression,Service Level Management
+5582,P2 - Regression,Service Level Management
+5583,P2 - Regression,Service Level Management
+5584,P2 - Regression,Service Level Management
+5585,P2 - Regression,Service Level Management
+5586,P2 - Regression,BWF Connector
+5587,P2 - Regression,DWP-BWF Integration
+5588,P2 - Regression,BWF Connector
+5589,P2 - Regression,Create Case Page
+5590,P2 - Regression,Create Case Page
+5591,P2 - Regression,Create Case Page
+5592,P1 - CTQ,Configuration
+5593,P1 - CTQ,"Knowledge Management, Knowledge Templates"
+5594,P1 - CTQ,"Knowledge Management, Knowledge Templates"
+5595,P1 - CTQ,"Knowledge Management, Knowledge Templates"
+5596,P1 - CTQ,"Knowledge Management, Knowledge Templates"
+5597,P2 - Regression,DWP-BWF Integration
+5598,P2 - Regression,DWP-BWF Integration
+5599,P1 - CTQ,DWP-BWF Integration
+5600,P2 - Regression,DWP-BWF Integration
+5601,P0 - Smoke,DWP-BWF Integration
+5602,P1 - CTQ,DWP-BWF Integration
+5603,P2 - Regression,Create Case Page
+5604,P0 - Smoke,DWP-BWF Integration
+5605,P2 - Regression,Create Case Page
+5606,P1 - CTQ,Configuration
+5607,P2 - Regression,"Create Case Page, Quick Case"
+5608,P2 - Regression,Service Level Management
+5609,P2 - Regression,Service Level Management
+5610,P1 - CTQ,Knowledge Management
+5611,P1 - CTQ,Case Edits
+5612,P1 - CTQ,Case Edits
+5613,P1 - CTQ,Case Edits
+5614,P1 - CTQ,Case Edits
+5615,P1 - CTQ,Case Edits
+5616,P1 - CTQ,Flowsets
+5617,P0 - Smoke,Flowsets
+5618,P0 - Smoke,Flowsets
+5619,P0 - Smoke,Flowsets
+5620,P0 - Smoke,Flowsets
+5621,P0 - Smoke,Flowsets
+5622,P0 - Smoke,Flowsets
+5623,P0 - Smoke,Flowsets
+5624,P0 - Smoke,Flowsets
+5625,P0 - Smoke,Flowsets
+5626,P0 - Smoke,Flowsets
+5627,P0 - Smoke,Flowsets
+5628,P0 - Smoke,Flowsets
+5629,P2 - Regression,Service Level Management
+5630,P2 - Regression,Service Level Management
+5631,P2 - Regression,Service Level Management
+5632,P2 - Regression,Service Level Management
+5633,P2 - Regression,Service Level Management
+5634,P2 - Regression,Service Level Management
+5635,P2 - Regression,Service Level Management
+5636,P2 - Regression,Service Level Management
+5637,P0 - Smoke,Flowsets
+5638,P2 - Regression,Flowsets
+5639,P2 - Regression,Flowsets
+5640,P2 - Regression,Flowsets
+5641,P2 - Regression,Flowsets
+5642,P0 - Smoke,Flowsets
+5643,P2 - Regression,Service Level Management
+5644,P2 - Regression,Service Level Management
+5645,P2 - Regression,Service Level Management
+5646,P2 - Regression,Service Level Management
+5647,P0 - Smoke,Service Level Management
+5648,P2 - Regression,Service Level Management
+5649,P2 - Regression,"Localization, Service Level Management"
+5650,P1 - CTQ,Case Approval
+5651,P2 - Regression,Social
+5652,P0 - Smoke,Service Level Management
+5653,P0 - Smoke,Service Level Management
+5654,P2 - Regression,Social
+5655,P2 - Regression,Social
+5656,P0 - Smoke,Service Level Management
+5657,P2 - Regression,Service Level Management
+5658,P2 - Regression,Task Management
+5659,P0 - Smoke,"Case Creation, Create Case Page"
+5660,P2 - Regression,Create Case Page
+5661,P2 - Regression,Localization
+5662,P2 - Regression,Localization
+5663,P2 - Regression,Localization
+5664,P2 - Regression,Create Case Page
+5665,P1 - CTQ,Create Case Page
+5666,P2 - Regression,Localization
+5667,P1 - CTQ,Task Management
+5668,P1 - CTQ,Knowledge Reports
+5669,P1 - CTQ,Knowledge Reports
+5670,P0 - Smoke,Social
+5671,P0 - Smoke,Social
+5672,P2 - Regression,Task Management
+5673,P2 - Regression,Knowledge Management
+5674,P0 - Smoke,Task Management
+5675,P1 - CTQ,Task Management
+5676,P2 - Regression,Localization
+5677,P2 - Regression,Localization
+5678,P2 - Regression,Localization
+5679,P2 - Regression,Localization
+5680,P2 - Regression,Knowledge Management
+5681,P2 - Regression,Knowledge Management
+5682,P1 - CTQ,Knowledge Management
+5683,P2 - Regression,Knowledge Management
+5684,P1 - CTQ,Knowledge Management
+5685,P1 - CTQ,Service Level Management
+5686,P1 - CTQ,Service Level Management
+5687,P1 - CTQ,Service Level Management
+5688,P2 - Regression,Create Case Page
+5689,P2 - Regression,Knowledge Management
+5690,P2 - Regression,Localization
+5691,P2 - Regression,DWP-BWF Integration
+5692,P1 - CTQ,Service Level Management
+5693,P0 - Smoke,Service Level Management
+5694,P0 - Smoke,Service Level Management
+5695,P2 - Regression,Knowledge Management
+5696,P2 - Regression,Knowledge Management
+5697,P2 - Regression,Knowledge Management
+5698,P2 - Regression,Knowledge Management
+5699,P2 - Regression,Knowledge Management
+5700,P2 - Regression,Knowledge Management
+5701,P2 - Regression,Knowledge Management
+5702,P2 - Regression,Knowledge Management
+5703,P2 - Regression,Knowledge Management
+5704,P2 - Regression,Knowledge Management
+5705,P2 - Regression,Knowledge Management
+5706,P0 - Smoke,Service Level Management
+5707,P0 - Smoke,Service Level Management
+5708,P0 - Smoke,Service Level Management
+5709,P0 - Smoke,Service Level Management
+5710,P0 - Smoke,Service Level Management
+5711,P0 - Smoke,Service Level Management
+5712,P0 - Smoke,Service Level Management
+5713,P0 - Smoke,Knowledge Management
+5714,P0 - Smoke,Knowledge Management
+5715,P0 - Smoke,Knowledge Management
+5716,P2 - Regression,Knowledge Management
+5717,P2 - Regression,Knowledge Management
+5718,P2 - Regression,Knowledge Management
+5719,P0 - Smoke,Knowledge Management
+5720,P0 - Smoke,Knowledge Management
+5721,P0 - Smoke,Knowledge Management
+5722,P0 - Smoke,Knowledge Management
+5723,P0 - Smoke,Knowledge Management
+5724,P2 - Regression,Knowledge Management
+5725,P2 - Regression,Knowledge Management
+5726,P2 - Regression,Knowledge Management
+5727,P2 - Regression,Knowledge Management
+5728,P2 - Regression,Knowledge Management
+5729,P2 - Regression,Knowledge Management
+5730,P2 - Regression,Create Case Page
+5731,P2 - Regression,Social
+5732,P0 - Smoke,Case Approval
+5733,P1 - CTQ,DWP-BWF Integration
+5734,P1 - CTQ,DWP-BWF Integration
+5735,P2 - Regression,"Create Case Page, Search"
+5736,P0 - Smoke,Task Management
+5737,P2 - Regression,Knowledge Management
+5738,P2 - Regression,Knowledge Management
+5739,P2 - Regression,Knowledge Management
+5740,P2 - Regression,Localization
+5741,P2 - Regression,BWF Connector
+5742,P2 - Regression,Create Case Page
+5743,P1 - CTQ,Branding\UI
+5744,P1 - CTQ,Branding\UI
+5745,P1 - CTQ,Branding\UI
+5746,P1 - CTQ,Branding\UI
+5747,P1 - CTQ,Branding\UI
+5748,P1 - CTQ,Branding\UI
+5749,P1 - CTQ,Branding\UI
+5750,P1 - CTQ,BWF Connector
+5751,P2 - Regression,DWP-BWF Integration
+5752,P1 - CTQ,Create Case Page
+5753,P2 - Regression,Batch 3
+5754,P2 - Regression,Service Level Management
+5755,P2 - Regression,Service Level Management
+5756,P2 - Regression,Service Level Management
+5757,P2 - Regression,Knowledge Management
+5758,P2 - Regression,Knowledge Management
+5759,P2 - Regression,Knowledge Management
+5760,P2 - Regression,Knowledge Management
+5761,P2 - Regression,Knowledge Management
+5762,P0 - Smoke,Create Case Page
+5763,P2 - Regression,Create Case Page
+5764,P2 - Regression,Task Management
+5765,P2 - Regression,Create Case Page
+5766,P2 - Regression,Create Case Page
+5767,P2 - Regression,Create Case Page
+5768,P2 - Regression,Create Case Page
+5769,P2 - Regression,Create Case Page
+5770,P1 - CTQ,Knowledge Reports
+5771,P1 - CTQ,Knowledge Reports
+5772,P0 - Smoke,Create Case Page
+5775,P2 - Regression,Task Management
+5776,P2 - Regression,"Case Creation, Create Case Page"
+5777,P0 - Smoke,Create Case Page
+5778,P0 - Smoke,Create Case Page
+5779,P2 - Regression,Task Management
+5780,P2 - Regression,DWP-BWF Integration
+5781,P0 - Smoke,"KA: Editing, Knowledge Management"
+5782,P0 - Smoke,"KA: Editing, Knowledge Management"
+5783,P0 - Smoke,"KA: Editing, Knowledge Management"
+5784,P2 - Regression,Task Management
+5785,P2 - Regression,Task Management
+5786,P2 - Regression,Task Management
+5787,P2 - Regression,Task Management
+5788,P2 - Regression,Knowledge Management
+5789,P2 - Regression,Localization
+5790,P2 - Regression,Localization
+5791,P2 - Regression,Task Management
+5792,P2 - Regression,Task Management
+5793,P2 - Regression,Task Management
+5794,P2 - Regression,Task Management
+5795,P2 - Regression,Task Management
+5796,P2 - Regression,Task Management
+5797,P2 - Regression,Service Level Management
+5798,P2 - Regression,Service Level Management
+5799,P1 - CTQ,Create Case Page
+5800,P2 - Regression,Task Management
+5801,P2 - Regression,Task Management
+5802,P2 - Regression,Task Management
+5803,P2 - Regression,Task Management
+5804,P2 - Regression,Create Case Page
+5805,P1 - CTQ,Service Level Management
+5806,P1 - CTQ,Service Level Management
+5807,P0 - Smoke,Service Level Management
+5808,P0 - Smoke,Service Level Management
+5809,P0 - Smoke,Service Level Management
+5810,P0 - Smoke,Service Level Management
+5811,P2 - Regression,Service Level Management
+5812,P1 - CTQ,Service Level Management
+5813,P1 - CTQ,Service Level Management
+5814,P0 - Smoke,Service Level Management
+5815,P0 - Smoke,Service Level Management
+5816,P0 - Smoke,Service Level Management
+5817,P0 - Smoke,Service Level Management
+5818,P0 - Smoke,Service Level Management
+5819,P0 - Smoke,Service Level Management
+5820,P2 - Regression,"Case Reports, Service Level Management Reports"
+5821,P2 - Regression,"Case Reports, Service Level Management Reports"
+5822,P2 - Regression,Reports
+5823,P1 - CTQ,DWP-BWF Integration
+5824,P0 - Smoke,DWP-BWF Integration
+5825,P2 - Regression,DWP-BWF Integration
+5828,P1 - CTQ,DWP-BWF Integration
+5829,P2 - Regression,Localization
+5830,P2 - Regression,Localization
+5831,P2 - Regression,Localization
+5832,P2 - Regression,Localization
+5833,P2 - Regression,Localization
+5834,P2 - Regression,Localization
+5835,P2 - Regression,Localization
+5836,P2 - Regression,Localization
+5837,P2 - Regression,Localization
+5838,P2 - Regression,Localization
+5839,P2 - Regression,Localization
+5840,P2 - Regression,Localization
+5841,P2 - Regression,Configuration
+5842,P1 - CTQ,Knowledge Management
+5843,P2 - Regression,Localization
+5844,P2 - Regression,Localization
+5845,P2 - Regression,Localization
+5846,P2 - Regression,Localization
+5847,P2 - Regression,Localization
+5848,P2 - Regression,Localization
+5849,P2 - Regression,Localization
+5850,P2 - Regression,Localization
+5851,P2 - Regression,Localization
+5852,P2 - Regression,Localization
+5853,P2 - Regression,Localization
+5854,P2 - Regression,Localization
+5855,P2 - Regression,Localization
+5856,P2 - Regression,Localization
+5857,P2 - Regression,Localization
+5858,P1 - CTQ,Knowledge Management
+5859,P2 - Regression,Localization
+5860,P2 - Regression,Knowledge Management
+5861,P2 - Regression,Service Level Management
+5862,P2 - Regression,Service Level Management
+5863,P2 - Regression,Service Level Management
+5864,P2 - Regression,Service Level Management
+5865,P2 - Regression,Service Level Management
+5866,P2 - Regression,Service Level Management
+5867,P2 - Regression,Service Level Management
+5868,P2 - Regression,"Knowledge Management, Search"
+5869,P2 - Regression,"Knowledge Management, Search"
+5870,P1 - CTQ,Knowledge Management
+5871,P1 - CTQ,Knowledge Management
+5872,P1 - CTQ,"KA: Editing, Knowledge Management"
+5873,P2 - Regression,Knowledge Reports
+5874,P2 - Regression,Case Reports
+5875,P0 - Smoke,Knowledge Reports
+5876,P0 - Smoke,Knowledge Reports
+5877,P2 - Regression,Knowledge Management
+5878,P2 - Regression,Knowledge Management
+5879,P1 - CTQ,Knowledge Management
+5880,P2 - Regression,Knowledge Management
+5881,P2 - Regression,"Knowledge Management, Search"
+5882,P1 - CTQ,Knowledge Management
+5883,P1 - CTQ,Knowledge Management
+5884,P1 - CTQ,Knowledge Management
+5885,P1 - CTQ,Knowledge Management
+5886,P0 - Smoke,"Knowledge Management, Knowledge Sets"
+5887,P2 - Regression,"KA: Editing, Knowledge Management"
+5888,P2 - Regression,"KA: Editing, Knowledge Management"
+5889,P0 - Smoke,"KA: Editing, Knowledge Management"
+5890,P2 - Regression,"KA: Editing, Knowledge Management"
+5891,P2 - Regression,"KA: Editing, Knowledge Management"
+5892,P2 - Regression,"KA: Editing, Knowledge Management"
+5893,P2 - Regression,"KA: Editing, Knowledge Management"
+5894,P1 - CTQ,"KA: Viewing, Knowledge Management"
+5895,P1 - CTQ,"Knowledge Management, Social"
+5896,P1 - CTQ,Knowledge Management
+5897,P0 - Smoke,Knowledge Management
+5898,P1 - CTQ,Knowledge Management
+5899,P1 - CTQ,Knowledge Management
+5900,P2 - Regression,Localization
+5901,P2 - Regression,Localization
+5902,P2 - Regression,Localization
+5903,P2 - Regression,Case Edits
+5904,P2 - Regression,Localization
+5905,P2 - Regression,Global Notification
+5906,P2 - Regression,Global Notification
+5907,P0 - Smoke,Global Notification
+5908,P0 - Smoke,Global Notification
+5909,P2 - Regression,Global Notification
+5910,P0 - Smoke,Global Notification
+5911,P0 - Smoke,Global Notification
+5912,P2 - Regression,Global Notification
+5913,P2 - Regression,Global Notification
+5914,P1 - CTQ,Global Notification
+5915,P2 - Regression,Global Notification
+5916,P1 - CTQ,Global Notification
+5917,P2 - Regression,Global Notification
+5918,P2 - Regression,Global Notification
+5919,P2 - Regression,Localization
+5920,P2 - Regression,Task Management
+5921,P2 - Regression,Create Case Page
+5922,P1 - CTQ,Knowledge Management
+5923,P1 - CTQ,Knowledge Management
+5924,P1 - CTQ,Batch 3
+5925,P1 - CTQ,Service Level Management
+5926,P2 - Regression,Service Level Management
+5927,P1 - CTQ,Service Level Management
+5928,P2 - Regression,Service Level Management
+5929,P2 - Regression,Service Level Management
+5930,P1 - CTQ,Service Level Management
+5931,P2 - Regression,Service Level Management
+5932,P2 - Regression,Service Level Management
+5933,P1 - CTQ,Service Level Management
+5934,P1 - CTQ,Service Level Management
+5935,P0 - Smoke,Service Level Management
+5936,P1 - CTQ,Service Level Management
+5937,P0 - Smoke,Service Level Management
+5938,P1 - CTQ,Service Level Management
+5939,P2 - Regression,Knowledge Management
+5940,P2 - Regression,Knowledge Management
+5941,P2 - Regression,Knowledge Management
+5942,P1 - CTQ,Social
+5943,P2 - Regression,Configuration
+5944,P2 - Regression,Configuration
+5945,P2 - Regression,Knowledge Management
+5946,P2 - Regression,Knowledge Management
+5947,P1 - CTQ,Knowledge Management
+5948,P1 - CTQ,Knowledge Management
+5949,P0 - Smoke,Knowledge Management
+5950,P2 - Regression,Knowledge Management
+5951,P2 - Regression,Knowledge Management
+5952,P1 - CTQ,Knowledge Management
+5953,P1 - CTQ,Knowledge Management
+5954,P1 - CTQ,Knowledge Management
+5955,P2 - Regression,Service Level Management
+5956,P1 - CTQ,Service Level Management
+5957,P2 - Regression,Service Level Management
+5958,P1 - CTQ,Service Level Management
+5959,P1 - CTQ,Service Level Management
+5960,P2 - Regression,Service Level Management
+5961,P2 - Regression,Service Level Management
+5962,P2 - Regression,Service Level Management
+5963,P2 - Regression,Service Level Management
+5964,P2 - Regression,Service Level Management
+5965,P2 - Regression,Service Level Management
+5966,P1 - CTQ,Service Level Management
+5967,P1 - CTQ,Service Level Management
+5968,P1 - CTQ,Service Level Management
+5969,P1 - CTQ,Knowledge Management
+5970,P2 - Regression,"KA: Editing, Knowledge Management"
+5971,P2 - Regression,"KA: Editing, Knowledge Management"
+5972,P2 - Regression,"KA: Editing, Knowledge Management"
+5973,P2 - Regression,"KA: Editing, Knowledge Management"
+5974,P2 - Regression,"KA: Editing, Knowledge Management"
+5975,P2 - Regression,"KA: Editing, Knowledge Management"
+5976,P2 - Regression,"KA: Editing, Knowledge Management"
+5977,P2 - Regression,"KA: Editing, Knowledge Management"
+5978,P2 - Regression,"KA: Editing, Knowledge Management"
+5979,P2 - Regression,Knowledge Management
+5980,P1 - CTQ,Global Notification
+5981,P0 - Smoke,"Case Status Changes, Create Case Page"
+5982,P2 - Regression,Knowledge Management
+5983,P2 - Regression,Knowledge Management
+5984,P1 - CTQ,Create Case Page
+5985,P0 - Smoke,Knowledge Sets
+5986,P2 - Regression,Knowledge Management
+5987,P0 - Smoke,Knowledge Management
+5988,P0 - Smoke,Knowledge Management
+5989,P2 - Regression,Knowledge Management
+5990,P2 - Regression,Knowledge Management
+5991,P0 - Smoke,Knowledge Management
+5992,P2 - Regression,Knowledge Management
+5993,P2 - Regression,Knowledge Management
+5994,P2 - Regression,Knowledge Management
+5995,P2 - Regression,Knowledge Management
+5996,P2 - Regression,Knowledge Management
+5997,P2 - Regression,Knowledge Management
+5998,P0 - Smoke,"Knowledge Management, Knowledge Sets"
+5999,P2 - Regression,Knowledge Management
+6000,P0 - Smoke,Knowledge Management
+6001,P2 - Regression,Knowledge Management
+6002,P2 - Regression,Knowledge Management
+6003,P2 - Regression,Knowledge Management
+6004,P2 - Regression,Knowledge Management
+6005,P2 - Regression,Knowledge Management
+6006,P0 - Smoke,Knowledge Management
+6007,P2 - Regression,"KA: Viewing, Knowledge Management"
+6008,P0 - Smoke,Knowledge Management
+6009,P0 - Smoke,Knowledge Management
+6010,P1 - CTQ,Service Level Management
+6011,P1 - CTQ,Service Level Management
+6012,P2 - Regression,Service Level Management
+6013,P2 - Regression,Service Level Management
+6014,P2 - Regression,Service Level Management
+6015,P0 - Smoke,Service Level Management
+6016,P2 - Regression,"KA: Editing, Knowledge Management"
+6017,P0 - Smoke,Configuration
+6018,P0 - Smoke,Service Level Management
+6019,P1 - CTQ,Service Level Management
+6020,P0 - Smoke,Service Level Management
+6021,P2 - Regression,Service Level Management
+6022,P0 - Smoke,Service Level Management
+6023,P2 - Regression,Service Level Management
+6024,P0 - Smoke,Service Level Management
+6025,P1 - CTQ,Service Level Management
+6026,P0 - Smoke,Service Level Management
+6027,P0 - Smoke,Service Level Management
+6028,P0 - Smoke,Service Level Management
+6029,P2 - Regression,"Batch 3, Service Level Management"
+6030,P1 - CTQ,Knowledge Management
+6031,P1 - CTQ,Knowledge Management
+6032,P1 - CTQ,Knowledge Management
+6033,P1 - CTQ,Knowledge Management
+6034,P1 - CTQ,Knowledge Management
+6035,P1 - CTQ,"Batch 3, Service Level Management"
+6036,P1 - CTQ,"Batch 3, Service Level Management"
+6037,P0 - Smoke,"Batch 3, Service Level Management"
+6038,P0 - Smoke,"Batch 3, Service Level Management"
+6039,P0 - Smoke,"Batch 3, Service Level Management"
+6040,P0 - Smoke,"Batch 3, Service Level Management"
+6041,P0 - Smoke,"Batch 3, Service Level Management"
+6042,P2 - Regression,"Batch 3, Service Level Management"
+6043,P0 - Smoke,"Batch 3, Service Level Management"
+6044,P0 - Smoke,"Batch 3, Service Level Management"
+6045,P2 - Regression,"Batch 3, Service Level Management"
+6046,P1 - CTQ,"Batch 3, Service Level Management"
+6047,P1 - CTQ,"Batch 3, Service Level Management"
+6048,P1 - CTQ,"Batch 3, Service Level Management"
+6049,P1 - CTQ,"Batch 3, Service Level Management"
+6050,P0 - Smoke,"Batch 3, Service Level Management"
+6051,P0 - Smoke,"Batch 3, Service Level Management"
+6052,P0 - Smoke,"Batch 3, Service Level Management"
+6053,P0 - Smoke,"Batch 3, Service Level Management"
+6054,P0 - Smoke,"Batch 3, Service Level Management"
+6055,P0 - Smoke,"Batch 3, Service Level Management"
+6056,P0 - Smoke,"Batch 3, Service Level Management"
+6057,P0 - Smoke,"Batch 3, Service Level Management"
+6058,P0 - Smoke,"Batch 3, Service Level Management"
+6059,P2 - Regression,"Batch 3, Service Level Management"
+6060,P2 - Regression,Create Case Page
+6061,P2 - Regression,"Case Creation, Create Case Page"
+6062,P2 - Regression,Create Case Page
+6063,P0 - Smoke,Case Edits
+6064,P2 - Regression,"Case Creation, Create Case Page"
+6065,P2 - Regression,Global Notification
+6066,P2 - Regression,Global Notification
+6067,P2 - Regression,Global Notification
+6068,P0 - Smoke,Global Notification
+6069,P1 - CTQ,Knowledge Management
+6070,P2 - Regression,Knowledge Management
+6071,P1 - CTQ,Create Case Page
+6072,P0 - Smoke,Knowledge Management
+6073,P0 - Smoke,Global Notification
+6074,P2 - Regression,"KA: Creating, Knowledge Management"
+6075,P2 - Regression,Knowledge Management
+6076,P1 - CTQ,Knowledge Management
+6077,P1 - CTQ,Global Notification
+6078,P2 - Regression,Create Case Page
+6079,P2 - Regression,Create Case Page
+6080,P2 - Regression,Create Case Page
+6081,P2 - Regression,Create Case Page
+6082,P2 - Regression,Create Case Page
+6083,P2 - Regression,Create Case Page
+6084,P2 - Regression,Create Case Page
+6085,P0 - Smoke,"Batch 3, Service Level Management"
+6086,P2 - Regression,"Create Case Page, KA: Searching"
+6087,P1 - CTQ,"Task Approval, Task Management"
+6088,P0 - Smoke,Task Management
+6089,P2 - Regression,Localization
+6090,P2 - Regression,"Batch 3, Service Level Management"
+6091,P0 - Smoke,"Batch 3, Service Level Management"
+6092,P2 - Regression,"Batch 3, Service Level Management"
+6093,P2 - Regression,"Batch 3, Service Level Management"
+6094,P2 - Regression,"Batch 3, Service Level Management"
+6095,P2 - Regression,Create Case Page
+6096,P2 - Regression,"Batch 3, Service Level Management"
+6097,P1 - CTQ,Create Case Page
+6098,P0 - Smoke,"Batch 3, Service Level Management"
+6099,P2 - Regression,Task Management
+6100,P1 - CTQ,"Batch 3, Service Level Management"
+6101,P2 - Regression,Task Management
+6102,P2 - Regression,Case Edits
+6103,P2 - Regression,Case Edits
+6104,P0 - Smoke,Create Case Page
+6105,P1 - CTQ,Create Case Page
+6106,P0 - Smoke,Task Management
+6107,P1 - CTQ,Task Management
+6108,P0 - Smoke,Create Case Page
+6109,P0 - Smoke,Assignment
+6110,P2 - Regression,Case Edits
+6111,P2 - Regression,Case Edits
+6112,P2 - Regression,Case Edits
+6113,P2 - Regression,Case Edits
+6114,P2 - Regression,Create Case Page
+6115,P2 - Regression,"Batch 3, Service Level Management"
+6116,P2 - Regression,"Batch 3, Service Level Management"
+6117,P2 - Regression,Batch 3
+6118,P2 - Regression,Social
+6119,P1 - CTQ,"Batch 3, Service Level Management"
+6120,P1 - CTQ,"Batch 3, Service Level Management"
+6121,P0 - Smoke,"Batch 3, Service Level Management"
+6122,P1 - CTQ,"Batch 3, Service Level Management"
+6123,P2 - Regression,"Batch 3, Service Level Management"
+6124,P2 - Regression,"Batch 3, Service Level Management"
+6125,P2 - Regression,"Batch 3, Service Level Management"
+6126,P1 - CTQ,"Batch 3, Service Level Management"
+6127,P2 - Regression,"Batch 3, Service Level Management"
+6128,P2 - Regression,"Batch 3, Service Level Management"
+6129,P1 - CTQ,"Batch 3, Service Level Management"
+6130,P1 - CTQ,"Batch 3, Service Level Management"
+6131,P1 - CTQ,"Batch 3, Service Level Management"
+6132,P2 - Regression,"Batch 3, Service Level Management"
+6133,P1 - CTQ,"Batch 3, Service Level Management"
+6134,P2 - Regression,"Batch 3, Service Level Management"
+6135,P1 - CTQ,"Batch 3, Service Level Management"
+6136,P2 - Regression,"Batch 3, Service Level Management"
+6137,P2 - Regression,"Batch 3, Service Level Management"
+6138,P2 - Regression,"Batch 3, Service Level Management"
+6139,P1 - CTQ,"Batch 3, Service Level Management"
+6140,P1 - CTQ,"Batch 3, Service Level Management"
+6141,P1 - CTQ,"Batch 3, Service Level Management"
+6142,P2 - Regression,"Batch 3, Service Level Management"
+6143,P2 - Regression,"Batch 3, Service Level Management"
+6144,P2 - Regression,"Batch 3, Service Level Management"
+6145,P2 - Regression,"Batch 3, Service Level Management"
+6146,P1 - CTQ,"Batch 3, Service Level Management"
+6147,P2 - Regression,"Batch 3, Service Level Management"
+6148,P1 - CTQ,"Batch 3, Service Level Management"
+6149,P1 - CTQ,"Batch 3, Service Level Management"
+6150,P2 - Regression,Create Case Page
+6151,P2 - Regression,Knowledge Management
+6152,P2 - Regression,Knowledge Management
+6153,P2 - Regression,"Batch 3, Service Level Management"
+6154,P2 - Regression,"Batch 3, Service Level Management"
+6155,P1 - CTQ,"Batch 3, Service Level Management"
+6156,P1 - CTQ,"Batch 3, Service Level Management"
+6157,P2 - Regression,"Batch 3, Service Level Management"
+6158,P2 - Regression,"Batch 3, Service Level Management"
+6159,P2 - Regression,"Batch 3, Service Level Management"
+6160,P0 - Smoke,"Batch 3, Service Level Management"
+6161,P2 - Regression,Knowledge Management
+6162,P2 - Regression,"Batch 3, Service Level Management"
+6163,P2 - Regression,Foundation
+6164,P0 - Smoke,"Batch 3, Service Level Management"
+6165,P0 - Smoke,"Batch 3, Service Level Management"
+6166,P0 - Smoke,"Batch 3, Service Level Management"
+6167,P1 - CTQ,"Batch 3, Service Level Management"
+6168,P2 - Regression,"Batch 3, Service Level Management"
+6169,P1 - CTQ,"Batch 3, Service Level Management"
+6170,P1 - CTQ,"Batch 3, Service Level Management"
+6171,P2 - Regression,"Batch 3, Service Level Management"
+6172,P2 - Regression,"Batch 3, Service Level Management"
+6173,P1 - CTQ,"Batch 3, Service Level Management"
+6174,P0 - Smoke,"Batch 3, Service Level Management"
+6175,P2 - Regression,"Batch 3, Service Level Management"
+6176,P0 - Smoke,"Batch 3, Service Level Management"
+6177,P1 - CTQ,"Batch 3, Service Level Management"
+6178,P1 - CTQ,"Batch 3, Service Level Management"
+6179,P0 - Smoke,"Batch 3, Service Level Management"
+6180,P1 - CTQ,"Batch 3, Service Level Management"
+6181,P1 - CTQ,"Batch 3, Service Level Management"
+6182,P1 - CTQ,"Batch 3, Service Level Management"
+6183,P2 - Regression,"Batch 3, Service Level Management"
+6184,P1 - CTQ,"Batch 3, Service Level Management"
+6185,P2 - Regression,"Batch 3, Service Level Management"
+6186,P1 - CTQ,"Batch 3, Service Level Management"
+6187,P2 - Regression,Social
+6188,P0 - Smoke,"Batch 3, Service Level Management"
+6189,P0 - Smoke,"Batch 3, Service Level Management"
+6190,P0 - Smoke,"Batch 3, Service Level Management"
+6191,P2 - Regression,Social
+6192,P1 - CTQ,Case Approval
+6193,P2 - Regression,Social
+6194,P0 - Smoke,"Batch 3, Service Level Management"
+6195,P2 - Regression,"Batch 3, Service Level Management"
+6196,P0 - Smoke,"Batch 3, Service Level Management"
+6197,P2 - Regression,"Batch 3, Service Level Management"
+6198,P2 - Regression,"Batch 3, Service Level Management"
+6199,P2 - Regression,"Batch 3, Service Level Management"
+6200,P2 - Regression,"Batch 3, Service Level Management"
+6201,P1 - CTQ,"Batch 3, Service Level Management"
+6202,P0 - Smoke,"Batch 3, Service Level Management"
+6203,P0 - Smoke,"Batch 3, Service Level Management"
+6204,P2 - Regression,"Batch 3, Service Level Management"
+6205,P0 - Smoke,Case Approval
+6206,P2 - Regression,"Batch 3, Service Level Management"
+6207,P0 - Smoke,Case Approval
+6208,P2 - Regression,Knowledge Management
+6209,P1 - CTQ,"Batch 3, Service Level Management"
+6210,P1 - CTQ,"Batch 3, Service Level Management"
+6211,P2 - Regression,"Batch 3, Service Level Management"
+6212,P0 - Smoke,"Batch 3, Service Level Management"
+6213,P2 - Regression,Knowledge Management
+6214,P2 - Regression,Knowledge Management
+6215,P1 - CTQ,Case Approval
+6216,P1 - CTQ,Case Approval
+6217,P1 - CTQ,Case Approval
+6218,P2 - Regression,Case Approval
+6219,P1 - CTQ,Case Approval
+6220,P1 - CTQ,Case Approval
+6221,P2 - Regression,Knowledge Management
+6222,P2 - Regression,Knowledge Management
+6223,P2 - Regression,Knowledge Management
+6224,P2 - Regression,Create Case Page
+6225,P2 - Regression,Create Case Page
+6226,P2 - Regression,Knowledge Management
+6227,P2 - Regression,Knowledge Management
+6228,P2 - Regression,Knowledge Management
+6229,P2 - Regression,Knowledge Management
+6230,P1 - CTQ,Flowsets
+6231,P2 - Regression,Knowledge Management
+6232,P2 - Regression,Create Case Page
+6233,P2 - Regression,Flowsets
+6234,P2 - Regression,Flowsets
+6235,P2 - Regression,"Batch 3, Service Level Management"
+6236,P2 - Regression,"Batch 3, Service Level Management"
+6237,P2 - Regression,"Batch 3, Service Level Management"
+6238,P2 - Regression,Create Case Page
+6239,P2 - Regression,"Batch 3, Service Level Management"
+6240,P2 - Regression,Social
+6241,P2 - Regression,Social
+6242,P2 - Regression,Create Case Page
+6243,P2 - Regression,Create Case Page
+6244,P2 - Regression,Foundation
+6245,P2 - Regression,Knowledge Management
+6246,P2 - Regression,Foundation
+6247,P2 - Regression,Foundation
+6248,P2 - Regression,Foundation
+6249,P2 - Regression,Foundation
+6250,P2 - Regression,"Create Case Page, Search"
+6251,P2 - Regression,Knowledge Management
+6252,P2 - Regression,"Batch 3, Service Level Management"
+6253,P2 - Regression,"Batch 3, Service Level Management"
+6254,P2 - Regression,"Case Approval, Localization"
+6255,P2 - Regression,"Batch 3, Service Level Management"
+6256,P2 - Regression,"Batch 3, Service Level Management"
+6257,P2 - Regression,Knowledge Management
+6258,P2 - Regression,Case Edits
+6259,P2 - Regression,"Batch 3, Service Level Management"
+6260,P2 - Regression,"Batch 3, Service Level Management"
+6261,P2 - Regression,Search
+6262,P1 - CTQ,"Batch 3, Service Level Management"
+6263,P1 - CTQ,"Batch 3, Service Level Management"
+6264,P0 - Smoke,"Batch 3, Service Level Management"
+6265,P0 - Smoke,"Batch 3, Service Level Management"
+6266,P1 - CTQ,"Batch 3, Service Level Management"
+6267,P0 - Smoke,Case Approval
+6268,P2 - Regression,Flowsets
+6269,P1 - CTQ,Flowsets
+6270,P2 - Regression,Flowsets
+6271,P2 - Regression,Flowsets
+6272,P0 - Smoke,"Batch 3, Service Level Management"
+6273,P2 - Regression,Flowsets
+6274,P0 - Smoke,"BWF Connector, Case Approval"
+6275,P1 - CTQ,BWF Connector
+6276,P1 - CTQ,Flowsets
+6277,P2 - Regression,"Batch 4, Service Level Management"
+6278,P1 - CTQ,Flowsets
+6279,P2 - Regression,Task Management
+6280,P1 - CTQ,Create Case Page
+6281,P2 - Regression,Case Edits
+6282,P2 - Regression,Create Case Page
+6283,P2 - Regression,Create Case Page
+6284,P1 - CTQ,Create Case Page
+6285,P0 - Smoke,"Create Case Page, KA: Searching"
+6286,P0 - Smoke,"Create Case Page, KA: Searching"
+6287,P2 - Regression,Assignment
+6289,P1 - CTQ,Task Management
+6290,P2 - Regression,Create Case Page
+6292,P2 - Regression,Create Case Page
+6293,P2 - Regression,Create Case Page
+6294,P2 - Regression,"Batch 4, Service Level Management"
+6295,P1 - CTQ,"Batch 4, Service Level Management"
+6296,P0 - Smoke,Task Management
+6297,P2 - Regression,Create Case Page
+6299,P2 - Regression,"Case Creation, Create Case Page"
+6300,P2 - Regression,Localization
+6301,P2 - Regression,"Case Status Changes, Create Case Page"
+6302,P1 - CTQ,Case Edits
+6303,P2 - Regression,Create Case Page
+6305,P1 - CTQ,Create Case Page
+6306,P2 - Regression,Create Case Page
+6307,P1 - CTQ,"Case Status Changes, Create Case Page"
+6308,P2 - Regression,Assignment
+6309,P1 - CTQ,Create Case Page
+6310,P2 - Regression,Create Case Page
+6311,P2 - Regression,Create Case Page
+6312,P2 - Regression,DWP-BWF Integration
+6313,P2 - Regression,Create Case Page
+6314,P1 - CTQ,Create Case Page
+6315,P0 - Smoke,Create Case Page
+6316,P2 - Regression,Create Case Page
+6317,P2 - Regression,Create Case Page
+6318,P1 - CTQ,Assignment
+6319,P0 - Smoke,Assignment
+6320,P1 - CTQ,Create Case Page
+6321,P2 - Regression,Create Case Page
+6322,P1 - CTQ,Create Case Page
+6323,P0 - Smoke,Create Case Page
+6324,P2 - Regression,Create Case Page
+6325,P0 - Smoke,Create Case Page
+6326,P0 - Smoke,Create Case Page
+6327,P2 - Regression,BWF Connector
+6328,P2 - Regression,Assignment
+6329,P2 - Regression,"Case Status Changes, Create Case Page"
+6330,P2 - Regression,"Case Status Changes, Create Case Page"
+6331,P2 - Regression,Create Case Page
+6332,P2 - Regression,"Case Status Changes, Create Case Page"
+6333,P1 - CTQ,"Case Status Changes, Create Case Page"
+6334,P2 - Regression,"Case Status Changes, Create Case Page"
+6335,P2 - Regression,BWF Connector
+6336,P2 - Regression,Create Case Page
+6337,P2 - Regression,Create Case Page
+6338,P2 - Regression,Create Case Page
+6339,P0 - Smoke,Create Case Page
+6340,P2 - Regression,Knowledge Management
+6341,P1 - CTQ,Knowledge Management
+6342,P0 - Smoke,Knowledge Management
+6343,P2 - Regression,Knowledge Management
+6344,P0 - Smoke,Knowledge Management
+6345,P0 - Smoke,Knowledge Management
+6346,P0 - Smoke,Knowledge Management
+6347,P0 - Smoke,Knowledge Management
+6348,P0 - Smoke,Knowledge Management
+6349,P0 - Smoke,"Knowledge Management, Knowledge Sets"
+6350,P1 - CTQ,Knowledge Management
+6351,P2 - Regression,"Knowledge Management, Knowledge Sets"
+6352,P2 - Regression,"Knowledge Management, Knowledge Sets"
+6353,P1 - CTQ,"Knowledge Management, Knowledge Sets"
+6354,P2 - Regression,Knowledge Management
+6355,P1 - CTQ,"Knowledge Management, Knowledge Sets"
+6356,P0 - Smoke,"Knowledge Management, Knowledge Sets"
+6357,P0 - Smoke,"Knowledge Management, Knowledge Sets"
+6358,P0 - Smoke,"Knowledge Management, Knowledge Templates"
+6359,P2 - Regression,Knowledge Management
+6360,P2 - Regression,Knowledge Management
+6361,P1 - CTQ,Create Case Page
+6362,P2 - Regression,Knowledge Management
+6363,P2 - Regression,Knowledge Management
+6364,P2 - Regression,"Create Case Page, Search"
+6365,P2 - Regression,"Create Case Page, Search"
+6366,P2 - Regression,Knowledge Management
+6367,P2 - Regression,Knowledge Management
+6368,P2 - Regression,Knowledge Management
+6369,P2 - Regression,Knowledge Management
+6370,P2 - Regression,Knowledge Management
+6371,P2 - Regression,"Create Case Page, Search"
+6372,P2 - Regression,Knowledge Management
+6373,P2 - Regression,Knowledge Management
+6374,P2 - Regression,"Knowledge Management, Search"
+6375,P2 - Regression,Knowledge Management
+6376,P2 - Regression,Knowledge Management
+6377,P2 - Regression,Global Notification
+6378,P0 - Smoke,Global Notification
+6379,P2 - Regression,"Create Case Page, Quick Case"
+6380,P2 - Regression,Knowledge Management
+6381,P2 - Regression,Create Case Page
+6382,P2 - Regression,"Create Case Page, Quick Case"
+6383,P2 - Regression,Create Case Page
+6384,P1 - CTQ,Create Case Page
+6385,P1 - CTQ,Create Case Page
+6386,P1 - CTQ,Task Management
+6387,P0 - Smoke,Knowledge Management
+6388,P0 - Smoke,Knowledge Management
+6389,P1 - CTQ,Task Management
+6390,P0 - Smoke,Knowledge Management
+6391,P2 - Regression,"Create Case Page, Quick Case"
+6392,P2 - Regression,Create Case Page
+6393,P0 - Smoke,"Case Status Changes, Create Case Page"
+6394,P0 - Smoke,Knowledge Management
+6395,P2 - Regression,"Case Status Changes, Create Case Page"
+6396,P0 - Smoke,Knowledge Management
+6397,P0 - Smoke,Create Case Page
+6398,P0 - Smoke,"KA: Editing, Knowledge Management"
+6399,P2 - Regression,Create Case Page
+6400,P2 - Regression,"KA: Searching, Knowledge Management"
+6401,P2 - Regression,Create Case Page
+6402,P0 - Smoke,"KA: Editing, Knowledge Management"
+6403,P1 - CTQ,Create Case Page
+6404,P1 - CTQ,"KA: Editing, Knowledge Management"
+6405,P0 - Smoke,"Case Creation, Create Case Page"
+6406,P2 - Regression,"KA: Creating, Knowledge Management"
+6407,P0 - Smoke,"Create Case Page, Quick Case"
+6408,P0 - Smoke,"KA: Creating, Knowledge Management"
+6409,P0 - Smoke,Knowledge Management
+6410,P0 - Smoke,Knowledge Management
+6411,P0 - Smoke,Knowledge Management
+6412,P2 - Regression,Localization
+6413,P2 - Regression,Knowledge Management
+6414,P1 - CTQ,BWF Connector
+6415,P0 - Smoke,"Create Case Page, Quick Case"
+6416,P2 - Regression,Knowledge Management
+6417,P2 - Regression,Case Edits
+6418,P2 - Regression,Knowledge Management
+6419,P2 - Regression,Knowledge Management
+6420,P2 - Regression,Create Case Page
+6421,P2 - Regression,Create Case Page
+6422,P2 - Regression,"Create Case Page, Search"
+6423,P2 - Regression,Create Case Page
+6424,P2 - Regression,Create Case Page
+6425,P0 - Smoke,Task Management
+6426,P2 - Regression,Case Approval
+6427,P2 - Regression,Knowledge Management
+6428,P2 - Regression,Create Case Page
+6429,P2 - Regression,Create Case Page
+6430,P2 - Regression,Create Case Page
+6431,P2 - Regression,Knowledge Management
+6432,P2 - Regression,Create Case Page
+6433,P2 - Regression,Create Case Page
+6434,P2 - Regression,Knowledge Management
+6435,P0 - Smoke,Knowledge Management
+6436,P1 - CTQ,Create Case Page
+8174,Documentation,Case Creation
+11993,P1 - CTQ,Live Chat
+12011,P2 - Regression,Delta
+12012,P1 - CTQ,Delta
+12013,P0 - Smoke,Email
+12016,P1 - CTQ,Case Status Changes
+12017,P1 - CTQ,Create Case Page
+12018,P1 - CTQ,Knowledge Management
+12019,P1 - CTQ,Quick Case
+12020,P1 - CTQ,Create Case Page
+12021,P1 - CTQ,"Case Status Changes, Knowledge Management"
+12022,P1 - CTQ,Knowledge Management
+12023,P1 - CTQ,"Knowledge Management, Quick Case"
+12024,P1 - CTQ,"Create Case Page, Knowledge Management"
+12025,P1 - CTQ,"Knowledge Management, Line Of Business"
+12026,P2 - Regression,Knowledge Management
+12027,P2 - Regression,Delta
+12028,P2 - Regression,Delta
+12029,P1 - CTQ,Delta
+12030,P1 - CTQ,Case Status Changes
+12031,P1 - CTQ,Knowledge Management
+12032,P1 - CTQ,Quick Case
+12033,P1 - CTQ,Create Case Page
+12034,P1 - CTQ,Line Of Business
+12035,P1 - CTQ,Knowledge Management
+12036,P1 - CTQ,Create Case Page
+12037,P1 - CTQ,Quick Case
+12038,P1 - CTQ,Create Case Page
+12039,P1 - CTQ,Line Of Business
+12040,P2 - Regression,Delta
+12041,P1 - CTQ,Knowledge Management
+12042,P1 - CTQ,Quick Case
+12043,P1 - CTQ,Create Case Page
+12063,P2 - Regression,Email
+12064,P2 - Regression,Delta
+12065,P2 - Regression,Delta
+12066,P2 - Regression,Delta
+12067,P2 - Regression,Delta
+12068,P2 - Regression,Delta
+12069,P2 - Regression,Delta
+12070,P2 - Regression,Delta
+12071,P2 - Regression,Delta
+12072,P2 - Regression,Delta
+12073,P2 - Regression,Delta
+12074,P2 - Regression,Delta
+12075,P2 - Regression,Delta
+12076,P2 - Regression,Delta
+12077,P2 - Regression,Delta
+12078,P2 - Regression,Delta
+12079,P2 - Regression,Delta
+12080,P2 - Regression,Delta
+12081,P2 - Regression,Delta
+12082,P1 - CTQ,Quick Case
+12083,P1 - CTQ,Create Case Page
+12084,P2 - Regression,Delta
+12085,P2 - Regression,Delta
+12086,P2 - Regression,Delta
+12087,P2 - Regression,Delta
+12088,P2 - Regression,Delta
+12089,P2 - Regression,Delta
+12090,P1 - CTQ,Delta
+12100,P1 - CTQ,Business Work Flows 21.02
+12101,P2 - Regression,Task Management
+12103,P1 - CTQ,"Case Edits, KA: Creating, KA: Editing"
+12107,P1 - CTQ,Dynamic Data
+12108,P1 - CTQ,Task Management
+12109,P1 - CTQ,Email
+12110,P1 - CTQ,Email
+12111,P1 - CTQ,Notifications
+12112,P1 - CTQ,Email
+12113,P1 - CTQ,Service Level Management
+12114,P1 - CTQ,Case Edits
+12115,P1 - CTQ,Social
+12116,P2 - Regression,Configuration

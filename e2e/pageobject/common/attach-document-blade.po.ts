@@ -63,6 +63,7 @@ class AttachDocumentBlade {
     }
 
     async searchRecord(documentName: string): Promise<void> {
+        await browser.sleep(30000); // workaround for performance issue
         await $(this.selectors.searchBox).clear();
         await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
         let i: number;
@@ -70,7 +71,7 @@ class AttachDocumentBlade {
             console.log(documentName, "search doc lib count: ", i);
             let bolnVal: boolean = await this.isDocumentInfoDisplayed(documentName);
             if (bolnVal == false) {
-                await browser.sleep(3000);
+                await browser.sleep(3000); // To Wait For Document Libarary Record Gets Display On Blade.
                 await $(this.selectors.searchBox).clear();
                 await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
             } else {

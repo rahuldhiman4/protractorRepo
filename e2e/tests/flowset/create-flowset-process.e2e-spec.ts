@@ -1,14 +1,26 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
+import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
+import previewCasePage from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
-import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
-import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import statusBladePo from '../../pageobject/common/update.status.blade.po';
+import composeEmailPo from '../../pageobject/email/compose-mail.po';
+import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
+import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
+import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -21,233 +33,395 @@ describe('Create Process in Flowset', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
-    //ankagraw
-    it('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
+    //asahitya
+    describe('[5023]: [Case Creation] Verify able to create case with Global case template having flowset', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-
-        await apiHelper.apiLogin('tadmin');
-        let case_management = CASE_MANAGEMENT_LIB_PROCESS;
-        let case_Management_Process = case_management.name + randomStr;
-        case_management.name = case_Management_Process;
-        await apiCoreUtil.createProcess(case_management);
-
-        let processName = case_Management_Process.split(':')[1];
-
-        await expect(consoleFlowsetProcessLibrary.isRegisterProcessEnable()).toBeTruthy("Add flowset register Process is disabled");
-        await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
-
-        //verify the Titles
-        await expect(createFlowsetProcessLibrary.isCompanyTitleDisplayed('Company')).toBeTruthy(" Company Title is not present");
-        await expect(createFlowsetProcessLibrary.isProcessNameTitleDisplayed('Process Name')).toBeTruthy(" Process Name Title is not present");
-        await expect(createFlowsetProcessLibrary.isDescriptionTitleDisplayed('Description')).toBeTruthy(" Description Title is not present");
-        await expect(createFlowsetProcessLibrary.isStatusTitleDisplayed('Status')).toBeTruthy(" Status Title is not present");
-        await expect(createFlowsetProcessLibrary.isProcessAliasTitleDisplayed('Process Alias Name')).toBeTruthy(" Process Alias Title is not present");
-        await expect(createFlowsetProcessLibrary.isApplicationTitleDisplayed('Application Services Library')).toBeTruthy(" Application Service Title is not present");
-        await createFlowsetProcessLibrary.clickOnStatus();
-        await createFlowsetProcessLibrary.statusDropDownValuesDisplayed(drpDownStatus);
-
-        //verify the Required Fields
-        await expect(createFlowsetProcessLibrary.isCompanyRequiredTextDisplayed()).toBeTruthy(" Company Required text not present ");
-        await expect(createFlowsetProcessLibrary.isProcessRequiredTextDisplayed()).toBeTruthy(" Process Name Required text not present ");
-        await expect(createFlowsetProcessLibrary.isDescriptionRequiredTextDisplayed()).toBeTruthy(" Description Required text not present ");
-        await expect(createFlowsetProcessLibrary.isStatusRequiredTextDisplayed()).toBeTruthy(" Status Required text not present ");
-        await expect(createFlowsetProcessLibrary.isProcessAliasRequiredTextDisplayed()).toBeTruthy(" Process Alias Required text not present ");
-        await createFlowsetProcessLibrary.clickSaveButton();
-        await expect(createFlowsetProcessLibrary.isErrorMsgPresent()).toBeTruthy("Error msg not present");
-
-        //add Flowsets
-        await createFlowsetProcessLibrary.selectCompany('Petramco');
-        await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
-        await createFlowsetProcessLibrary.selectProcessName(processName);
-        await createFlowsetProcessLibrary.setAliasName("Alias" + randomStr);
-        await createFlowsetProcessLibrary.setDescription("description" + randomStr);
-        await createFlowsetProcessLibrary.selectStatus("Active");
-        await createFlowsetProcessLibrary.clickSaveButton();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid("Alias" + randomStr)).toBeTruthy("Alias" + randomStr + "name is not present");
-    });
-
-    it('[DRDMV-1269,DRDMV-1295]: [Flowsets] Search Register Process on Console', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        try {
+        let caseResponse = undefined;
+        beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            let social_Service = SOCIAL_SERVICE_PROCESS;
-            let social_Service_Process = social_Service.name + randomStr;
-            social_Service.name = social_Service_Process;
-            await apiCoreUtil.createProcess(social_Service);
+            let processName = `Agent Origin Global ${randomStr}`
+            await apiHelper.createProcess(processName, 'AGENT_ORIGIN');
 
-            let processLibConfData1 = {
-                applicationServicesLib: "com.bmc.dsm.social-lib",
-                processName: social_Service_Process,
-                processAliasName: `Process${randomStr}`,
-                company: "Petramco",
-                description: `description${randomStr}`,
-                status: "Active"
+            //Register the Process
+            await apiHelper.apiLogin('fritz');
+            const registerProcessData = {
+                applicationServicesLib: 'com.bmc.dsm.case-lib',
+                processName: `com.bmc.dsm.case-lib:${processName}`,
+                processAliasName: processName,
+                company: '- Global -',
+                lineOfBusiness: "Facilities",
+                description: 'Desc ' + randomStr,
+                status: 'Active'
             }
-            await apiHelper.createProcessLibConfig(processLibConfData1);
+            let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
-            await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
-            await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
-            await editFlowsetProcessLibrary.selectStatus('Draft');
-            await editFlowsetProcessLibrary.clickOnSaveButton();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
-            await expect(editFlowsetProcessLibrary.getDescription('UpdataDescription' + randomStr)).toBe('UpdataDescription' + randomStr);
-            await expect(consoleFlowsetProcessLibrary.isProcessPresentOnGrid('No Name Process')).toBeFalsy('Unnecessary register is not display');
+            //Create new flowset
+            let flowsetName: string = `5023 ${randomStr}`;
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetGlobalFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName;
+            flowsetMandatoryFieldsData["lineOfBusiness"] = "Facilities";
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+            //Map Process to Flowset
+            let flowsetProcessMappingData = {
+                function: 'Initialization',
+                processNameFull: registerProcessData.processName,
+                processName: processName,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
+
+            //Create Case Template
+            let caseTemplateData = {
+                "templateName": '5023 tname' + randomStr,
+                "templateSummary": '5023 Summary' + randomStr,
+                "casePriority": "Medium",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "lineOfBusiness": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Frieda",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "flowset": flowsetResponse.id
+            }
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData)
+
+            //Create Case using above Case Template
+            let caseData = {
+                "Requester": "qkatawazi",
+                "Summary": "5023 Create Case",
+                "Line of Business": "Facilities",
+                "Origin": "Agent",
+                "Case Template ID": caseTemplateResponse.displayId
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+        });
+
+        it('[5023]: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            expect(await viewCasePage.getPriorityValue()).toBe('Low');
             await apiHelper.apiLogin('tadmin');
-            let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
-            await apiHelper.deleteFlowsetProcessLibConfig(processName);
-        } catch (e) {
-            throw e;
-        } finally {
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Agent Origin Global ${randomStr}`)).toEqual(1);
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
+        });
+    })
+
+    //asahitya
+    describe('[5317]: Initialization process execution for case origin Agent', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let processName = `Agent Origin 5317 ${randomStr}`;
+        it('[5317]: Initialization process execution for case origin Agent', async () => {
+            //Create a Process
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createProcess(processName, 'AGENT_ORIGIN');
+
+            //Create a Flowset
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
+            await consoleFlowsetConfigPage.clickOnAddFlowset();
+            await createFlowsetPage.selectCompany('Petramco');
+            await createFlowsetPage.setFlowsetname('Flowset' + randomStr);
+            await createFlowsetPage.setDescription("description" + randomStr);
+            await createFlowsetPage.selectStatus("Active");
+            await createFlowsetPage.clickSaveButton();
+            await editFlowsetConfigPo.clickOnAddNewMappingBtn();
+            await editFlowsetConfigPo.selectProcess(processName);
+            await editFlowsetConfigPo.selectFunction('Initialization');
+            await editFlowsetConfigPo.selectProcessStatus('Active');
+            await editFlowsetConfigPo.clickSaveBtnOnProcessMapping();
+            await utilityCommon.closeAllBlades();
+        });
+        it('[5317]: Initialization process execution for case origin Agent', async () => {
+            //Create a Case Template
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
+            await createCaseTemplatePage.setTemplateName('5317 Tname ' + randomStr);
+            await createCaseTemplatePage.setCompanyName('Petramco');
+            await createCaseTemplatePage.setCaseSummary(`Summary ${randomStr}`);
+            await createCaseTemplatePage.setFlowsetValue('Flowset' + randomStr);
+            await createCaseTemplatePage.setOwnerCompanyValue('Petramco');
+            await createCaseTemplatePage.setOwnerOrgDropdownValue('United States Support');
+            await createCaseTemplatePage.setOwnerGroupDropdownValue('US Support 1');
+            await createCaseTemplatePage.setTemplateStatusDropdownValue('Active');
+            await createCaseTemplatePage.setPriorityValue('High');
+            await createCaseTemplatePage.clickSaveCaseTemplate();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            //Create a case using above flowset
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('fritz');
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate('5317 Tname ' + randomStr);
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePage.clickGoToCaseButton();
+            expect(await viewCasePage.getPriorityValue()).toBe('Low');
+            await apiHelper.apiLogin('tadmin');
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', processName)).toEqual(1);
+        });
     });
 
-    //ankagraw
-    it('[DRDMV-7607]: [Permissions] Process Library access', async () => {
-        try {
-            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    //asahitya
+    describe('[5295]: Initialization process execution for case origin Email', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseResponse = undefined;
+
+        beforeAll(async () => {
+            //Create a Process
             await apiHelper.apiLogin('tadmin');
-            let social_Service = SOCIAL_SERVICE_PROCESS;
-            let social_Service_Process = social_Service.name + randomStr;
-            social_Service.name = social_Service_Process;
-            await apiCoreUtil.createProcess(social_Service);
-            let processLibConfData1 = {
-                applicationServicesLib: "com.bmc.dsm.social-lib",
-                processName: social_Service_Process,
-                processAliasName: `Process${randomStr}`,
-                company: "Petramco",
-                description: `description${randomStr}`,
-                status: "Active"
-            }
+            let processName = `Email Origin ${randomStr}`
+            await apiHelper.createProcess(processName, 'EMAIL_ORIGIN');
+
+            //Register the Process
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createProcessLibConfig(processLibConfData1);
+            const registerProcessData = {
+                applicationServicesLib: 'com.bmc.dsm.case-lib',
+                processName: 'com.bmc.dsm.case-lib:' + processName,
+                processAliasName: processName,
+                company: 'Petramco',
+                description: 'Desc ' + randomStr,
+                status: 'Active'
+            }
+            await apiHelper.createProcessLibConfig(registerProcessData);
 
-            //login with same company Manager
-            await navigationPage.signOut();
-            await loginPage.login('qdu');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            expect(await consoleFlowsetProcessLibrary.isRegisterProcessDisplayed()).toBeFalsy("Register Process Link button displayed for case manager.");
-            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(`Process${randomStr}`)).toBeTruthy(`Process${randomStr}` + "Name is not present");
+            //Create new flowset
+            let flowsetName: string = `5295 ${randomStr}`;
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName;
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-            //login with same company CBA 
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
-            await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
-            let alias = 'UpdateAlias' + randomStr;
-            await editFlowsetProcessLibrary.setAliasName(alias);
-            await editFlowsetProcessLibrary.clickOnSaveButton();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeTruthy(alias + "Name is not present");
+            //Map Process to Flowset
+            let flowsetProcessMappingData = {
+                function: 'Initialization',
+                processNameFull: registerProcessData.processName,
+                processName: processName,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
 
-            //login with different company CBA
-            await navigationPage.signOut();
-            await loginPage.login('gwixillian');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
+            //Create Case Template
+            let caseTemplateData = {
+                "templateName": '5295 tname' + randomStr,
+                "templateSummary": '5295 Summary' + randomStr,
+                "casePriority": "Medium",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "flowset": flowsetResponse.id
+            }
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData)
 
-            //login with different company Manager
-            await navigationPage.signOut();
-            await loginPage.login('rrovnitov');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
+            //Create Case using above Case Template
+            let caseData = {
+                "Requester": "fritz",
+                "Summary": "5295 Create Case",
+                "Origin": "Email",
+                "Case Template ID": caseTemplateResponse.displayId
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+        });
 
-            //login with same company Agent
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
-            await navigationPage.gotoSettingsPage();
-            await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
+        it('[5295]: Initialization process execution for case origin Agent', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            expect(await viewCasePage.getPriorityValue()).toBe('Critical');
             await apiHelper.apiLogin('tadmin');
-            let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
-            await apiHelper.deleteFlowsetProcessLibConfig(processName);
-        } catch (e) {
-            throw e;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 350 * 1000);
-
-    it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let allHeaders: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Process Name', 'Status'];
-        let remainingHeaders: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Status'];
-        await apiHelper.apiLogin('tadmin');
-        let social_Service = SOCIAL_SERVICE_PROCESS;
-        let social_Service_Process = social_Service.name + randomStr;
-        social_Service.name = social_Service_Process;
-        await apiCoreUtil.createProcess(social_Service);
-        let processLibConfData1 = {
-            applicationServicesLib: "com.bmc.dsm.social-lib",
-            processName: social_Service_Process,
-            processAliasName: `Process${randomStr}`,
-            company: "Petramco",
-            description: `description${randomStr}`,
-            status: "Active"
-        }
-        await apiHelper.createProcessLibConfig(processLibConfData1);
-
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        await consoleFlowsetProcessLibrary.addColumn(["ID", "Process Name"]);
-        await expect(consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(allHeaders)).toBeTruthy("Available value is not present");
-        await consoleFlowsetProcessLibrary.removeColumn(["Process Name"]);
-        await expect(consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(remainingHeaders)).toBeTruthy("Available value is not present");
-        await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
-        await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
-        await editFlowsetProcessLibrary.clickOnSaveButton();
-        await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
-        await consoleFlowsetProcessLibrary.clearSearcBox();
-        await consoleFlowsetProcessLibrary.clickOnRefreshButton();
-        await expect(consoleFlowsetProcessLibrary.getSortedValuesFromColumn("Process Alias Name")).toBeTruthy("Sorted not possible");
-        await apiHelper.apiLogin('tadmin');
-        let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
-        await apiHelper.deleteFlowsetProcessLibConfig(processName);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin ${randomStr}`)).toEqual(1);
+        });
     });
 
-    //ankagraw
-    xit('[DRDMV-11987]: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
-        // incomplete test case... create process which changes case priority to low, register process with flowset
-        // create global template, set case priority as high and use flowset
-        // create case using template with medium priority, and verify priority changes to low
+    describe('[5294,5325,5321]: User Activity Feeds process execution for post created by email', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplate1 = 'Case Template 1' + randomStr;
-        let globalCategName = 'DemoCateg1';
-        let categName2 = 'DemoCateg2';
-        let categName3 = 'DemoCateg3';
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createOperationalCategory(globalCategName, true);
-        await apiHelper.createOperationalCategory(categName2);
-        await apiHelper.createOperationalCategory(categName3);
-        await apiHelper.associateCategoryToCategory(globalCategName, categName2);
-        await apiHelper.associateCategoryToCategory(categName2, categName3);
-        let caseTemplateSummary1 = 'Summary 1' + randomStr;
+        let caseResponse = undefined;
+        let processName = undefined;
+        beforeAll(async () => {
+            //Create a Process
+            await apiHelper.apiLogin('tadmin');
+            processName = `Activity Feed Email ${randomStr}`
+            await apiHelper.createProcess(processName, 'SOCIAL_ACTIVITY_FEED');
 
-        await apiHelper.apiLogin('qkatawazi');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
-        flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+            //Create new flowset
+            let flowsetName: string = `5294 ${randomStr}`;
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName;
+            await apiHelper.apiLogin('qkatawazi');
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-    });//, 180 * 1000);
+            //Map Process to Flowset
+            let flowsetProcessMappingData = {
+                flowsetId: flowsetResponse.id,
+                processName: processName,
+                processNameFull: 'com.bmc.dsm.social-lib:' + processName,
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
+
+            //Create Case Template
+            let caseTemplateData = {
+                "templateName": '5294 tname' + randomStr,
+                "templateSummary": '5294 Summary' + randomStr,
+                "casePriority": "Medium",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "flowset": flowsetResponse.id
+            }
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData)
+            await apiHelper.apiLogin('qfeng');
+
+            //Create Case using above Case Template
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "5294 Create Case",
+                "Origin": "Email",
+                "Case Template ID": caseTemplateResponse.displayId
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createEmailBox('outgoing');
+        });
+        it('[5294,5325,5321]: User Activity Feeds process execution for post created by email', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickOnRequestersEmail();
+            await composeEmailPo.setEmailBody('Text added for 5294');
+            await composeEmailPo.clickOnSendButton();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPage.clickOnRefreshButton();
+            await activityTabPage.clickOnShowMore();
+            expect(await activityTabPage.getRecipientInTo()).toContain('To: Qianru Tao');
+            expect(await activityTabPage.getEmailSubject()).toContain(caseResponse.displayId + ':5294 Create Case');
+            expect(await activityTabPage.getEmailBody()).toContain('Text added for 5294');
+            await apiHelper.apiLogin('tadmin');
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(1);
+            await activityTabPage.addActivityNote("hello");
+            await activityTabPage.clickOnPostButton();
+            await browser.sleep(1000); //hardwait to complete process execution
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(1);
+            await statusBladePo.changeStatus('In Progress');
+            await statusBladePo.clickSaveStatus('In Progress');
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
+        });
+    });
+
+    describe('[5324]: Flowset with multiple process mapping with different functions', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseResponse = undefined;
+        let processName1, processName2;
+        beforeAll(async () => {
+            //Create Process1
+            await apiHelper.apiLogin('tadmin');
+            processName1 = `Activity Feed Email 5324 ${randomStr}`
+            await apiHelper.createProcess(processName1, 'SOCIAL_ACTIVITY_FEED');
+
+            //Create Process2
+            processName2 = `Email Origin 5324 ${randomStr}`
+            await apiHelper.createProcess(processName2, 'EMAIL_ORIGIN');
+
+            //Register the Process1
+            await apiHelper.apiLogin('qkatawazi');
+            const registerProcessData1 = {
+                applicationServicesLib: "com.bmc.dsm.social-lib",
+                processName: 'com.bmc.dsm.social-lib:' + processName1,
+                processAliasName: processName1,
+                company: 'Petramco',
+                description: 'Desc ' + randomStr,
+                status: 'Active'
+            }
+            await apiHelper.createProcessLibConfig(registerProcessData1);
+
+            //Register the Process2
+            const registerProcessData2 = {
+                applicationServicesLib: "com.bmc.dsm.case-lib",
+                processName: 'com.bmc.dsm.case-lib:' + processName2,
+                processAliasName: processName2,
+                company: 'Petramco',
+                description: 'Desc ' + randomStr,
+                status: 'Active'
+            }
+            await apiHelper.createProcessLibConfig(registerProcessData2);
+
+            //Create new flowset
+            let flowsetName: string = `5324 ${randomStr}`;
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+
+            //Map Process1 to Flowset
+            let flowsetProcessMappingData1 = {
+                function: 'User Activity Feeds',
+                processNameFull: registerProcessData1.processName,
+                processName: processName1,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData1);
+
+            //Map Process2 to Flowset
+            let flowsetProcessMappingData2 = {
+                function: 'Initialization',
+                processNameFull: registerProcessData2.processName,
+                processName: processName2,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData2);
+
+            //Create Case Template
+            let caseTemplateData = {
+                "templateName": '5324 tname' + randomStr,
+                "templateSummary": '5324 Summary' + randomStr,
+                "casePriority": "Medium",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "flowset": flowsetResponse.id
+            }
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData)
+            await apiHelper.apiLogin('qfeng');
+
+            //Create Case using above Case Template
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "5324 Create Case",
+                "Origin": "Email",
+                "Case Template ID": caseTemplateResponse.displayId
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+        });
+        it('[5324]: Flowset with multiple process mapping with different functions', async () => {
+            await apiHelper.apiLogin('tadmin');
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin 5324 ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email 5324 ${randomStr}`)).toEqual(0);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await activityTabPage.addActivityNote("hello");
+            await activityTabPage.clickOnPostButton();
+            await browser.sleep(1000); //hardwait to complete process execution
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin 5324 ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email 5324 ${randomStr}`)).toEqual(1);
+        });
+    });
 });

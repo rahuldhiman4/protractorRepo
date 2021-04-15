@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ChangeAssignmentOldBlade {
 	EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -135,9 +135,40 @@ class ChangeAssignmentOldBlade {
 						await dropDown[i].$('.d-icon-angle_down').click();
 						await dropDown[i].$('input').sendKeys(option);
 						await element(by.cssContainingText("li[ng-repeat*='option']", option)).isPresent().then(async () => {
-							await browser.sleep(1000);
+							await browser.sleep(1000); // Wait For Drop Down Values Are Loaded And Ready To Select Value.
 							await element(by.cssContainingText(".is-open li[ng-repeat*='option']", option)).click();
 						});
+					}
+				}
+			});
+		}
+	}
+
+	async isAllDropDownValuesMatches(dropDownName: string, data: string[]): Promise<void> {
+		await browser.wait(this.EC.or(async () => {
+			let count = await $$('.rx-assignment-select').count();
+			return count >= 1;
+		}), 3000);
+		const dropDown: ElementFinder[] = await $$('.rx-assignment-select');
+		for (let i: number = 0; i < dropDown.length; i++) {
+			await dropDown[i].$('.rx-assignment-select-label').isPresent().then(async (result) => {
+				if (result) {
+					let dropDownLabelText: string = await dropDown[i].$('.rx-assignment-select-label').getText();
+					if (dropDownLabelText === dropDownName) {
+						await dropDown[i].$('.d-icon-angle_down').click();
+
+						let arr: string[] = [];
+						let drpDwnvalue: number = await $$("li[ng-repeat*='option']").count();
+						for (let i = 0; i < drpDwnvalue; i++) {
+							let ab: string = await $$("li[ng-repeat*='option']").get(i).getText();
+							arr[i] = ab;
+						}
+						arr = arr.sort();
+						data = data.sort();
+						return arr.length === data.length && arr.every(
+							(value, index) => (value === data[index])
+						);
+
 					}
 				}
 			});

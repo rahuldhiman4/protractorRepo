@@ -38,7 +38,7 @@ class TableProperties {
     async clickOnOkButton(): Promise<void> {
         let index = await this.getTableParentElementIndex();
         await $$(this.selectors.tableDialogWindow).get(index).$(this.selectors.okButton).click();
-        await browser.sleep(1000);
+        await browser.sleep(1000); // Wait For Table Gets Added On Email Body.
     }
 
 }

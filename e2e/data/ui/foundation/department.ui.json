@@ -1,36 +1,72 @@
 {
     "DepartmentData": {
         "orgName": "UI-Department",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData19501": {
         "orgName": "UI-Department-19501",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData19082": {
         "orgName": "UI-Department-19082",
         "relatedOrgId": null,
-        "domainTag":"FacilityDomain"
+        "domainTag": "FacilityDomain"
     },
     "DepartmentData_BulkOperation": {
         "orgName": "BulkOperationDepartment",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData12111": {
         "orgName": "UI-Department-12111",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData2002": {
         "orgName": "UI-Department-2002",
         "relatedOrgId": null,
-        "domainTag":"AccountsDomain"
+        "domainTag": "Human Resource"
     },
-    "DepartmentData11825":{
+    "DepartmentData11825": {
         "orgName": "UI-Department-11825",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
-    "DepartmentData12080":{
-        "orgName": "UI-Department-12080",
-        "relatedOrgId": null
+    "DepartmentDataPhylum1": {
+        "orgName": "UI-Phylum-Deprt1",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "DepartmentDataPhylum2": {
+        "orgName": "UI-Phylum-Deprt2",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "DepartmentDataPhylum3": {
+        "orgName": "UI-Phylum-Deprt3",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "DepartmentDataPhylum4": {
+        "orgName": "UI-Phylum-Deprt4",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "DepartmentDataPhylum5": {
+        "orgName": "UI-Phylum-Deprt5",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "DepartmentDataPhylum6": {
+        "orgName": "UI-Phylum-Deprt6",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "PsilonDepartmentHRLOB": {
+        "orgName": "HRLOB-Department",
+        "relatedOrgId": null,
+        "domainTag": "HR"
     }
 }

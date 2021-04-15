@@ -1,32 +1,33 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import utilsGrid from "../../../utils/util.grid";
+import utilityCommon from '../../../utils/utility.common';
+import utilityGrid from '../../../utils/utility.grid';
 
 class EditAcknowledgementTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        templateName: '[rx-view-component-id="a01af9fa-da73-44e5-a304-8f8c7632b1a0"] input',
-        description: '[rx-view-component-id="f7437c9e-1ed7-4aac-974a-e4d4a643ee35"] input',
-        moduleName: '[rx-view-component-id="8107085d-334f-4d50-beb9-ad10d8911144"] .ui-select-toggle',
-        company: '[rx-view-component-id="af048482-fdf7-4650-ab4b-75e262e00445"]  .ui-select-toggle',
-        status: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"]  .ui-select-match-text',
-        searchButton: '.rx-toggle-search-button',
+        templateName: '[rx-view-component-id="e7893fa6-ebfd-4e5f-b997-efcd337caa8b"] input',
+        description: '[rx-view-component-id="13687881-a1ff-4198-a22a-4d2583307e48"] input',
+        moduleName: '[rx-view-component-id="2a3f6607-4335-4540-aedf-f71a47c6b575"] button',
+        company: '[rx-view-component-id="e75104bf-e0a8-41db-ad84-31b9ef05fd9f"] button',
+        status: '[rx-view-component-id="2b5a61a3-16f8-4d1f-9a60-558c4575ed3a"]  button div',
+        searchButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] input[type="search"]',
         searchGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
-        statusGuid: 'a1e0042f-41e7-4c80-9cd8-014786f346e6',
-        labelGuid: '38ba050c-eb47-44a7-9efc-c724302560bf',
-        localeGuid: '71db023a-4979-4f58-a026-6aeda2edd96b',
-        localizeMessage: '[rx-view-component-id="88ea24dd-ddad-489f-904a-89e43f80f5e6"] button',
-        editButton: '.rx-button-bar-action-buttons__inner .rx-action-button_clear button',
+        statusGuid: '2b5a61a3-16f8-4d1f-9a60-558c4575ed3a',
+        labelGuid: '3dc8431e8-b40a-43fd-88fe-8d7dc884c069',
+        localeGuid: 'c1ebf410-826a-434a-9f42-e8c44ed8dcdb',
+        localizeMessage: '[rx-view-component-id="d80f1ed8-5f3a-4ad1-bd5a-aa4b68879cc2"] button',
+        editButton: '.d-icon-left-pencil',
         body: '.cke_wysiwyg_div',
-        editMessageTextBladeSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        editMessageTextBladeSubjectMessage: '[rx-view-component-id="87825f39-f76b-4a2b-9d04-1e521562dc00"] input',
         newLocalizeMessageEmailMessageSubject: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
         newLocalizeMessageEmailMessageLocalizeDropDownGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
-        saveButton: '.rx-action-button_primary .d-button_primary',
-        cancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
+        saveButton: '.rx-action-button_primary .btn-primary',
+        cancelButton: '[rx-view-component-id="8fe0e727-14ac-4773-ba4d-03835070e907"] button',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
-        msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .ui-grid-row-header-cell',
+        msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] span.radio__label',
         editPencilButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-left-pencil',
-        statusField: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"] .ui-select-match',
+        statusField: '[rx-view-component-id="2b5a61a3-16f8-4d1f-9a60-558c4575ed3a"] button',
+        lobValue: '[rx-view-component-id="c6cbd5e4-3897-493c-a7e0-455c8262e198"] button div'
     }
 
     async getTemplateName(): Promise<string> {
@@ -48,7 +49,7 @@ class EditAcknowledgementTemplate {
     }
 
     async getCompanyName(): Promise<string> {
-        return await $(this.selectors.company).$('.ui-select-match-text').getText();
+        return await $(this.selectors.company).getText();
     }
 
     async getStatusValue(): Promise<string> {
@@ -57,21 +58,21 @@ class EditAcknowledgementTemplate {
 
     async getSubjectMessageValue(): Promise<string> {
        await  $(this.selectors.searchButton).click();
-        await utilsGrid.searchAndSelectGridRecord('subject', '8b59641c-2fca-4d96-8395-03e232cf05de');
-        return await utilsGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
+        await utilityGrid.searchAndSelectGridRecord('subject', '8b59641c-2fca-4d96-8395-03e232cf05de');
+        return await utilityGrid.getFirstGridRecordColumnValue('Message','8b59641c-2fca-4d96-8395-03e232cf05de');
     }
 
     async getBodyMessageValue(): Promise<string> {
-        return await utilsGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
+        return await utilityGrid.getFirstGridRecordColumnValue('Message','8b59641c-2fca-4d96-8395-03e232cf05de');
     }
 
     async searchAndSelectEmailTemplate(value: string): Promise<void> {
-        await utilsGrid.searchAndSelectGridRecord(value);
+        await utilityGrid.searchAndSelectGridRecord(value);
     }
 
     async searchAndSelectBody(value: string): Promise<void> {
         await $(this.selectors.searchButton).click();
-        await utilsGrid.searchAndSelectGridRecord(value, '8b59641c-2fca-4d96-8395-03e232cf05de');
+        await utilityGrid.searchAndSelectGridRecord(value, '8b59641c-2fca-4d96-8395-03e232cf05de');
     }
 
     async clickOnLocalizeMessageButton(): Promise<void> {
@@ -79,7 +80,7 @@ class EditAcknowledgementTemplate {
     }
 
     async selectLocalizeDropDownOfNewLocalizedEmailMessage(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.newLocalizeMessageEmailMessageLocalizeDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.newLocalizeMessageEmailMessageLocalizeDropDownGuid, value);
     }
 
     async setSubjectOfNewLocalizedEmailMessage(subject: string): Promise<void> {
@@ -95,7 +96,7 @@ class EditAcknowledgementTemplate {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilsGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.gridGuid);
     }
 
     async clickOnGridSearchIcon(): Promise<void> {
@@ -103,19 +104,19 @@ class EditAcknowledgementTemplate {
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
-        await utilsGrid.searchOnGridConsole(value);
+        await utilityGrid.searchRecord(value,this.selectors.gridGuid);
     }
 
     async searchAndSelectGridRecord(value: string): Promise<void> {
-        await utilsGrid.searchAndSelectGridRecord(value);
+        await utilityGrid.searchAndSelectGridRecord(value,this.selectors.gridGuid);
     }
 
     async isModuleNameDisabled(): Promise<boolean> {
-        return await $(this.selectors.moduleName).getAttribute("disabled") == "true";
+        return await $(this.selectors.moduleName).getAttribute("aria-disabled") == "true";
     }
 
     async isCompanyDropDownDisabled(): Promise<boolean> {
-        return await $(this.selectors.company).getAttribute("disabled") == "true";
+        return await $(this.selectors.company).getAttribute("aria-disabled") == "true";
     }
 
     async isLocalizedMessageButtonDisplayed(): Promise<boolean> {
@@ -123,11 +124,11 @@ class EditAcknowledgementTemplate {
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, value);
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
     async updateDescription(descriptionText: string): Promise<void> {
@@ -136,7 +137,7 @@ class EditAcknowledgementTemplate {
     }
 
     async selectlocaleDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.localeGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.localeGuid, value);
     }
 
     async updateEditMessageTextBladeBody(body: string): Promise<void> {
@@ -170,10 +171,10 @@ class EditAcknowledgementTemplate {
     }
 
     async clearGridSearchBox(): Promise<void> {
-        await utilsGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
     }
     async isLocaleDropDownValueDisplayed(arr:string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.localeGuid,arr);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.localeGuid,arr);
     }
 
     async isLocalizedMessageButtonEnabled(): Promise<boolean>{
@@ -185,7 +186,7 @@ class EditAcknowledgementTemplate {
     }
 
     async isStatusFieldEnabled(): Promise<boolean>{
-        return await $(this.selectors.statusField).getAttribute('readonly') =='false';
+        return await $(this.selectors.statusField).getAttribute('aria-disabled') =='false';
     }
 
     async clickOnBodyCheckbox(): Promise<void>{
@@ -198,6 +199,10 @@ class EditAcknowledgementTemplate {
 
     async isEditButtonEnabled(): Promise<boolean>{
         return await $(this.selectors.editPencilButton).isEnabled();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

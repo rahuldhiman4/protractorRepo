@@ -1,44 +1,89 @@
 {
     "SuppGrpData": {
         "orgName": "UI-SupportGroup",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "SuppGrpData19501": {
         "orgName": "UI-SupportGroup-19501",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "SuppGrpData19082": {
         "orgName": "UI-SupportGroup-19082",
         "relatedOrgId": null,
-        "domainTag":"FacilityDomain"
+        "domainTag": "FacilityDomain"
     },
     "SuppGrpData_BulkOperation": {
         "orgName": "BulkOperationSupportGroup",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "SuppGrpData12111": {
         "orgName": "UI-SupportGroup-12111",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "SuppGrpData2002": {
         "orgName": "UI-SupportGroup-2002",
         "relatedOrgId": null,
-        "domainTag":"AccountsDomain"
+        "domainTag": "Human Resource"
     },
-    "SuppGrpData11825":{
+    "SuppGrpData11825": {
         "orgName": "UI-SupportGroup-11825",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
-    "SuppGrpData12080":{
+    "SuppGrpData12080": {
         "orgName": "UI-SupportGroup-12080",
         "relatedOrgId": null
     },
-    "SuppGrpData10410":{
+    "SuppGrpData10410": {
         "orgName": "UI-SupportGroup-10410",
         "relatedOrgId": null
     },
-    "SuppGrpDataPsilon":{
+    "SuppGrpDataPsilon": {
         "orgName": "UI-SupportGroup-Psilon",
         "relatedOrgId": "b0446b99d8bb186e231cd17800e6c779233e9c57cff6d4352ac7a10fdf898e54f6c33615a2858395985b7cb5e2b65d53c8b084f4c456afdcc6bb9250318ee4fc"
+    },
+    "SuppGrpDataPhylum1": {
+        "orgName": "UI-Phylum-SuppGrup1",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "SuppGrpDataPhylum2": {
+        "orgName": "UI-Phylum-SuppGrup2",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "SuppGrpDataPhylum3": {
+        "orgName": "UI-Phylum-SuppGrup3",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "SuppGrpDataPhylum4": {
+        "orgName": "UI-Phylum-SuppGrup4",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "SuppGrpDataPhylum5": {
+        "orgName": "UI-Phylum-SuppGrup5",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "SuppGrpDataPhylum6": {
+        "orgName": "UI-Phylum-SuppGrup6",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "PhylumSuppGrpData": {
+        "orgName": "UI-SupportGroupHR",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "PsilonSuppGrpHRLOB": {
+        "orgName": "HRLOB-SuppGrp",
+        "relatedOrgId": null,
+        "domainTag": "HR"
     }
 }

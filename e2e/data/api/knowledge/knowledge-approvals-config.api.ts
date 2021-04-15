@@ -13,6 +13,10 @@ export const KNOWLEDGE_APPROVAL_CONFIG = {
         "1000001437": {
             "id": 1000001437,
             "value": "Knowledge Approval mapping"
+        },
+        "450000420": {
+            "id": 450000420,
+            "value": "HumanResource"
         }
     }
 }

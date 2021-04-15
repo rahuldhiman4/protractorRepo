@@ -1,6 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilityCommon from '../../utils/utility.common';
-import { version } from 'process';
+import { $, protractor, ProtractorExpectedConditions, element, by, browser } from "protractor";
 
 class PreviewKnowledge {
 
@@ -10,7 +8,7 @@ class PreviewKnowledge {
         knowledgeSection: '.doc-editor-read-mode p',
         knowledgeArticleID: '.d-icon-lightbulb_o',
         backButton: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
-        goToArticleButton: '[rx-view-component-id="5c11d82c-8269-41fc-a93f-374252adc4c2"] button',
+        goToArticleButton: '[rx-view-component-id="5c11d82c-8269-41fc-a93f-374252adc4c2"] button span',
         statusOfKA: '[rx-view-component-id="09044fe7-3bcd-48e9-98f3-96c482b37b77"] .status-transition',
         fieldLabels: '.clearfix label',
         articleVersion: '[rx-view-component-id="e8fced69-963d-41a0-84f9-f11d1ca6e029"] span',
@@ -40,7 +38,17 @@ class PreviewKnowledge {
     }
 
     async clickGoToArticleButton(): Promise<void> {
-        await $(this.selectors.goToArticleButton).click();
+        await $(this.selectors.goToArticleButton).isPresent().then(async (present) => {
+            if(present) {
+                await $(this.selectors.goToArticleButton).isDisplayed().then(async (displayed) => {
+                    if(displayed) await $(this.selectors.goToArticleButton).click();
+                });
+            }
+            else{
+                await browser.sleep(1000);
+                await $(this.selectors.goToArticleButton).click();
+            }
+        });
     }
 
     async clickOnBackButton(): Promise<void> {

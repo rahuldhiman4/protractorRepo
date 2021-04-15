@@ -1,12 +1,11 @@
+import utilityCommon from '../../utils/utility.common';
 import { resolve } from "path";
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 import ckEditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        //        activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"], bwf-rich-text-editor[style="display: block;"]',
         activityNoteTextArea: '.cke_enable_context_menu',
         activityCkEditorGuid: '76b9d8a2-54ef-4b24-a086-fc6ff745449d',
         addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
@@ -15,7 +14,7 @@ class ActivityTabPage {
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
         addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
-        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value, .activity__body div',
+        activityLog: '.activity__body .activity-title a, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value, .activity__body div, .activity__body div a',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.checkbox__label span',
         filterAuthor: '.dropdown [placeholder="Enter name, email, login ID or employee ID"]',
@@ -38,7 +37,7 @@ class ActivityTabPage {
         emailReply: '.bwf-button-link[aria-label="Reply"]',
         emailReplyAll: '.bwf-button-link[aria-label="Reply All"]',
         dwpRatingText: 'bwf-activity-dwp-survey .activity-title',
-        dwpSurveyText: '.dwp-answer strong, .dwp-answer div, .dwp-answer',
+        dwpSurveyText: '.dwp-answer strong, .dwp-answer div, .dwp-answer, .dwp-answer .ng-star-inserted',
         viewSurveyBtn: '.dwp-survey-list button',
         dwpQuestions: '.list-of-questions strong',
         dwpAnswers: '.dwp-survey-details .types-of-answers',
@@ -47,7 +46,7 @@ class ActivityTabPage {
         dwpFeedback: '.dp-content .dwp-comment',
         logItems: '.activity  .activity__body',
         AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
-        refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
+        refreshButton: '.bwf-button-link[aria-label="Refresh"]',
         attachmentField: '.attachment-button input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         expandAllAttachmentActivity: '.activity__wrapper .d-icon-plus',
@@ -62,29 +61,12 @@ class ActivityTabPage {
         showLessLinkForAttachment: '.activity__wrapper .flex-wrap button span',
         lockIcon: '.d-icon-lock',
         activityLogList: '.activity .activity__wrapper',
-        linkIcon: '.cke_toolbar .cke_button__link_icon',
-        boldIcon: '.cke_button__bold_icon',
-        italicIcon: '.cke_button__italic_icon',
-        underLineIcon: '.cke_button__underline_icon',
-        leftAlignIcon: '.cke_button__justifyleft_icon',
-        centerAlignIcon: '.cke_button__justifycenter_icon',
-        rightAlignIcon: '.cke_button__justifyright_icon',
-        colorIcon: '.cke_button__textcolor',
-        numberIcon: '.cke_button__numberedlist_icon',
-        bulletIcon: '.cke_button__bulletedlist_icon',
-        addNotePublicCheckBoxToolTip: '.d-icon-question_circle_o',
-        maximizeMinimizeicon: '.cke_button__maximize_icon',
-        maximizeMinimizeWindow: '.cke_button__maximize',
-        boldTextCkEditorTextArea: '.cke_enable_context_menu strong',
-        italicTextCkEditorTextArea: '.cke_enable_context_menu em',
-        underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
-        colorTextCkEditorTextArea: '.cke_enable_context_menu span',
         alignmentTextCkEditorTextArea: '.cke_enable_context_menu',
-        numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
-        bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
-        linkTextCkEditorTextArea: '.cke_enable_context_menu a',
-        activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"]',
+        activityLogBody: '.activities .activity__wrapper',
         showApproversLink: '.activity__wrapper button.btn-sm',
+        alertTooltipMessage: '.alert-content',
+        alertTooltipIcon: '.d-icon-info_circle',
+        rightAlign: 'p[style="text-align: right;"],div[style="text-align: right;"]'
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
@@ -116,47 +98,69 @@ class ActivityTabPage {
     }
 
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.activityLogList).count();
+            return count >= activityNumber;
+        }), 5000);
         switch (iconName) {
             case "note_pencil": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed();
-                break;
             }
 
             case "pencil": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-pencil').isDisplayed();
-                break;
             }
 
             case "comments": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-comments').isDisplayed();
-                break;
             }
 
             case "unflag": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed();
-                break;
             }
 
             case "flag": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag').isDisplayed();
-                break;
             }
 
             case "filePlus": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isDisplayed();
             }
 
             case "arrow_exclamation_circle": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isDisplayed();
             }
 
             case "squares_arrows": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isPresent();
-                break;
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isDisplayed();
             }
 
             case "files_change": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isDisplayed();
+            }
+
+            case "user_arrow": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-user_arrow_o').isDisplayed();
+            }
+
+            case "check_circle": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-check_circle').isDisplayed();
+            }
+
+            case "right-refresh": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-right-refresh').isDisplayed();
+            }
+
+            case "arrow_squares": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-arrow_squares').isDisplayed();
+            }
+
+            case "envelope": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-envelope_o').isDisplayed();
+            }
+
+            case "lock_shield": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-lock_shield').isDisplayed();
             }
 
             default: {
@@ -176,7 +180,7 @@ class ActivityTabPage {
     }
 
     async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).isDisplayed().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).isPresent().then(async (link) => {
             if (link) {
                 await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).click();
                 return true;
@@ -223,8 +227,7 @@ class ActivityTabPage {
     }
 
     async clickOnHyperlink(value: string): Promise<void> {
-        let locator = `.activity .email-body a[href='${value}']`;
-        await $(locator).click();
+        await element(by.cssContainingText('.activity__wrapper a', value)).click();
     }
 
     async getTextOfTD(tabValue: string): Promise<string> {
@@ -271,7 +274,7 @@ class ActivityTabPage {
     }
 
     async getAllTaskActivity(fileName: string): Promise<string> {
-        return await (await element(by.cssContainingText(this.selectors.taskActivity, fileName)).getText()).trim();
+        return (await element(by.cssContainingText(this.selectors.taskActivity, fileName)).getText()).trim();
     }
 
     async clickOnReply(): Promise<void> {
@@ -341,10 +344,18 @@ class ActivityTabPage {
         return fileName;
     }
 
-    async getActivityNotesText(textToMatch: string): Promise<boolean> {
-        let elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
-        let value = await elem.getText();
-        return value.includes(textToMatch) ? true : false;
+    async getActivityReplyNotesText(textToMatch: string): Promise<boolean> {
+        return await $(this.selectors.emailReply).isPresent().then(async (result) => {
+            if (result) return (await $(this.selectors.emailReply).getText()).includes(textToMatch) ? true : false;
+            else return false;
+        });
+    }
+
+    async getActivityReplyAllNotesText(textToMatch: string): Promise<boolean> {
+        return await $(this.selectors.emailReplyAll).isPresent().then(async (result) => {
+            if (result) return (await $(this.selectors.emailReplyAll).getText()).includes(textToMatch) ? true : false;
+            else return false;
+        });
     }
 
     async getApprovalActivityText(textToMatch: string): Promise<boolean> {
@@ -353,9 +364,22 @@ class ActivityTabPage {
         return value.includes(textToMatch) ? true : false;
     }
 
+    async getApprovalRejectionActivityText(textToMatch: string): Promise<boolean> {
+        let elem = $('div.d-icon-cross_circle + div');
+        let value = await elem.getText();
+        return value.includes(textToMatch) ? true : false;
+    }
+
+    async getApprovalErrorActivityText(textToMatch: string): Promise<boolean> {
+        let elem = $('.d-icon-exclamation_triangle + div');
+        let value = await elem.getText();
+        return value.includes(textToMatch) ? true : false;
+    }
+
+
     async isApprovalActivityDisplayed(textToMatch: string): Promise<boolean> {
-        return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isDisplayed();
+        return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isDisplayed();
         })
     }
 
@@ -393,7 +417,7 @@ class ActivityTabPage {
 
     async clickActivityNoteTextBox(): Promise<void> {
         await $(this.selectors.addNoteBox).click();
-        await browser.sleep(1500);
+        await browser.sleep(1500); // Wait Until Activity Note Text Box Show ON Page.
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
@@ -424,7 +448,6 @@ class ActivityTabPage {
 
     async clickOnPostButton(): Promise<void> {
         await $(this.selectors.addNotePostButton).click();
-        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -432,6 +455,7 @@ class ActivityTabPage {
     }
 
     async clickOnNotesTemplate(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteNotesTemplate)), 5000);
         await $(this.selectors.addNoteNotesTemplate).click();
     }
 
@@ -528,9 +552,9 @@ class ActivityTabPage {
         let activityValue: string = "";
         let countVal = await $$(this.selectors.activityLog).count();
         for (let i: number = 0; i < countVal; i++) {
-            activityValue = activityValue + await $$(this.selectors.activityLog).get(i).getText();
+            activityValue = activityValue + " " + await $$(this.selectors.activityLog).get(i).getText();
         }
-        return await activityValue.includes(caseActivityLogText);
+        return activityValue.includes(caseActivityLogText);
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
@@ -554,8 +578,8 @@ class ActivityTabPage {
         await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
     }
 
-    async scrollToActivity(activityNumber: number): Promise<void> { //Operates on activity scroll bar.
-        await browser.executeScript("arguments[0].scrollIntoView();", $$('.activity .activity__wrapper').get(activityNumber - 1).getWebElement());
+    async scrollToActivity(activityNumber: number): Promise<void> {
+        await utilityCommon.scrollToElement(($$('.activity .activity__wrapper').get(activityNumber - 1)));  //Operates on activity scroll bar.
     }
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
@@ -572,9 +596,8 @@ class ActivityTabPage {
     }
 
     async clickOnAttachLink(): Promise<void> {
-        await $(this.selectors.attachmentLink).click();
+        await element(by.cssContainingText(this.selectors.attachmentLink, 'Attach')).click();
     }
-
     async isPersonLinkPresent(): Promise<boolean> {
         return await $(this.selectors.activityLog).isDisplayed();
     }
@@ -588,6 +611,7 @@ class ActivityTabPage {
 
     async openSurveyReport(): Promise<void> {
         await $(this.selectors.viewSurveyBtn).click();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)), 6000);
     }
 
     async isViewSurveyInformationLinkPresent(): Promise<boolean> {
@@ -599,7 +623,7 @@ class ActivityTabPage {
         let dwpActivityText = "";
         for (let i: number = 0; i < allText; i++) {
             let ele = await $$(this.selectors.dwpSurveyText).get(i);
-            dwpActivityText = dwpActivityText + await ele.getText();
+            dwpActivityText = dwpActivityText + await ele.getAttribute('innerText');
         }
         return dwpActivityText;
     }
@@ -667,152 +691,6 @@ class ActivityTabPage {
         return value.includes(bodyText) ? true : false;
     }
 
-    async clickMaximizeMinimizeIcon(): Promise<void> {
-        await $(this.selectors.maximizeMinimizeicon).click();
-    }
-
-    async isPublicCheckBoxToolTipIconDisplayed(): Promise<boolean> {
-        return await $(this.selectors.addNotePublicCheckBoxToolTip).isPresent().then(async (link) => {
-            if (link) return await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed();
-            else return false;
-        });
-    }
-
-    async clickOnLinkIcon(): Promise<void> {
-        await $(this.selectors.linkIcon).click();
-        await browser.sleep(2000);
-    }
-
-    async clickOnBoldIcon(): Promise<void> {
-        await $(this.selectors.boldIcon).click();
-    }
-
-    async clickOnItalicIcon(): Promise<void> {
-        await $(this.selectors.italicIcon).click();
-    }
-
-    async clickOnUnderLineIcon(): Promise<void> {
-        await $(this.selectors.underLineIcon).click();
-    }
-
-    async clickOnLeftAlignIcon(): Promise<void> {
-        await $(this.selectors.leftAlignIcon).click();
-    }
-
-    async clickOnRightAlignIcon(): Promise<void> {
-        await $(this.selectors.rightAlignIcon).click();
-    }
-
-    async clickOnCenterAlignIcon(): Promise<void> {
-        await $(this.selectors.centerAlignIcon).click();
-    }
-
-    async setInsertRemoveNumberList(value: string): Promise<void> {
-        await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
-        await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
-        await $(this.selectors.numberIcon).click();
-        await $(this.selectors.activityNoteTextArea).sendKeys(value);
-    }
-
-    async setInsertRemoveBulletedList(value: string): Promise<void> {
-        await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
-        await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
-        await $(this.selectors.bulletIcon).click();
-        await $(this.selectors.activityNoteTextArea).sendKeys(value);
-    }
-
-    async selectColor(colorValue: string): Promise<void> {
-        await $(this.selectors.colorIcon).click();
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('iframe.cke_panel_frame').getWebElement());
-        let locator: string = `a[title="${colorValue}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
-        await $(locator).click();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-    }
-
-    async getTextCkEditorTextArea(): Promise<string> {
-        return await $(this.selectors.activityNoteTextArea).getText();
-    }
-
-    async isCkEditorDisplayed(): Promise<boolean> {
-        return await $(this.selectors.activityNoteTextArea).isPresent().then(async (link) => {
-            if (link) return await $(this.selectors.activityNoteTextArea).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isBoldTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isItalicTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isUnderlineTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isPresent().then(async (link) => {
-            if (link) return await element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isColorTextDisplayedInCkEditorTextArea(colorCode: string, bodyText: string): Promise<boolean> {
-        return await $(`.cke_enable_context_menu span[style="${colorCode}"]`).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        let rightAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: right;"]');
-        return await ckEditorOpsPo.isTextRightAlignInCkEditorTextArea(bodyText,rightAlignmentElement);
-    }
-
-    async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        let centerAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: center;"]');
-        return await ckEditorOpsPo.isTextCenterAlignInCkEditorTextArea(bodyText,centerAlignmentElement);
-    }
-
-    async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isBulletListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
-            else return false;
-        });
-    }
-
-    async isLinkDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
-            else return false;
-        });
-    }
-
-    async getTextCkEditorMinimizeOrMiximize(): Promise<string> {
-        return await $(this.selectors.maximizeMinimizeWindow).getAttribute('title');
-    }
-
 
     async isBoldTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
         let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('strong').getText();
@@ -843,14 +721,14 @@ class ActivityTabPage {
     }
 
     async isLeftAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$$('div[style="position: relative;"]').get(0).getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;
     }
 
     async isRightAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('[style="text-align: right;"]').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$(this.selectors.rightAlign).getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;
@@ -886,15 +764,6 @@ class ActivityTabPage {
         });
     }
 
-    async isNoteTemplateLinkDisplayedInCkEditor(notesTemplateText: string, activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$('a').isPresent().then(async (link) => {
-            if (link) {
-                let getTextNotesTemplate = await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$$('p').first().getText();
-                return getTextNotesTemplate.trim().includes(notesTemplateText)
-            } else return false;
-        });
-    }
-
     async clickShowApproversLink(showApproversLinkLabel: string): Promise<void> {
         await $(this.selectors.showApproversLink).click();
     }
@@ -907,30 +776,28 @@ class ActivityTabPage {
         return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
     }
 
-    async isTableSummaryDisplayedInCkEditorTextArea(tableSummary: string): Promise<boolean> {
-        let locator = `table[summary='${tableSummary}']`;       
-        return await element(by.css(locator)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.css(locator)).isDisplayed();
-            } else return false;
-        });
-    }
-
-    async isTableCaptionDisplayedInCkEditorTextArea(tableSummary: string,tableCaption: string): Promise<boolean> {
-        let locator = `table[summary='${tableSummary}'] caption`;       
-        return await element(by.css(locator)).isPresent().then(async (result) => {
-            if (result) {
-                let tableCaptionText = await element(by.css(locator)).getText();
-                return tableCaptionText.includes(tableCaption);
-            }
-            else return false;
-        });
-    }
-
     async isCKImageDisplayedInActivity(value: string): Promise<boolean> {
         let locator = `.activity img[src='${value}']`;
-        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        let imageIsDisplayed: boolean = await $$(locator).first().isDisplayed();
         return imageIsDisplayed;
+    }
+
+    async getInfoTooltipMessage(): Promise<string> {
+        return await $(this.selectors.alertTooltipMessage).getText();
+    }
+
+    async isInfoTooltipIconDisplayed(): Promise<boolean> {
+        return await $(this.selectors.alertTooltipIcon).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.alertTooltipIcon).isDisplayed();
+            else return false;
+        })
+    }
+
+    async isBoldTextDisplayed(textName: string): Promise<boolean> {
+        return await element(by.cssContainingText('.activities .activity__wrapper strong', textName)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText('.activities .activity__wrapper strong', textName)).isDisplayed();
+            else return false;
+        });
     }
 }
 

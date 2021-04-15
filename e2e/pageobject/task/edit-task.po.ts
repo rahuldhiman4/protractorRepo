@@ -1,6 +1,5 @@
 import { resolve } from "path";
-import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
@@ -15,21 +14,41 @@ class EditTask {
         changesAssignmentButton: '[rx-view-component-id="c423242c-28ca-4fd2-a81c-4495bf2fffb7"] button',
         attachmentField: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] input[type="file"]',
         attachButton: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] button',
-        categoryTier1: '909ad3ad-6706-4d46-bb5a-bc48fa6ca98e',
-        categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
-        categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
-        categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
+        categoryTier1: '4591e595-2d43-4218-9245-9d4de0adbc48',
+        categoryTier2: 'caeb4c73-8107-4a5c-a966-7628469e48fc',
+        categoryTier3: '291c9c82-e9b3-4b3c-bb1f-4e23d11ff39e',
+        categoryTier4: '9130bb4f-acd8-4a36-bf99-7fd38469b3fc',
         priority: 'e638927a-e1e1-46e7-bfe3-8fe9904a5c5a',
         dynamicDate: '.i-date',
-        dynamicDateTime: 'input[ng-model="datetime"]',
+        dynamicBooleanValue: 'button.d-icon-check_adapt',
+        dynamicFieldTime: '.i-time',
+        dynamicDateTime: '.fields-container .i-date-time',
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
         dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
         ckeditorGuid: '6053a7e8-5194-420b-965a-1c3bfe3ad0a1',
-        refreshActivity: '.d-icon-left-refresh',
+        categoryTier1Value: '[rx-view-component-id="4591e595-2d43-4218-9245-9d4de0adbc48"] .dropdown-toggle',
+        categoryTier2Value: '[rx-view-component-id="caeb4c73-8107-4a5c-a966-7628469e48fc"] .dropdown-toggle',
+        categoryTier3Value: '[rx-view-component-id="291c9c82-e9b3-4b3c-bb1f-4e23d11ff39e"] .dropdown-toggle',
+        requesterName: '[rx-view-component-id="4860ff6b-01b4-49b3-b257-c043ae1ab232"] .person-name .person-link',
+        requesterMail: '[rx-view-component-id="4860ff6b-01b4-49b3-b257-c043ae1ab232"] .bwf-person-email button',
+        assigneeName: '[rx-view-component-id="a0c63feb-58f4-487a-9d23-36088df553b3"] .dropdown-toggle',
+        assignGroupText: '[rx-view-component-id="60b50604-dfc9-42ef-9688-1db148b00809"] .dropdown-toggle',
+        assignCompany: '[rx-view-component-id="f1c5abf8-7093-4d14-9f51-f4ba888c6607"] .dropdown-toggle', 
+        taskSummaryRequiredText: '1261e01e-00fb-4e2c-b2ac-72e837f9fcea',  
+        assignedCompanyRequiredText: 'f1c5abf8-7093-4d14-9f51-f4ba888c6607',
+        assignedGroupRequiredText: '60b50604-dfc9-42ef-9688-1db148b00809',
+        taskTypeRequiredText: '057f2521-313b-40c9-be56-829827512abf',
+        taskLabel: '[rx-view-component-id="db352c84-3f9f-4209-aa3c-426fcc118305"] .btn-secondary',
+        errorMsgOnDynamicFiled: '.form-control-feedback strong',
+        labelGuid: 'db352c84-3f9f-4209-aa3c-426fcc118305'
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
         return await $(this.selectors.taskTypeValue).getAttribute('disabled') == 'true' ? true : false;
+    }
+
+    async getErrorMsgOnDynamicFiled(): Promise<string> {
+        return await $(this.selectors.errorMsgOnDynamicFiled).getText();
     }
 
     async isProcessNameDisabled(): Promise<boolean> {
@@ -41,9 +60,20 @@ class EditTask {
         await $(this.selectors.dynamicDate).sendKeys(value);
     }
 
+    async selectValueFromList(value: string): Promise<void> {
+        await utilityCommon.selectDropDown('4c988a95-b148-475f-b91c-9788d8e6c0cb', value);
+    }
+
+    async setLabel(value: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
+    }
+
     async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await $(this.selectors.dynamicDateTime).clear();
         await $(this.selectors.dynamicDateTime).sendKeys(value);
+    }
+
+    async setTimeInDynamicField(value: string): Promise<void> {
+        await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
@@ -66,9 +96,6 @@ class EditTask {
         await $(this.selectors.assignToMe).click();
     }
 
-    async clickOnRefreshActivity() {
-        await $(this.selectors.refreshActivity).click();
-    }
 
     async clickOnChangeAssignementButton() {
         await $(this.selectors.changesAssignmentButton).click();
@@ -112,6 +139,10 @@ class EditTask {
 
     async selectTaskCategoryTier2(categoryTier2: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
+    }
+
+    async clickOnTrueValueOfDynamicField(): Promise<void> {
+        await $(this.selectors.dynamicBooleanValue).click();
     }
 
     async selectTaskCategoryTier3(categoryTier3: string): Promise<void> {
@@ -159,8 +190,105 @@ class EditTask {
         await $(this.selectors.taskSummary).sendKeys(summary);
     }
 
-    async isAssignmentSectionDisplayed():Promise<boolean>{
-        return await $(this.selectors.assignToMe).isDisplayed();
+    async isRequesterNameDisplayed(requesterName:string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.requesterName,requesterName)).isPresent().then(async (result) => {
+            if (result){
+                return await element(by.cssContainingText(this.selectors.requesterName,requesterName)).isDisplayed();
+            }else return false;
+        });
+    }
+
+    async isFieldsDisplyed(labelName:string):  Promise<boolean> {
+        let locator: string = undefined;
+        switch (labelName) {
+            case "Assign Group": {
+                locator = this.selectors.assignGroupText;
+                break;
+            }
+            case "Assign Company": {
+                locator = this.selectors.assignCompany;
+                break;
+            }
+            case "Assignee Name": {
+                locator = this.selectors.assigneeName;
+                break;
+            }
+            case "CategoryTier3Value": {
+                locator = this.selectors.categoryTier3Value;
+                break;
+            }
+            case "CategoryTier1Value": {
+                locator = this.selectors.categoryTier1Value;
+                break;
+            }
+            case "CategoryTier2Value": {
+                locator = this.selectors.categoryTier2Value;
+                break;
+            }
+            case "Requester Mail": {
+                locator = this.selectors.requesterMail;
+                break;
+            }
+            case "Assignment Section": {
+                locator = this.selectors.assignToMe;
+                break;
+            }
+            default: {
+                console.log(labelName, ' is not a valid parameter');
+                break;
+            }
+        }
+        return await $(locator).isPresent().then(async (result) => {
+            if (result){
+                return await $(locator).isDisplayed();
+            }else return false;
+        });
+    }
+
+    async isRequiredTextPresent(labelName:string): Promise<boolean> {
+        let locator: string = undefined;
+        switch (labelName) {
+            case "Task Summary": {
+                locator = this.selectors.taskSummaryRequiredText;
+                break;
+            }
+            case "Priority": {
+                locator = this.selectors.priority;
+                break;
+            }
+            case "Assigned Company": {
+                locator = this.selectors.assignedCompanyRequiredText;
+                break;
+            }
+            case "Assigned Group": {
+                locator = this.selectors.assignedGroupRequiredText;
+                break;
+            }
+            default: {
+                console.log(labelName, ' is not a valid parameter');
+                break;
+            }
+        }
+        return await utilityCommon.isRequiredTagToField(locator);
+    }
+
+    async getTaskCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4}"] button`).getText();
+    }
+
+    async isTaskLabelValueDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.taskLabel, labelName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.taskLabel, labelName)).isDisplayed();
+            else return false;
+        });
+    }
+    
+    async clickOnLinkIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnLinkIcon(this.selectors.ckeditorGuid);
+    }
+    
+    async enterNewLineInCKE():Promise<void>{
+        await ckeditorOpsPo.enterNewLineInCKE(this.selectors.ckeditorGuid);
     }
 }
 

@@ -4,32 +4,27 @@ class CreateKATemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        templateName: '[name="templateName"]',
-        knowledgeSet: '[name="knowledgeSet"]',
-        disabledEnabledCheck: '.d-checkbox__label .d-checkbox__item',
-        addsection:'.d-icon-left-plus_circle',
-        sectionTitle:'.rx-template-editor-text-fields input',
-        templateDescription:'.d-textfield textarea',
-        saveButton: 'button[type="submit"]',
-        removeSection:'.remove-button',
-        cancelBtn: '.template-editor-action-buttons button.d-button_secondary',
-        upArrowCollapse: '.d-icon-right-angle_up',
-        downArrowExpand: '.d-icon-right-angle_down',
-        expandCollapseAllBtn: '.expand-collapse-buttons button',
+        templateName: 'input[autofocus]',
+        disabledEnabledCheck: 'div.template-attributes div:nth-of-type(2) [type="checkbox"]',
+        addsection: 'div.editor-button-group .btn-link',
+        sectionTitle: 'div.card-block input',
+        templateDescription: 'textarea.ng-star-inserted',
+        saveButton: 'button.btn-primary',
+        removeSection: '.d-icon-left-cross_adapt',
+        cancelBtn: 'div.modal-footer .btn-secondary',
+        upArrowCollapse: '.tab-caret',
+        downArrowExpand: '.tab-caret',
+        expandCollapseAllBtn: '.editor-button-toggle button',
+        lobValue: '[aria-label="Line of Business"] .rx-select__search-button-title',
+        field: 'label.form-control-label span'
     }
 
-    async setTemplateName(value:string): Promise<void> {
+    async setTemplateName(value: string): Promise<void> {
         await $(this.selectors.templateName).sendKeys(value);
     }
 
-    async setDescription(value:string): Promise<void> {
+    async setDescription(value: string): Promise<void> {
         await $(this.selectors.templateDescription).sendKeys(value);
-    }
-
-    async setKnowledgeSetValue(value:string): Promise<void> {
-        await $(this.selectors.knowledgeSet).click();
-        let customXpath=`[title='${value}']`;
-        await $(customXpath).click();
     }
 
     async clickOnDisableEnableCheckBox(): Promise<void> {
@@ -40,9 +35,15 @@ class CreateKATemplate {
         await $(this.selectors.addsection).click();
     }
 
-    async setSectionTitle(value:string, position?: number):Promise<void>{
-        if(position) await $$(this.selectors.sectionTitle).get(position-1).sendKeys(value);
-        else await $(this.selectors.sectionTitle).sendKeys(value);
+    async setSectionTitle(value: string, position?: number): Promise<void> {
+        if (position) {
+            await $$(this.selectors.sectionTitle).get(position - 1).clear();
+            await $$(this.selectors.sectionTitle).get(position - 1).sendKeys(value);
+        }
+        else {
+            await $(this.selectors.sectionTitle).clear();
+            await $(this.selectors.sectionTitle).sendKeys(value);
+            }
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -66,7 +67,7 @@ class CreateKATemplate {
     }
 
     async isSectionVisible(position?: number): Promise<boolean> {
-        if(position) return await $$(this.selectors.sectionTitle).get(position-1).isDisplayed();
+        if (position) return await $$(this.selectors.sectionTitle).get(position - 1).isDisplayed();
         else return await $$(this.selectors.sectionTitle).get(0).isDisplayed();
     }
 
@@ -78,9 +79,16 @@ class CreateKATemplate {
         await $$(this.selectors.expandCollapseAllBtn).get(0).click();
     }
 
-    async getfieldLabel(fieldName: string): Promise<string> {
-        let fieldLocator = `[aria-label="${fieldName}"] .d-textfield__item`;
-        return await $(fieldLocator).getText();
+    async getfieldLabel(fieldName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.field, fieldName)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText(this.selectors.field, fieldName)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 export default new CreateKATemplate();

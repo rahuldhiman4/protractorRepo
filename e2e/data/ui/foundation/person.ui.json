@@ -3,90 +3,270 @@
         "firstName": "fnPerson",
         "lastName": "lnPerson",
         "userId": "idPerson",
-        "company": "Petramco"
+        "company": "Petramco",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
     },
     "PersonData19501": {
         "firstName": "fnPerson19501",
         "lastName": "lnPerson19501",
-        "userId": "idPerson19501"
-    },
-    "PersonData19082": {
-        "firstName": "fnPerson19082",
-        "lastName": "lnPerson19082",
-        "userId": "idPerson19082"
+        "userId": "idPerson19501",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
     },
     "PersonData_BulkOperation": {
         "firstName": "BOPerson",
         "lastName": "BOlnPerson",
-        "userId": "idPersonBO"
+        "userId": "idPersonBO",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
     },
     "PersonData12111": {
         "firstName": "fnPerson12111",
         "lastName": "lnPerson12111",
-        "userId": "idPerson12111"
+        "userId": "idPerson12111",
+        "userPermission": [
+            "Case Agent",
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PersonData2002": {
         "firstName": "fnPerson2004",
         "lastName": "lnPerson2004",
-        "userId": "idPerson2004"
+        "userId": "idPerson2004",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
     },
     "PhylumCaseAgent1": {
         "firstName": "phylumfn1",
         "lastName": "phylumln1",
         "userId": "idphylum1",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAgent2": {
         "firstName": "phylumfn2",
         "lastName": "phylumln2",
         "userId": "idphylum2",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAgent3": {
         "firstName": "phylumfn3",
         "lastName": "phylumln3",
         "userId": "idphylum3",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
+    },
+    "PhylumCaseAgent4": {
+        "firstName": "phylumfn4",
+        "lastName": "phylumln4",
+        "userId": "idphylum4",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
+    },
+    "PhylumCaseAgent5": {
+        "firstName": "phylumfn5",
+        "lastName": "phylumln5",
+        "userId": "idphylum5",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
+    },
+    "PhylumCaseAgent6": {
+        "firstName": "phylumfn6",
+        "lastName": "phylumln6",
+        "userId": "idphylum6",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
+    },
+    "PhylumCaseAgent7": {
+        "firstName": "phylumfn7",
+        "lastName": "phylumln7",
+        "userId": "idphylum7",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
+    },
+    "PhylumCaseAgent8": {
+        "firstName": "phylumfn8",
+        "lastName": "phylumln8",
+        "userId": "idphylum8",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
+    },
+    "PhylumCaseAgent9": {
+        "firstName": "phylumfn9",
+        "lastName": "phylumln9",
+        "userId": "idphylum9",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumKnowledgeUser1": {
         "firstName": "phylumfnk1",
         "lastName": "phylumlnk1",
         "userId": "idphylumkuser",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": [
+            "Case Agent",
+            "Knowledge Coach",
+            "Finance",
+             "Case Business Analyst"
+        ]
     },
     "PhylumKnowledgeUser2": {
         "firstName": "phylumfnk2",
         "lastName": "phylumlnk2",
         "userId": "idphylumkuser2",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": [
+            "Case Agent",
+            "Knowledge Coach",
+            "Finance",
+            "Case Business Analyst"
+        ]
     },
-    "PersonData11825":{
+    "PersonData11825": {
         "firstName": "fnPerson11825",
         "lastName": "lnPerson11825",
-        "userId": "idphylum311825"
+        "userId": "idphylum311825",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
-    "PersonData12080":{
+    "PersonData12080": {
         "firstName": "fnPerson12080",
         "lastName": "lnPerson12080",
-        "userId": "idphylum312080"
+        "userId": "idphylum312080",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
-    "PhytoCaseAdmin1": {
+    "PhylumCaseAdmin1": {
         "firstName": "Ashish",
         "lastName": "Nehra",
         "userId": "anehra",
-        "company": "Phyto",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Knowledge Coach",
+            "Finance"
+        ]
     },
-    "PhytoCaseAdmin2": {
+    "PhylumCaseAdmin2": {
         "firstName": "Zaheer",
         "lastName": "Khan",
         "userId": "zkhan",
-        "company": "Phyto"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Knowledge Coach",
+            "Finance"
+        ]
     },
-    "PhytoKnowledgeUser": {
+    "PhylumKnowledgeUser": {
         "firstName": "Sachin",
         "lastName": "Tendulkar",
         "userId": "stendulkar",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Agent",
+            "Knowledge Coach",
+            "Finance",
+            "Case Business Analyst"
+        ]
+    },
+    "HumanResouceCaseAgent1": {
+        "firstName": "phylumfHR1",
+        "lastName": "phylumlHR1",
+        "userId": "idphylumHR1",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
+    },
+    "HumanResouceCaseAgent2": {
+        "firstName": "phylumfHR2",
+        "lastName": "phylumlHR2",
+        "userId": "idphylumHR2",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
+    },
+    "HumanResouceCaseAgent3": {
+        "firstName": "phylumfHR3",
+        "lastName": "phylumlHR3",
+        "userId": "idphylumHR3",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
+    },
+    "HRCBALOBCBA": {
+        "firstName": "personCBAHRLOB",
+        "lastName": "personCBAHRLOB",
+        "userId": "personCBAHRLOB",
+        "company": "Psilon",
+        "userPermission": [
+            "Case Business Analyst",
+            "HR"
+        ]
+    },
+    "HRCALOBCBA": {
+        "firstName": "personCAHRLOB",
+        "lastName": "personCAHRLOB",
+        "userId": "personCAHRLOB",
+        "company": "Psilon",
+        "userPermission": [
+            "Case Agent",
+            "HR"
+        ]
+    },"HRCMLOBCBA": {
+        "firstName": "personCMHRLOB",
+        "lastName": "personCMHRLOB",
+        "userId": "personCMHRLOB",
+        "company": "Psilon",
+        "userPermission": [
+            "Case Manager",
+            "HR"
+        ]
     }
 }

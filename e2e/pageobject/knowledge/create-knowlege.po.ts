@@ -1,4 +1,5 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { DropDownType } from "../../utils/constants";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class CreateKnowledgePage {
@@ -8,19 +9,19 @@ class CreateKnowledgePage {
         knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] input',
         saveKnowlegeButton: '[rx-view-component-id="2fdb0ffb-560d-46b4-b7af-379d90bcb0a8"] button',
         knowledgeSet: '80a2cd78-e9a5-4997-b7bb-6fadf918bd3e',
-        assignToMeBtn: '[rx-view-component-id="8cb384cb-598d-46f4-a858-08111a6c51bd"] button',
+        assignToMeBtn: '[rx-view-component-id="47343ecd-1617-4f52-9fbd-9f4a6f259760"] bwf-assign-to-me button',
         knowledgeMetadataSection: '[rx-view-component-id="789f2b42-5a5f-4926-8ddd-c2b90fbb7e5e"] .adapt-select',
-        knowledgeSetRequiedtext: '[rx-view-component-id="80a2cd78-e9a5-4997-b7bb-6fadf918bd3e"] .adapt-select',
+        knowledgeSetRequiedtext: '[rx-view-component-id="80a2cd78-e9a5-4997-b7bb-6fadf918bd3e"]  adapt-rx-select',
         authorRequiredText: '[rx-view-component-id="0a50ea72-5fe9-4488-9547-de0a7eb38dee"] .adapt-select',
         attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip',
         templateHeading: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .template-name',
         templateSection: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .template-sections',
-        regionGuid: '17b172fd-28d5-4553-bd22-b59695953287',
-        siteGuid: 'ba9870e4-81f4-45ea-b034-9aff10bc3ab7',
-        categoryTier1Guid: 'b51fcb01-f3d1-4da2-a42d-ffc5873a21b3',
-        categoryTier2Guid: '6f480482-c224-4742-b941-bce655d40fde',
-        categoryTier3Guid: '2774b518-00ab-4e02-bb23-95bdb0285840',
-        categoryTier4Guid: 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
+        regionGuid: 'a0e3703d-7655-4861-9a72-13168852b998',
+        siteGuid: 'd71842ad-8244-4e00-a03c-b583a98245ba',
+        categoryTier1Guid: '082c0d4d-2425-4549-a13f-3f462843559f',
+        categoryTier2Guid: '214299c9-ba6d-44fb-8f0e-9a1ebefe280f',
+        categoryTier3Guid: '8250e409-b774-45b5-91d2-89b620560263',
+        categoryTier4Guid: '5140f73c-3581-47ff-914a-82ad05e06b6b',
         referenceGuid: '7591fcfd-3d96-4155-a450-33c6e591dc2c',
         discardButton: '[rx-view-component-id="0b2d73c8-de57-460b-909c-17e2ae50ea5b"] button',
         knowledgeSetValue: '[rx-view-component-id="80a2cd78-e9a5-4997-b7bb-6fadf918bd3e"] button',
@@ -28,12 +29,15 @@ class CreateKnowledgePage {
         knowledgePreview: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .create-ka-template',
         selectDifferentTemplate: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .group-buttons button.btn-secondary',
         changeTemplate: '[rx-view-component-id="64e29650-ca7f-4b3d-a2af-826be22f8e0f"] button',
-        categoryTier1Value: '[rx-view-component-id="b51fcb01-f3d1-4da2-a42d-ffc5873a21b3"] button',
-        categoryTier2Value: '[rx-view-component-id="6f480482-c224-4742-b941-bce655d40fde"] button',
-        categoryTier3Value: '[rx-view-component-id="2774b518-00ab-4e02-bb23-95bdb0285840"] button',
+        categoryTier1Value: '[rx-view-component-id="082c0d4d-2425-4549-a13f-3f462843559f"] button',
+        categoryTier2Value: '[rx-view-component-id="214299c9-ba6d-44fb-8f0e-9a1ebefe280f"] button',
+        categoryTier3Value: '[rx-view-component-id="8250e409-b774-45b5-91d2-89b620560263"] button',
         templatePreview: '.create-ka-template__preview',
         backBtn: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
         imageIcon: '[rx-view-component-id="7591fcfd-3d96-4155-a450-33c6e591dc2c"] .cke_toolgroup .cke_button__image',
+        lineOfBusiness: '[rx-view-component-id="9bcf3768-1f60-4b44-a300-3bad90b22651"] button[btn-type="tertiary"]',
+        useSelectedTemplateBtn: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .btn-primary',
+        siteGrpGuid: 'f161abec-d0d4-487d-9099-7879f66ae01a'
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -90,10 +94,8 @@ class CreateKnowledgePage {
         }
     }
 
-    async   clickOnUseSelectedTemplateButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
-        await element(by.buttonText('Use selected Template')).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
+    async clickOnUseSelectedTemplateButton(): Promise<void> {
+        await $(this.selectors.useSelectedTemplateBtn).click();
     }
 
     async setReferenceValue(value: string): Promise<void> {
@@ -101,7 +103,7 @@ class CreateKnowledgePage {
     }
 
     async selectKnowledgeSet(knowledgeSet: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.knowledgeSet, knowledgeSet);
+        await utilityCommon.selectDropDown("Knowledge Set(required)", knowledgeSet, DropDownType.Label);
     }
 
     async addTextInKnowlegeTitleField(addTextKnowlegeTitleField: string): Promise<void> {
@@ -219,21 +221,23 @@ class CreateKnowledgePage {
     async selectSiteDropDownOption(fieldOption: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.siteGuid, fieldOption);
     }
-
+    async selectSiteGroupDropDownOption(fieldOption: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.siteGrpGuid, fieldOption);
+    }
     async getCreateKnowledgeHeader(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
         return await $(this.selectors.createKnowledgeHeader).getText();
     }
 
     async isTemplateDescriptionPresent(description: string): Promise<boolean> {
-        return await element(by.cssContainingText('.template-description', description)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText('.template-description', description)).isDisplayed();
+        return await element(by.cssContainingText('.template-description', description)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText('.template-description', description)).isDisplayed();
         });
     }
 
     async isSectionTitleVisibleOnPreview(title: string): Promise<boolean> {
-        return await element(by.cssContainingText('.section-title', title)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText('.section-title', title)).isDisplayed();
+        return await element(by.cssContainingText('.section-title', title)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText('.section-title', title)).isDisplayed();
         });
     }
 
@@ -248,6 +252,44 @@ class CreateKnowledgePage {
     async clickOnImageIcon(): Promise<void> {
         await $(this.selectors.imageIcon).click();
     }
+    async getValueOfLineOFBusiness(): Promise<string> {
+        return (await $(this.selectors.lineOfBusiness).getText()).trim();
+    }
+
+    async isLineOfBusinessDisable(): Promise<boolean> {
+        return await $(this.selectors.lineOfBusiness).isDisplayed();
+    }
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Knowledge Set": {
+                guid = this.selectors.knowledgeSet;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1Guid;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2Guid;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3Guid;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4Guid;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
 }
 
 export default new CreateKnowledgePage();

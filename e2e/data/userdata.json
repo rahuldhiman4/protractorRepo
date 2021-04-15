@@ -1,158 +1,237 @@
 {
 	"tadmin": {
-		"userName": "tadmin@petramco.com",
+		"userName": "tadmin",
 		"userPassword": "Password_1234"
 	},
 	"qdu": {
-		"userName": "qdu@petramco.com",
+		"userName": "qdu",
 		"userPassword": "Password_1234"
 	},
 	"franz": {
-		"userName": "Franz@petramco.com",
+		"userName": "Franz",
 		"userPassword": "Password_1234"
 	},
 	"elizabeth": {
-		"userName": "Elizabeth@petramco.com",
+		"userName": "Elizabeth",
 		"userPassword": "Password_1234"
 	},
 	"sbadree": {
-		"userName": "sbadree@petramco.com",
+		"userName": "sbadree",
 		"userPassword": "Password_1234"
 	},
 	"qkatawazi": {
-		"userName": "qkatawazi@petramco.com",
+		"userName": "qkatawazi",
 		"userPassword": "Password_1234"
 	},
 	"fritz": {
-		"userName": "Fritz@petramco.com",
+		"userName": "Fritz",
 		"userPassword": "Password_1234"
 	},
 	"qtao": {
-		"userName": "qtao@petramco.com",
+		"userName": "qtao",
 		"userPassword": "Password_1234"
 	},
 	"kayo": {
-		"userName": "kayo@petramco.com",
+		"userName": "kayo",
 		"userPassword": "Password_1234"
 	},
 	"kkohri": {
-		"userName": "kkohri@petramco.com",
+		"userName": "kkohri",
 		"userPassword": "Password_1234"
 	},
 	"kmills": {
-		"userName": "KMills@petramco.com",
+		"userName": "KMills",
 		"userPassword": "Password_1234"
 	},
 	"kWilliamson": {
-		"userName": "KWilliamson@petramco.com",
+		"userName": "KWilliamson",
 		"userPassword": "Password_1234"
 	},
 	"gwixillian": {
-		"userName": "gwixillian@petramco.com",
+		"userName": "gwixillian",
 		"userPassword": "Password_1234"
 	},
 	"qliu": {
-		"userName": "qliu@petramco.com",
+		"userName": "qliu",
 		"userPassword": "Password_1234"
 	},
 	"khardison": {
-		"userName": "khardison@petramco.com",
+		"userName": "khardison",
 		"userPassword": "Password_1234"
 	},
 	"peter": {
-		"userName": "Peter@petramco.com",
+		"userName": "Peter",
 		"userPassword": "Password_1234"
 	},
 	"hannah": {
-		"userName": "Hannah@petramco.com",
+		"userName": "hhaas",
 		"userPassword": "Password_1234"
 	},
 	"qyuan": {
-		"userName": "qyuan@petramco.com",
+		"userName": "qyuan",
 		"userPassword": "Password_1234"
 	},
 	"qannis": {
-		"userName": "qannis@petramco.com",
+		"userName": "qannis",
 		"userPassword": "Password_1234"
 	},
 	"qfeng": {
-		"userName": "qfeng@petramco.com",
+		"userName": "qfeng",
 		"userPassword": "Password_1234"
 	},
 	"qstrong": {
-		"userName": "qstrong@petramco.com",
+		"userName": "qstrong",
 		"userPassword": "Password_1234"
 	},
 	"gderuno": {
-		"userName": "gderuno@petramco.com",
-		"userPassword": "Password_1234"
-	},
-	"caseagentbwf": {
-		"userName": "caseagentbwf@petramco.com",
+		"userName": "gderuno",
 		"userPassword": "Password_1234"
 	},
 	"werusha": {
-		"userName": "werusha@petramco.com",
+		"userName": "werusha",
 		"userPassword": "Password_1234"
 	},
 	"qheroux": {
-		"userName": "qheroux@petramco.com",
+		"userName": "qheroux",
 		"userPassword": "Password_1234"
 	},
 	"qquettawala": {
-		"userName": "qquettawala@petramco.com",
+		"userName": "qquettawala",
 		"userPassword": "Password_1234"
 	},
 	"frieda": {
-		"userName": "Frieda@petramco.com",
+		"userName": "Frieda",
 		"userPassword": "Password_1234"
 	},
 	"qcolumbcille": {
-		"userName": "qcolumbcille@petramco.com",
+		"userName": "qcolumbcille",
 		"userPassword": "Password_1234"
 	},
 	"qgeorge": {
-		"userName": "qgeorge@petramco.com",
+		"userName": "qgeorge",
 		"userPassword": "Password_1234"
 	},
 	"kwilson": {
-		"userName": "kwilson@petramco.com",
+		"userName": "kwilson",
 		"userPassword": "Password_1234"
 	},
 	"kdiva": {
-		"userName": "kdiva@petramco.com",
+		"userName": "kdiva",
 		"userPassword": "Password_1234"
 	},
 	"kjenner": {
-		"userName": "kjenner@petramco.com",
+		"userName": "kjenner",
 		"userPassword": "Password_1234"
 	},
 	"kbell": {
-		"userName": "kbell@petramco.com",
+		"userName": "kbell",
 		"userPassword": "Password_1234"
 	},
 	"kwethington": {
-		"userName": "kwethington@petramco.com",
+		"userName": "kwethington",
 		"userPassword": "Password_1234"
 	},
 	"kwilliams": {
-		"userName": "kwilliams@petramco.com",
+		"userName": "kwilliams",
 		"userPassword": "Password_1234"
 	},
 	"rrovnitov": {
-		"userName": "rrovnitov@petramco.com",
+		"userName": "rrovnitov",
 		"userPassword": "Password_1234"
 	},
-	"sasadmin": {
-		"userName": "admin",
-		"userPassword": "Asimil@89"
-	},
 	"fabian": {
-		"userName": "Fabian@petramco.com",
+		"userName": "Fabian",
 		"userPassword": "Password_1234"
 	},
 	"dbomei": {
-		"userName": "dbomei@petramco.com",
+		"userName": "dbomei",
 		"userPassword": "Password_1234"
+	},
+	"jbarnes": {
+		"userName": "jbarnes",
+		"userPassword": "Password_1234"
+	},
+	"ppeter": {
+		"userName": "ppeter",
+		"userPassword": "Password_1234"
+	},
+	"monika": {
+		"userName": "Monika",
+		"userPassword": "Password_1234"
+	},
+	"ncage": {
+		"userName": "ncage",
+		"userPassword": "Password_1234"
+	},
+	"rwillie": {
+		"userName": "rwillie",
+		"userPassword": "Password_1234"
+	},
+	"sbruce": {
+		"userName": "sbruce",
+		"userPassword": "Password_1234"
+	},
+	"ttristan": {
+		"userName": "ttristan",
+		"userPassword": "Password_1234"
+	},
+	"sherbert": {
+		"userName": "sherbert",
+		"userPassword": "Password_1234"
+	},
+	"qcespedes": {
+		"userName": "qcespedes",
+		"userPassword": "Password_1234"
+	},
+	"cbarton": {
+		"userName": "cbarton",
+		"userPassword": "Password_1234"
+	},
+	"ajoshi": {
+		"userName": "ajoshi",
+		"userPassword": "Password_1234"
+	},
+	"mcarney": {
+		"userName": "mcarney",
+		"userPassword": "Password_1234"
+	},
+	"morwenna": {
+		"userName": "Morwenna",
+		"userPassword": "Password_1234"
+	},
+	"smoran": {
+		"userName": "smoran",
+		"userPassword": "Password_1234"
+	}
+	,
+	"umiguelde": {
+		"userName": "umiguelde",
+		"userPassword": "Password_1234"
+	}
+	,
+	"jstuart": {
+		"userName": "jstuart",
+		"userPassword": "Password_1234"
+	}
+	,
+	"yhenny": {
+		"userName": "yhenny",
+		"userPassword": "Password_1234"
+	},
+	"jmilano": {
+		"userName": "jmilano",
+		"userPassword": "Password_1234"
+	},
+	"rscoyfol": {
+		"userName": "rscoyfol",
+		"userPassword": "Password_1234"
+	},
+	"awarlock": {
+		"userName": "awarlock",
+		"userPassword": "Password_1234"
+	},
+	"demo" : {
+		"userName": "Demo",
+		"userPassword": "P@ssw0rd"
 	}
 }

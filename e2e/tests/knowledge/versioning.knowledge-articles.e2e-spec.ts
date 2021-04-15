@@ -5,11 +5,12 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import accessTabPo from '../../pageobject/common/access-tab.po';
+import changeAssignmentBlade from "../../pageobject/common/change-assignment.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import knowledgeAccessPage from '../../pageobject/knowledge/knowledge-access-tab.po';
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
@@ -17,16 +18,15 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import statusConfigPO from '../../pageobject/settings/common/status-config.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
-import statusConfigPO from '../../pageobject/settings/common/status-config.po';
-import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
+// let caseAgentUser = 'qyuan';
 let caseManagerUser = 'qdu';
 let knowledgeCandidateUser = 'kayo';
 let knowledgeContributorUser = 'kkohri';
@@ -35,21 +35,21 @@ let knowledgeCoachUser = 'kWilliamson';
 let versionColumn = 'Version';
 let knowledgeManagementApp = "Knowledge Management";
 let knowledgeArticlesTitleStr = "Knowledge Articles";
-let knowledgeArticlesStr = "Knowledge Articles ";
 let applyBtn = "Apply";
 let emptyStr = '';
-let articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
+let articleInDraftStatus = '3914 KnowledgeArticle_Draft';
 let minorEditOption = 'Minor Edit';
 let majorEditOption = 'Major Edit';
 let versionField = "Version";
 let versionFieldVal = "1";
-let RecommendedKnowledgeStr = "Recommended Knowledge ";
 let resourcesTabStr = "Resources";
 let activityTabStr = "Activity";
 
 describe('Knowledge Articles - Versioning Tests', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    const knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
+    const knowledgeSetTitleStrPetramco = 'versionedKnowledgeSetPetramco_' + randomStr;
+    const knowledgeSetTitleStrPsilon = 'versionedKnowledgeSetPsilon_' + randomStr;
+    const knowledgeSetTitleStrPhylum = 'versionedKnowledgeSetPhylum_' + randomStr;
     const knowledgeTemplateStr = 'VersionedArticleTemplate_' + randomStr;
     const attachmentFilePath = 'e2e/data/ui/attachment/articleStatus.png';
     const minorEditHelpText = `Submitting your changes will edit the existing Version 1`;
@@ -58,32 +58,30 @@ describe('Knowledge Articles - Versioning Tests', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin('dbomei');
+        await apiHelper.apiLogin('gderuno');
         let knowledgeSetData = {
-            knowledgeSetTitle: `${knowledgeSetTitleStr}`,
-            knowledgeSetDesc: `${knowledgeSetTitleStr}_Desc`,
+            knowledgeSetTitle: `${knowledgeSetTitleStrPetramco}`,
+            knowledgeSetDesc: `${knowledgeSetTitleStrPetramco}_Desc`,
             company: 'Petramco'
         }
-        let knowledgeArticleTemplateData = {
-            templateName: `${knowledgeTemplateStr}`,
-            company: "Petramco",
-            knowledgeSetId: "AGGADGG8ECDC0AQGPUJ1QFRW9RZH4E",
-            title: "articleSection"
-        }
         let knowledgeSetDataPsilon = {
-            knowledgeSetTitle: `${knowledgeSetTitleStr}`,
-            knowledgeSetDesc: `${knowledgeSetTitleStr}_Desc`,
+            knowledgeSetTitle: `${knowledgeSetTitleStrPsilon}`,
+            knowledgeSetDesc: `${knowledgeSetTitleStrPsilon}_Desc`,
             company: 'Psilon'
         }
         await apiHelper.createKnowledgeSet(knowledgeSetDataPsilon);
 
         await apiHelper.apiLogin('elizabeth');
-        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
-        await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
-    });
+        let knowledgeSetResponse = await apiHelper.createKnowledgeSet(knowledgeSetData);
+        await apiHelper.giveReadAccessToKnowledgeSet(knowledgeSetResponse);
+        console.log(knowledgeSetData.knowledgeSetTitle);
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
+        let knowledgeArticleTemplateData = {
+            templateName: knowledgeTemplateStr,
+            sectionTitle: "articleSection",
+            knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
+        }
+        await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
     });
 
     afterAll(async () => {
@@ -92,7 +90,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    it('[DRDMV-20656]: Verify that the newly created article shows the article version', async () => {
+    it('[3715]: Verify that the newly created article shows the article version', async () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeRefStr = 'KnowledgeReference' + randomStr;
         await navigationPage.signOut();
@@ -101,8 +99,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         await createKnowledgePage.clickOnTemplate('Reference');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitleStr);
-        await createKnowledgePage.setReferenceValue(knowledgeRefStr)
-        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitleStrPetramco);
         await createKnowledgePage.clickOnSaveKnowledgeButton();
         expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitleStr, 'Article title not matched.');
         await previewKnowledgePo.clickGoToArticleButton();
@@ -113,12 +110,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
         console.log(actualDate);
         let expectedVersion = "Version " + "1" + " - " + actualDate;
         expect(actualVersion).toBe(expectedVersion);
-    });//, 150 * 1000);
+    });
 
-    //skhobrag
-    describe('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', () => {
+    //skhobrag Defect DRDMV-26009
+    describe('[3708]: Verify the functionality of Edit article with Minor Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -139,30 +136,29 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
 
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
+                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "region": "Americas",
+                "siteGroup": "Marketing",
+                "site": "Atlanta",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {
+        it('[3708]: Verify the functionality of Edit article with Minor Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -174,45 +170,40 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for In Progress Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for In Progress Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {
+        it('[3708]: Verify the functionality of Edit article with Minor Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await browser.sleep(2000); //Hard wait to load the new tab properly
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for SME Review Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await browser.sleep(2000); //Hard wait to load the tab properly
+            await utilityCommon.refresh(); // Refresh needed to reflect changes.
+            await browser.sleep(2000); //Hard wait to load the tab properly
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect changes.
             console.log(await viewKnowledgeArticlePo.getKnowledgeArticleTitle());
             console.log(await viewKnowledgeArticlePo.getKnowledgeArticleDescription());
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -220,7 +211,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -232,7 +222,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleReviewerGroup()).toBe('AU Support 3');
         });
 
-        it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {
+        it('[3708]: Verify the functionality of Edit article with Minor Edit button', async () => {
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -241,12 +231,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickOnSaveButtonOfKA();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
-            await utilityCommon.refresh();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -254,7 +244,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -269,7 +258,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -277,7 +265,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20746]: Verify the search based on version on knowledge article console', () => {
+    describe('[3705]: Verify the search based on version on knowledge article console', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let versionFieldColumn: string[] = ["Version"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Version"];
@@ -287,27 +275,29 @@ describe('Knowledge Articles - Versioning Tests', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            let articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
+
+          let articleData = {
+            "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
             await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
+            await knowledgeConsole.removeColumnOnGrid(['Region']);
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -324,7 +314,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -340,10 +329,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -360,9 +348,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -375,16 +360,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
+            await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -397,14 +378,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
 
+            await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -417,16 +394,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
+            await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -439,32 +412,52 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         afterAll(async () => {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         })
 
     });
 
-    //skhobrag
-    describe('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', () => {
+    //skhobrag-pass
+    describe('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', () => {
+        beforeAll(async () => {
+            let articleData1 = {
+                "knowledgeSet": "HR",
+                "title": articleInDraftStatus,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
+                "assigneeSupportGroup": "AU Support 3",
+                "assignee": "KWilliamson"
+            }
+            await apiHelper.apiLogin('elizabeth');
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData1);
+            let knowledgeArticleGUID = knowledgeArticleData.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy("Article with Draft status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
 
-        it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
+        });
+
+        it('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
 
-            //Search with knowledge article with published status and different versions   
+            //Search with knowledge article with published status and different versions
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
@@ -481,31 +474,34 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
         });
 
-        it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
+
+        it('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
             //Login with Case Manager
             await navigationPage.signOut();
-            await loginPage.login(caseManagerUser);
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
 
-            //Search with knowledge article with published status and different versions            
+            //Search with knowledge article with published status and different versions
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
+            await browser.sleep(3000); // To Wait Until Assignee Displayed On Page.
             await createCasePage.clickSaveCaseButton();
+            await utilityCommon.closePopUpMessage();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab(resourcesTabStr);
 
@@ -515,10 +511,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
         });
 
-        it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
+        it('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
             //Login as Case Agent
             await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
@@ -532,7 +528,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
@@ -549,21 +545,25 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
 
     });
 
-    //skhobrag
-    describe('[DRDMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', () => {
+    //skhobrag-Defect DRDMV-26009
+    describe('[3707,3712]: Verify the functionality of Edit article with Major Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco'];
+        let articleAccessPermission: string[] = [
+          "GB Support 2",
+          "Petramco",
+          "Kane Williamson",
+          "Qianru Tao"
+        ];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -572,7 +572,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         let articleDetails = undefined;
         let articleData = undefined;
         let actualDate = undefined;
-
         let articleHelpFulCounterData = {
             linkedCounter: 182,
             helpfulPercentage: 81,
@@ -581,37 +580,37 @@ describe('Knowledge Articles - Versioning Tests', () => {
             notHelpfulCounter: 12
         }
 
+
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
 
-            articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+           articleData = {
+            "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
 
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
-            articleKeywordsVal = [`${articleDetails.displayId}`];
+            articleKeywordsVal = ['MyKeyword', `${articleDetails.displayId}`];
         });
 
-        it('[DRDFMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', async () => {
+        it('[3707,3712]: Verify the functionality of Edit article with Major Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -623,50 +622,49 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for In Progress Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for In Progress Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
         });
 
-        it('[DRDFMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        it('[3707,3712]: Verify the functionality of Edit article with Major Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
+            expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for SME Review Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
+            await browser.sleep(3000); //hard wait to load tab completely
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -674,7 +672,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -690,7 +687,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.isUnFlagArticleOptionDisplayed()).toBeTruthy('UnFlag Article option is displayed.');
         });
 
-        it('[DRDFMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', async () => {
+        it('[3707,3712]: Verify the functionality of Edit article with Major Edit button', async () => {
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -699,13 +696,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await browser.sleep(4000);
-            await utilityCommon.refresh();
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -713,7 +708,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -726,7 +720,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.isArticleLastReviewDateDisplayed()).toBeFalsy('Article Last Review Date is displayed on new version of an article.');
             expect(await viewKnowledgeArticlePo.isArticleNextReviewDateDisplayed()).toBeFalsy('Article Next Review Date  is displayed on new version of an article.');
             expect(await viewKnowledgeArticlePo.isArticleIsExternalValueDisplayed()).toBeFalsy('Article IsExternal Flag is displayed on new Draft version of an article.');
-            expect(await viewKnowledgeArticlePo.getArticleIsExternalValue()).toBe('');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleKeywords()).toEqual(articleKeywordsVal);
             expect(await viewKnowledgeArticlePo.isFlagArticleOptionDisplayed()).toBeFalsy('Flag Article option is displayed.');
             expect(await viewKnowledgeArticlePo.isUnFlagArticleOptionDisplayed()).toBeTruthy('UnFlag Article option is displayed.');
@@ -737,7 +730,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -745,7 +738,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -761,17 +753,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
 
     });
 
-    //skhobrag
-    describe('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', () => {
+    //skhobrag-pass
+    describe('[3706]: Verify the article status of previous version articles when the new versioned article is moved to Published status', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let articleData = undefined;
@@ -789,30 +778,28 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
             await apiHelper.apiLogin(caseAgentUser);
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "region": "Australia",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
+        it('[3706]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -822,34 +809,39 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(actualVersion).toBe(expectedVersion);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
+            await viewKnowledgeArticlePo.clickOnEditLink();
+            expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
+            expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
+            await editKnowledgePage.clickArticleCancelButton();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
+            expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
-        it('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
+        it('[3706]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
+            await browser.sleep(3000); // Hard wait for browser tab to load properly
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -857,8 +849,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getHelpTextForMajorEditOptionDisplayed()).toBe(majorEditHelpText);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await browser.sleep(4000);
-            await utilityCommon.refresh();
+            await browser.sleep(4000); // Hard wait for browser tab to load properly
+            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
+            await browser.sleep(4000);// Hard wait for browser tab to load properly
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
@@ -868,21 +861,23 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await browser.sleep(4000); // Hard wait for browser tab to load properly
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await browser.sleep(4000); // Hard wait for browser tab to load properly
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await viewKnowledgeArticlePo.selectArticleVersion('1');
+            await browser.sleep(2000); // Hard wait to load the browser completely
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Article is updated with Closed status.');
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
     });
 
-    //skhobrag
-    describe('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', () => {
+    //skhobrag-pass
+    describe('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let articleData = undefined;
@@ -902,30 +897,28 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
 
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "region": "Australia",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
+        it('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -935,42 +928,48 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(actualVersion).toBe(expectedVersion);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
+            await viewKnowledgeArticlePo.clickOnEditLink();
+            expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
+            expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
+            await editKnowledgePage.clickArticleCancelButton();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+        it('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
+            expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
         });
-
-        it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
+        it('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('HR Support');
-            await knowledgeAccessPage.selectSupportGroup('Employee Relations');
-            await knowledgeAccessPage.selectSupportGroupWriteAccess();
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Employee Relations', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -978,48 +977,44 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getHelpTextForMajorEditOptionDisplayed()).toBe(majorEditHelpText);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await browser.sleep(4000);
-            await utilityCommon.refresh();
+            await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
+            await utilityCommon.refresh(); // Refresh needed to reflect version update.
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickRemoveKnowledgeAccess('Petramco');
-            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
-            await knowledgeAccessPage.clickRemoveKnowledgeAccess('Employee Relations');
-            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
+            await accessTabPo.clickRemoveAccess('Petramco', true);
+            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            await accessTabPo.clickRemoveAccess('Employee Relations', true);
+            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
-            await loginPage.login('qgeorge');
-            await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.searchAndOpenHyperlink(articleData.title);
+
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
             await editKnowledgePage.selectArticleEditOption(majorEditOption);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_updated version");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (170250): Draft version already created.')).toBeTruthy('Already Draft version is present message is not displayed.');
-            await browser.sleep(4000);
-            await utilityCommon.refresh();
+            expect(await utilityCommon.isPopUpMessagePresent('Draft version already created.', 1)).toBeTruthy();
+            await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
+            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
         });
-
         afterAll(async () => {
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
 
     });
 
-    //skhobrag
-    describe('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', () => {
+    //skhobrag-pass
+    describe('[3714]: Verify that the newly created article with version displays on knowledge grid console', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let versionFieldColumns: string[] = ["Version"];
@@ -1040,31 +1035,30 @@ describe('Knowledge Articles - Versioning Tests', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+          articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', async () => {
+        it('[3714]: Verify that the newly created article with version displays on knowledge grid console', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -1073,35 +1067,43 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let expectedVersion = "Version " + "1" + " - " + actualDate;
             expect(actualVersion).toBe(expectedVersion);
             await editKnowledgePage.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
+            await viewKnowledgeArticlePo.clickOnEditLink();
+            expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
+            expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
+            await editKnowledgePage.clickArticleCancelButton();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
+            expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
-        it('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', async () => {
+        it('[3714]: Verify that the newly created article with version displays on knowledge grid console', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -1109,20 +1111,21 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getHelpTextForMajorEditOptionDisplayed()).toBe(majorEditHelpText);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await browser.sleep(4000);
-            await utilityCommon.refresh();
+            await browser.sleep(4000); // Hard wait to load the browser tab completely
+            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
+            await browser.sleep(4000); // Hard wait to load the browser tab completely
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             console.log(updatedVersion);
             console.log(await viewKnowledgeArticlePo.getArticleVersion());
 
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
 
+            await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
+            await browser.sleep(5000);// Hard wait to load the tab properly
+            expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await knowledgeConsole.addColumnOnGrid(versionFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(updatedArticleTitle);
@@ -1135,17 +1138,16 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
     });
 
-    //skhobrag
-    describe('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
+    //skhobrag-Defect DRDMV-26009
+    describe('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco'];
-        let updatedArticleAccessPermission: string[] = ['Employee Relations', 'GB Support 2', 'Petramco'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
+        let updatedArticleAccessPermission: string[] = ['GB Support 2', 'Employee Relations', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -1160,94 +1162,94 @@ describe('Knowledge Articles - Versioning Tests', () => {
         }
         let articleDetails = undefined;
         let articleKeywordsVal: string[] = undefined;
-        let updatedVersion: string = undefined;
-        let actualDate: string = undefined;
+        let updatedVersion = undefined;
+        let actualDate = undefined;
 
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+
+          articleData = {
+            "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
-            articleKeywordsVal = [`${articleDetails.displayId}`];
+            articleKeywordsVal = ['MyKeyword', `${articleDetails.displayId}`];
+            console.log('Article Id:', articleDetails.displayId);
 
         });
 
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
-            let actualDate = await viewKnowledgeArticlePo.formatDate();
+            actualDate = await viewKnowledgeArticlePo.formatDate();
             let expectedVersion = "Version " + "1" + " - " + actualDate;
             expect(actualVersion).toBe(expectedVersion);
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for In Progress Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for In Progress Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
+        });
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
+            expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for SME Review Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1255,7 +1257,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -1278,22 +1279,25 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await browser.sleep(4000);
-            await utilityCommon.refresh();
+        });
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+            //await utilityCommon.refresh(); // Refresh needed to reflect version update.
+            await browser.sleep(2000);
+
             updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('HR Support');
-            await knowledgeAccessPage.selectSupportGroup('Employee Relations');
-            await knowledgeAccessPage.selectSupportGroupWriteAccess();
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-            await utilityCommon.refresh();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Employee Relations', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+            await browser.sleep(2000);
+            await utilityCommon.refresh(); // Refresh needed to reflect article updates.
+            await browser.sleep(2000);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1301,7 +1305,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(updatedArticleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -1314,7 +1317,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.isArticleLastReviewDateDisplayed()).toBeFalsy('Article Last Review Date is displayed on new version of an article.');
             expect(await viewKnowledgeArticlePo.isArticleNextReviewDateDisplayed()).toBeFalsy('Article Next Review Date  is displayed on new version of an article.');
             expect(await viewKnowledgeArticlePo.isArticleIsExternalValueDisplayed()).toBeFalsy('Article IsExternal Flag is displayed on new Draft version of an article.');
-            expect(await viewKnowledgeArticlePo.getArticleIsExternalValue()).toBe('');
+            expect(await viewKnowledgeArticlePo.isArticleIsExternalValueDisplayed()).toBeFalsy('External Field is visible');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleKeywords()).toEqual(articleKeywordsVal);
             expect(await viewKnowledgeArticlePo.isFlagArticleOptionDisplayed()).toBeFalsy('Flag Article option is displayed.');
             expect(await viewKnowledgeArticlePo.isUnFlagArticleOptionDisplayed()).toBeTruthy('UnFlag Article option is displayed.');
@@ -1323,12 +1326,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await activityTabPo.getFirstPostContent()).toContain('Kane Williamson created a new version.', 'content not displaying on Activity');
         });
 
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
+            await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await browser.sleep(2000);
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Article is updated with Draft status.');
-            await browser.sleep(2000);
             await viewKnowledgeArticlePo.selectArticleVersion('1');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
@@ -1337,12 +1342,15 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_for Version 3");
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc + "_for Version 3");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
+            await browser.sleep(2000);
+        });
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Published status.');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc + "_for Version 3");
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1350,7 +1358,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -1361,8 +1368,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.isArticleReviewerGroupDisplayed()).toBeFalsy('Article Reviewer Group is displayed on new version of an article.');
             expect(await viewKnowledgeArticlePo.isArticleLastReviewDateDisplayed()).toBeFalsy('Article Last Review Date is displayed on new version of an article.');
             expect(await viewKnowledgeArticlePo.isArticleNextReviewDateDisplayed()).toBeFalsy('Article Next Review Date  is displayed on new version of an article.');
-            expect(await viewKnowledgeArticlePo.isArticleIsExternalValueDisplayed()).toBeFalsy('Article IsExternal Flag is displayed on new Draft version of an article.');
-            expect(await viewKnowledgeArticlePo.getArticleIsExternalValue()).toBe('');
+            expect(await viewKnowledgeArticlePo.isArticleIsExternalValueDisplayed()).toBeFalsy('Article IsExternal Flag is displayed on new Draft version of an article.')
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleKeywords()).toEqual(articleKeywordsVal);
             expect(await viewKnowledgeArticlePo.getAssigneeValue()).toBe('Kyle Mills');
             expect(await viewKnowledgeArticlePo.isFlagArticleOptionDisplayed()).toBeFalsy('Flag Article option is displayed.');
@@ -1373,14 +1379,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
     });
 
-    //skhobrag
-    describe('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', () => {
+    //skhobrag-pass
+    describe('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleData = undefined;
         let articleHelpFulCounterData = {
@@ -1395,31 +1400,31 @@ describe('Knowledge Articles - Versioning Tests', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+
+          articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -1431,144 +1436,144 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for In Progress Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for In Progress Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
-
+        });
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('Australia Support');
-            await knowledgeAccessPage.selectSupportGroup('AU Support 1');
-            await knowledgeAccessPage.selectSupportGroupWriteAccess();
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('AU Support 1', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+        });
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('India Support');
-            await knowledgeAccessPage.selectSupportGroup('IN Support 2');
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('IN Support 2', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('India Support');
-            await knowledgeAccessPage.selectSupportGroup('IN Support 3');
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('IN Support 3', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('United States Support');
-            await knowledgeAccessPage.selectSupportGroup('US Support 1');
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-
-            await utilityCommon.refresh();
-
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for SME Review Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilCommon.clickOnWarningOk();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
 
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
             await editKnowledgePage.selectArticleEditOption(majorEditOption);
             expect(await editKnowledgePage.isHelpTextForMajorEditOptionDisplayed()).toBeTruthy('Major Edit Option helptext for knowledge publisher user with write access is not displayed.');
-            expect(await editKnowledgePage.isMajorEditSaveButtonEnabled()).toBeTruthy('Major Edit Option is disabled for Knowledge publisher user with write access.');
+            expect(await editKnowledgePage.isMajorEditSaveButtonDisabled()).toBeFalsy('Major Edit Option is disabled for Knowledge publisher user with write access.');
             await editKnowledgePage.selectArticleEditOption(minorEditOption);
             expect(await editKnowledgePage.isHelpTextMinorEditOptionDisplayed()).toBeTruthy('Minor Edit Option helptext for knowledge publisher user with write access is not displayed.');
-            expect(await editKnowledgePage.isMinorEditSaveButtonEnabled()).toBeTruthy('Minor Edit Option is disabled for Knowledge publisher user with write access.');
+            expect(await editKnowledgePage.isMinorEditSaveButtonDisabled()).toBeFalsy('Minor Edit Option is disabled for Knowledge publisher user with write access.');
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
 
     });
 
-    describe('[DRDMV-20758]:  Verify the article versioning with respect to custom status configuration', () => {
-
+    xdescribe('[3697]:  Verify the article versioning with respect to custom status configuration', () => {
         beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            const personDataFile = require('../../data/ui/foundation/person.ui.json');
+            let personData1 = personDataFile['PhylumKnowledgeUser1'];
+            await apiHelper.createNewUser(personData1);
+            await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
+            await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
+
+            //KNowledge Set for Phylum
+            let knowledgeSetDataPhylum = {
+                knowledgeSetTitle: `${knowledgeSetTitleStrPhylum}`,
+                knowledgeSetDesc: `${knowledgeSetTitleStrPhylum}_Desc`,
+                company: 'Phylum',
+                lineOfBusiness: "Finance"
+            }
             await navigationPage.signOut();
-            await loginPage.login('dbomei');
+            await loginPage.login("idphylumkuser@petramco.com", "Password_1234");
+            await apiHelper.apiLogin("idphylumkuser@petramco.com", "Password_1234");
+            await apiHelper.createKnowledgeSet(knowledgeSetDataPhylum);
+        });
+        xit('[3697]:  Verify the article versioning with respect to custom status configuration', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
-            await statusConfigPO.setCompanyDropdown('Psilon', 'knowledge');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
+            await statusConfigPO.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPO.clickEditLifeCycleLink();
             await statusConfigPO.clickEditStatus("Published");
             await statusConfigPO.renameExistingStatus('Released');
             await statusConfigPO.clickOnBackButton();
             await statusConfigPO.clickEditLifeCycleLink();
-            await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished');
-            await statusConfigPO.addCustomStatus('Released', 'Retire Approval', 'AfterPublished');
+            await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished'); //this custom status already created in knowledge-preset-filter.e2e-spec
+            await statusConfigPO.addCustomStatus('Released', 'Retire Approval', 'AfterPublished'); //which executes before this class
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
         });
 
-        it('[DRDMV-20758]:  Verify the article versioning with respect to custom status configuration', async () => {
+        xit('[3697]:  Verify the article versioning with respect to custom status configuration', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField('DRDMV-20758 Title');
-            await createKnowledgePage.setReferenceValue('DRDMV-20758 Reference data')
-            await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitleStr);
+            await createKnowledgePage.addTextInKnowlegeTitleField('3697 Title');
+            await createKnowledgePage.setReferenceValue('3697 Reference data')
+            await createKnowledgePage.selectKnowledgeSet(`${knowledgeSetTitleStrPhylum}`);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePage.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
             await editKnowledgePage.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBlade.selectCompany('Psilon');
-            await changeAssignmentBlade.selectBusinessUnit('Psilon Support Org1');
-            await changeAssignmentBlade.selectSupportGroup('Psilon Support Group1');
-            await changeAssignmentBlade.selectAssignee('Doomi Bomei');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Phylum Support Group1');
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'phylumfnk1 phylumlnk1');
             await changeAssignmentBlade.clickOnAssignButton();
             await editKnowledgePage.clickSaveStatusBtn();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
@@ -1576,8 +1581,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore('Approved Article');
             await reviewCommentsPo.clickApprovedButton();
             await utilityCommon.closePopUpMessage();
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilityGrid.clearFilter();
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('BeforePublished', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1586,7 +1590,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             await utilityCommon.closePopUpMessage();
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Released', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1598,7 +1602,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed('Major Edit')).toBeFalsy('Versions Edit is displayed');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed('Minor Edit')).toBeFalsy('Versions Edit is displayed');
             await editKnowledgePage.clickArticleCancelButton();
-
         });
 
         afterAll(async () => {

@@ -1,10 +1,11 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 
 export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dropDownOption: '.dropdown_select__menu-content .dropdown-item *',
-        advancedSearchInput: 'input.adapt-search-field[placeholder="Search"]',
+        dropDownOption: 'div[role="listbox"] .dropdown-item',
+        advancedSearchInput: 'input.adapt-search-field[type="Search"]',
         advancedSearchSettingsBtn: 'span.d-icon-adjust_settings',
         advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
         advancedSearchResult: 'div.sr-search-result-components .bwf-search-fields__title-text',
@@ -13,7 +14,7 @@ export class Resources {
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
         knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
-        advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select',
+        advancedSearchFields: '[class="row ng-star-inserted"] span',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
         paginationNextButton: '.content-outlet .page-next',
     }
@@ -45,24 +46,16 @@ export class Resources {
         await $(this.selectors.advancedSearchSettingsBtnClose).click();
     }
 
-    async selectAdvancedSearchFilterOption(dropDownLabel: string, dropDownValue: string): Promise<void> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$('.dropdown.dropdown_select').count();
-            return count >= 1;
-        }), 3000);
-        const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
-        for (let i: number = 0; i < dropDown.length; i++) {
-            await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
-                if (result) {
-                    let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
-                    if (dropDownLabelText === dropDownLabel) {
-                        await dropDown[i].$('button').click();
-                        await dropDown[i].$('input').sendKeys(dropDownValue);
-                        await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
-                    }
-                }
-            });
-        }
+    async isValuePresentInDropdown(dropDownValue: string): Promise<boolean> {
+        let elementDropdown:ElementFinder =  await $('button[aria-label="Operational Category 1"]');
+        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
+    }
+
+    async isAdvancedSearchFilterDropDownLabelDisplayed(dropDownLabel: string): Promise<boolean> {
+        return await element(by.cssContainingText('.form-control-label', dropDownLabel)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText('.form-control-label', dropDownLabel)).isDisplayed();
+            else return false;
+        });
     }
 
     async isAdvancedSearchFilterOptionDropDownValueDisplayed(data: string[], dropDownNumber: number): Promise<boolean> {
@@ -81,8 +74,7 @@ export class Resources {
     }
 
     async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
-        const advancedSearchFilterBtn = await element(by.xpath(`//*[contains(@class,'justify-content-end')]//button[contains(text(),"${buttonText}")]`));
-        await advancedSearchFilterBtn.click();
+       await element(by.cssContainingText('.justify-content-end button',buttonText)).click();
     }
 
     async isApplyOrClearButtonButtonEnabled(buttonText: string): Promise<boolean> {
@@ -93,18 +85,25 @@ export class Resources {
         return await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).isPresent().then(async (result) => {
             if (result) {
                 return await browser.wait(this.EC.visibilityOf(element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType))), 5000).then(async () => {
-                    return await await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).getText();
+                    return await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).getText();
                 });
             }
         });
     }
 
-    async getCountOfHeading(headerName: string): Promise<string> {
+    async isAdvancedSearchResultContainsRecord(recordTitle: string): Promise<boolean> {
+        return await element(by.cssContainingText('div.bwf-search-fields__title-text span', recordTitle)).isPresent().then(async (result) => {
+            if(result) return await element(by.cssContainingText('div.bwf-search-fields__title-text span', recordTitle)).isDisplayed();
+            else return false;
+        });
+    }
+
+    async getCountOfHeading(headerName: string): Promise<number> {
         let smartRecorderResults: ElementFinder[] = await $$(this.selectors.smartSearchResult);
         for (let i: number = 0; i < smartRecorderResults.length; i++) {
             if ((await smartRecorderResults[i].getText()).includes(headerName)) {
                 let count: string = await smartRecorderResults[i].$('span').getText();
-                return count.substring(1, count.length - 1);
+                return parseInt(count.substring(1, count.length - 1));
             }
         }
     }
@@ -122,7 +121,7 @@ export class Resources {
     }
 
     async isResourcePresent(resourceName: string): Promise<boolean> {
-        // need to wait until spinner to hide (three dots)
+        await browser.sleep(1000); // need to wait until spinner to hide (three dots)
         return await $(`[title="${resourceName}"]`).isPresent().then(async (link) => {
             if (link) return await $(`[title="${resourceName}"]`).isDisplayed();
             else return false;
@@ -136,11 +135,11 @@ export class Resources {
         });
     }
 
-    async clickArrowFirstRecommendedKnowledge(): Promise<void> {
+    async clickArrowFirstRecommendedKnowledge(sectionTitle : string ): Promise<void> {
         let sections = $$('div.bwf-search-result');
         for(let i=0; i<(await sections).length; i++){
             let sectionLocator = sections.get(i).$('h2');
-            if((await sectionLocator.getText()).includes('Recommended Knowledge')) {
+            if((await sectionLocator.getText()).includes(sectionTitle)) {
                 await sections.get(i).$$('div.search-result-fields').first().click();
             }
         }
@@ -179,6 +178,13 @@ export class Resources {
 
     async clickPaginationNext(): Promise<void> {
         await $(this.selectors.paginationNextButton).click();
+    }
+
+    async isSectionTitleDisplayed(sectionName: string): Promise<boolean> {
+        return await $(`[aria-label*="${sectionName}"]`).isPresent().then(async (link) => {
+            if (link) return await $(`[aria-label*="${sectionName}"]`).isDisplayed();
+            else return false;
+        });
     }
 }
 

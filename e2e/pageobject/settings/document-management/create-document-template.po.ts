@@ -1,5 +1,5 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 class CreateDocumentTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -7,15 +7,16 @@ class CreateDocumentTemplate {
         addTemplate: '.d-icon-left-plus',
         templateName: '[rx-view-component-id="98493095-1421-4405-8927-dd684b0d2006"] input',
         company: 'a80a3c32-ce91-485b-a56b-3bac1f78d40f',
-        labelDropDownGuid: '02d4e346-ca1c-4eeb-a80e-322eab42ad02',
+        labelDropDownGuid: '8a25e360-c6cd-4d0b-b8ab-68df63b8c977',
         description: '[rx-view-component-id="933dd491-7d55-4735-b30a-f2826afe1461"] input',
         documentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] div.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="01906a54-d879-427b-a057-a5c5d4834487"] button',
         cancelButton: '[rx-view-component-id="cfab43d9-cdba-4bec-99f3-6aefdf9fae9d"] button',
-        pageHeader: '.modal-title',
-        insertFieldLinkOnDocumentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__expressioneditor_icon',
-        clickImageButton: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__image',
+        pageHeader: '.dp-title',
+        insertFieldLinkOnDocumentBody: '[class="cke_button_icon cke_button__rtfexpressioneditor_icon"]',
+        clickImageButton: '[class="cke_button_icon cke_button__image_icon"]',
         dynamicField: '[class="cke_contents cke_reset"] span',
+        lobValue: '[rx-view-component-id="dbeedef3-a2fb-4574-89f3-e6df0a417fc1"] button'
     }
     async clickOnDocumentBodyImageButton(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.clickImageButton)));
@@ -32,6 +33,11 @@ class CreateDocumentTemplate {
         await $(this.selectors.addTemplate).click();
     }
 
+    async isAddTemplateEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTemplate)));
+        return await $(this.selectors.addTemplate).isEnabled();
+    }
+
     async getDynamicFieldOnBody(): Promise<string> {
         return (await $(this.selectors.dynamicField).getText()).trim();
     }
@@ -46,11 +52,11 @@ class CreateDocumentTemplate {
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelDropDownGuid, value);
     }
 
     async setCompany(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.company, value);
+        await utilityCommon.selectDropDown(this.selectors.company, value);
     }
 
     async setDescription(value: string): Promise<void> {
@@ -98,7 +104,7 @@ class CreateDocumentTemplate {
                 break;
             }
             case "Label": {
-                guid = '02d4e346-ca1c-4eeb-a80e-322eab42ad02';
+                guid = '93d439ff-ca35-4a86-a6b3-d45e705be23d';
                 break;
             }
             default: {
@@ -106,7 +112,11 @@ class CreateDocumentTemplate {
                 break;
             }
         }
-        return await utilCommon.isRequiredTagToField(guid);
+        return await utilityCommon.isRequiredTagToField(guid);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

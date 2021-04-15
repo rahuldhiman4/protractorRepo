@@ -1,6 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import { $, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 
 class SelectEmailTemplateBlad {
@@ -17,7 +15,6 @@ class SelectEmailTemplateBlad {
 
     async clickOnApplyButton(): Promise<void> {
         await $(this.selectors.applyButton).click();
-        await utilCommon.waitUntilSpinnerToHide(); // wait required to populate email template text in compose email
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -25,7 +22,7 @@ class SelectEmailTemplateBlad {
     }
 
     async isEmailTemplateGridEmpty(templateName: string): Promise<boolean> {
-        let value = await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, 'Title');
+        let value = await utilityGrid.getFirstGridRecordColumnValue('Title');
         return value == templateName ? true : false;
     }
 
@@ -51,7 +48,7 @@ class SelectEmailTemplateBlad {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue( columnHeader);
     }
 
     async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
@@ -59,6 +56,8 @@ class SelectEmailTemplateBlad {
     }
 
     async searchAndSelectEmailTemplate(templateName: string): Promise<void> {
+        //wait added due to email template not searching
+        await browser.sleep(5000);
         await utilityGrid.searchAndSelectGridRecord(templateName, this.selectors.gridGuid);
     }
 
@@ -68,6 +67,10 @@ class SelectEmailTemplateBlad {
 
     async getGridRecordValue(columnHeader: string): Promise<string> {
         return await utilityGrid.getFirstGridRecordColumnValue(columnHeader, this.selectors.gridGuid);
+    }
+
+    async isRecordPresent(record: string): Promise<boolean> {
+        return await utilityGrid.isGridRecordPresent(record, this.selectors.gridGuid);
     }
 }
 

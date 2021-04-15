@@ -31,13 +31,13 @@ class RelatedPersonPage {
     }
 
     async isPersonRelatedHasCorrectRelation(relatedName: string, relation: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)), 6000);
+        await browser.wait(this.EC.visibilityOf(await element(by.cssContainingText('.list-group-item a.person-link', relatedName))), 6000);
         let status: boolean = false;
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allPersonNum; i++) {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
-            let rel: string = await person.$(this.selectors.relations).getText();
+            let rel: string = (await (await person.$(this.selectors.relations)).getText()).trim();
             if (nm == relatedName && rel == relation) {
                 status = true;
                 break;
@@ -157,21 +157,22 @@ class RelatedPersonPage {
     }
 
     async removeRelatedPerson(personName: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf(await element(by.cssContainingText('.list-group-item a.person-link', personName))), 6000);
         let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allCasesNum; i++) {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
-            let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
+            let nm: string = await (await person.$(this.selectors.relatedPersonNames)).getText();
             if (nm == personName) {
-                await person.$(this.selectors.removePersonCrossIcon).click();
+                await (await person.$(this.selectors.removePersonCrossIcon)).click();
+                await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
                 break;
             }
         }
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     }
 
     async isRelatedPersonPresent(personName: string): Promise<boolean> {
         let status: boolean = false;
-        if (await $(this.selectors.allRelatedPersons).isPresent) {
+        if (await (await $(this.selectors.allRelatedPersons)).isPresent()) {
             let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
             for (let i = 0; i < allCasesNum; i++) {
                 let nm: string = await $$(this.selectors.allRelatedPersons).get(i).$(this.selectors.relatedPersonNames).getText();
@@ -191,8 +192,7 @@ class RelatedPersonPage {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
-                await person.$(this.selectors.removePersonCrossIcon).click();
-                status = await $('button.close-button').isPresent();
+                status = await person.$('button.close-button').isPresent();
                 break;
             }
         }

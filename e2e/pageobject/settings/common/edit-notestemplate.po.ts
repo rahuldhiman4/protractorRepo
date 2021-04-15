@@ -1,53 +1,40 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from "../../../utils/utility.common";
 
 class editNotesTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        templateName: '[rx-view-component-id="6946bd12-b3f4-404c-8da3-054815bfea9b"] input',
         status: '6333057d-5f6a-4d5d-b862-a07db2f9997e',
         company: 'cdcad966-c707-404e-8aad-a71dc60930f2',
         language: 'f541b151-ebf5-4534-a36f-e9fd3aafde91',
         label: '54ccbb24-f8e2-43cf-bb34-f943e579a13e',
         localizedMessageButton: '[rx-view-component-id="d01e8c76-89c3-4259-ad53-9409a740030e"] button',
         insertField: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .cke_button__expressioneditor',
-        fieldVariable: '.rx-data-dictionary-item-value',
-        parentFields: '.rx-tree-node-parent',
-        okButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_primary',
-        cancelButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_secondary',
         body: '.cke_wysiwyg_div',
-        statusValue: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .ui-select-match-text',
-        bodyUpdateValue: '.cke_wysiwyg_div p',
-        notesTemplate: '[rx-view-component-id="ec3b4b22-122a-480c-a4d7-b62647710c87"] button',
-        saveButton: '[rx-view-component-id="7cfbf19a-7366-4d4f-b686-be6b6befaf82"] .d-button_primary',
-        cancelButton: '[rx-view-component-id="020cadc5-e0da-4ed3-99d3-6ad0bef712bc"] .d-button_secondary',
-        settingsButton: 'rx-shell .d-n-action__settings',
-        localMessage: '[rx-view-component-id="bcea8e76-32b2-414b-b073-e8c254b5f46e"]',
+        statusValue: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .rx-select__search-button-title',
+        bodyUpdateValue: '.cke_wysiwyg_div p,.cke_wysiwyg_div',
+        saveButton: '[rx-view-component-id="7cfbf19a-7366-4d4f-b686-be6b6befaf82"] button',
+        cancelButton: '[rx-view-component-id="020cadc5-e0da-4ed3-99d3-6ad0bef712bc"] button',
         localMessageVerification: '[rx-view-component-id="965fcbd6-27d1-40ae-b024-84c41629e47e"] p',
-        editStatus: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .ui-select-toggle',
-        readOnlyDescription: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .rtf-read-only'
-    }
-
-    async changeTemplateName(templateNameValue: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
-        await $(this.selectors.templateName).clear();
-        await $(this.selectors.templateName).sendKeys(templateNameValue);
+        editStatus: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .disabled',
+        readOnlyDescription: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .cke_editable',
+        lobValue: '[rx-view-component-id="fab9f375-8bc8-424a-997d-529eecd287f9"] .rx-select__search-button-title'
     }
 
     async changeStatusValue(statusValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, statusValue);
+        await utilityCommon.selectDropDown(this.selectors.status, statusValue);
     }
 
     async changeCompanyValue(companyValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.company, companyValue);
+        await utilityCommon.selectDropDown(this.selectors.company, companyValue);
     }
 
     async changeLanguageValue(languageValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.language, languageValue);
+        await utilityCommon.selectDropDown(this.selectors.language, languageValue);
     }
 
     async changeLabelValue(labelValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, labelValue);
+        await utilityCommon.selectDropDown(this.selectors.label, labelValue);
     }
 
     async updateBody(bodyValue: string): Promise<void> {
@@ -63,7 +50,7 @@ class editNotesTemplate {
     async clickOnSaveButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.closePopUpMessage();
+        //        await utilityCommon.closePopUpMessage();
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
     }
 
@@ -90,15 +77,18 @@ class editNotesTemplate {
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.editStatus).getAttribute('disabled') == 'true';
+        return await $(this.selectors.editStatus).isPresent();
+        
     }
 
     async isDescriptionFieldDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.readOnlyDescription).isPresent();
+        return await $(this.selectors.readOnlyDescription).getAttribute('contenteditable') == 'false';
     }
 
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new editNotesTemplate();

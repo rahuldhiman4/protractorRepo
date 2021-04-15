@@ -1,6 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
-import changeAssignmentBladePo from '../common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../common/change-assignment.po';
 import utilityCommon from '../../utils/utility.common';
 
 class StatusBladKnowledgeArticle {
@@ -17,12 +16,8 @@ class StatusBladKnowledgeArticle {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, knowledgeStatus);
-        await $(this.selectors.changeReviwerButton).click();
-        await changeAssignmentBladePo.selectCompany(company)
-        await changeAssignmentBladePo.selectBusinessUnit(reviewerBusinessUnit);
-        await changeAssignmentBladePo.selectSupportGroup(reviewerSupportGroup);
-        await changeAssignmentBladePo.selectAssignee(reviewer);
-        await changeAssignmentBladePo.clickOnAssignButton();
+        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', reviewerSupportGroup);
+        await changeAssignmentBladePo.setDropDownValue('Assignee', reviewer);
         await $(this.selectors.saveButtonOnReviewer).click();
     }
 

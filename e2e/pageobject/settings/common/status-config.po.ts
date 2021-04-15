@@ -1,30 +1,31 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from "../../../utils/util.common";
 import utilityCommon from '../../../utils/utility.common';
 
 class StatusConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        editLifeCycleButton: 'button.btn-edit-status-transition',
-        localizeButton: '.status-name_label button',
-        newStatusInput: '.default-locale-title input',
-        statusAddModalBtns: '.modal-content .status-settings_button-bar button',
-        settingPanelButtons: '.status-settings_button-bar .action-button',
+        editLifeCycleButton: 'button.font-weight-bold',
+        localizeButton: 'button.btn-localize',
+        newStatusInput: '.bwf-locale-modal input',
+        statusAddModalBtns: '.bwf-manage-status-reason-modal .btn.btn-primary',
+        settingPanelButtons: '.footer button[adapt-button]',
         localizedBtn: '.rx-template-editor-text-fields .d-icon-field_text_mapmarker',
-        localizeMenuButtons: '.status-settings_button-bar button',
+        localizeMenuButtons: '.bwf-locale-modal button[adapt-button]',
         status: '.v-line',
-        deleteButton: '.d-button_action-clear',
-        backButton: '.ac-btn-cancel-status-transition',
-        defaultStatusLifeCycle: '.flowchart-title .cc-title',
-        flowsetGuid: '3239972b-789a-46cb-ace0-c538b7bb531c',
+        deleteButton: 'button.bwf-pl-zero',
+        backButton: '.config-title button',
+        defaultStatusLifeCycle: '.config-title .title',
+        flowsetGuid: '1bb469bb-ef02-4134-ad87-b92002bc8e12',
         saveButton: '[class="d-button d-button_primary d-icon-left-undefined d-button_small"]',
-        cancelButton: '[class="d-button d-button_secondary d-icon-left-undefined d-button_small"]',
-        companydefaultvalue: '[class="ui-select-match-text pull-left"]',
-        mandatoryCheckBox: '.d-checkbox__item',
-        manageLink: '[class="d-button d-button_link d-icon-left-pencil d-button_small"]',
-        addStatusReason: '.d-icon-left-plus_circle',
+        cancelButton: '.footer button[btn-type="secondary"]',
+        companydefaultvalue: '[aria-label="Company"] .rx-select__search-button-title',
+        mandatoryCheckBox: '.checkbox__input',
+        manageLink: '.status-reason-wrapper button',
+        addStatusReason: 'button.btn-add-reason',
         localizeStatusReasonButton: '.d-icon-field_text_mapmarker',
+        statusReason: 'button.card-title',
+        statusReasonLocalizeBtn: '.reason-field button.btn-localize'
     }
 
     async clickOnMandatoryCheckbox(): Promise<void> {
@@ -34,25 +35,26 @@ class StatusConfigPage {
     async setStatusReason(newStatus: string): Promise<void> {
         await $(this.selectors.manageLink).click();
         await $(this.selectors.addStatusReason).click();
-        await $(this.selectors.localizeButton).click();
+        await $(this.selectors.statusReason).click();
+        await $(this.selectors.statusReasonLocalizeBtn).click();
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
-        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.statusAddModalBtns).first()), 5000);
+        // await browser.wait(this.EC.elementToBeClickable($$(this.selectors.statusAddModalBtns).first()), 5000);
         await $$(this.selectors.statusAddModalBtns).first().click();
         await this.saveSetting();
     }
 
 
     async saveSetting(): Promise<void> {
-        await browser.sleep(2000);
-        await utilityCommon.scrollToElement(await $$(this.selectors.settingPanelButtons).first());
+        await browser.sleep(2000); // Wait To Load the Setting Panel Buttons.
+        //await utilityCommon.scrollToElement(await $$(this.selectors.settingPanelButtons).first());
         await $$(this.selectors.settingPanelButtons).first().click();
     }
 
 
     async selectFlowset(flowset: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
+        await utilityCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -92,6 +94,7 @@ class StatusConfigPage {
 
     async clickEditStatus(status: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.status, status)).click();
+        await browser.wait(this.EC.visibilityOf($('.status-settings-wrapper .settings__status-name')), 5000);
     }
 
     async getDefaultStatus(status: string): Promise<string> {
@@ -117,15 +120,15 @@ class StatusConfigPage {
         let companyGuid: string = undefined;
         switch (page) {
             case "task": {
-                companyGuid = '6f415311-8708-4f63-9d1a-b373bad77377';
+                companyGuid = 'af9ff85c-cc3e-49a0-b813-4260175d343c';
                 break;
             }
             case "case": {
-                companyGuid = '11a8a316-3947-4479-8840-10436c8d6810';
+                companyGuid = '7ea8c0c2-6099-471b-91a2-54e4ae3cbdec';
                 break;
             }
             case "knowledge": {
-                companyGuid = '9244f298-b811-47f1-98f4-455761459dc9';
+                companyGuid = '35819be8-bbce-483d-a166-bb3ab7c92a92';
                 break;
             }
             default: {
@@ -133,7 +136,7 @@ class StatusConfigPage {
                 break;
             }
         }
-        return await utilCommon.isRequiredTagToField(companyGuid);
+        return await utilityCommon.isRequiredTagToField(companyGuid);
     }
 
     async clickOnBackButton(): Promise<void> {
@@ -145,15 +148,15 @@ class StatusConfigPage {
         let companyGuid: string = undefined;
         switch (page) {
             case "task": {
-                companyGuid = '6f415311-8708-4f63-9d1a-b373bad77377';
+                companyGuid = '5acc7fed-e1de-4130-8b95-cf2ad2097947';
                 break;
             }
             case "case": {
-                companyGuid = '11a8a316-3947-4479-8840-10436c8d6810';
+                companyGuid = '431d76e0-365b-407a-8394-9d658febc61a';
                 break;
             }
             case "knowledge": {
-                companyGuid = '9244f298-b811-47f1-98f4-455761459dc9';
+                companyGuid = '9dfb4eea-5edf-4a18-920f-84d7990ca11b';
                 break;
             }
             default: {
@@ -161,7 +164,7 @@ class StatusConfigPage {
                 break;
             }
         }
-        await utilCommon.selectDropDown(companyGuid, company);
+        await utilityCommon.selectDropDown(companyGuid, company);
     }
 
     async isEditLifeCycleBtnDisabled(): Promise<boolean> {
@@ -171,6 +174,7 @@ class StatusConfigPage {
 
     async clickEditLifeCycleLink(): Promise<void> {
         await $(this.selectors.editLifeCycleButton).click();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async renameExistingStatus(newStatus: string): Promise<void> {
@@ -208,9 +212,14 @@ class StatusConfigPage {
             let statusesLineLocator = $$('.joint-type-standard');
             for (let i: number = 0; i < await statusesLineLocator.count(); i++) {
                 let lineElement = await statusesLineLocator.get(i);
-                try { label = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label'); }
-                catch (ex) { console.log('Searching for the Status Locator'); }
+                try { 
+                    label = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label'); 
+                }
+                catch (ex) { 
+                    console.log('Searching for the Status Locator'); 
+                }
                 if (label == `${status1}--${status2}`) {
+                    console.log(label, ': Locator Found !');
                     modelId = await lineElement.getAttribute('model-id');
                     break;
                 }
@@ -218,8 +227,8 @@ class StatusConfigPage {
             await browser.actions().mouseMove($(`path[data-label="${status1}--${status2}"]`)).perform();
             await $(`[data-tool-name="add-new-status"][model-id="${modelId}"]`).click();
             await $(this.selectors.localizeButton).click();
-            await $(this.selectors.newStatusInput).clear();
-            await $(this.selectors.newStatusInput).sendKeys(newStatus);
+            await $$(this.selectors.newStatusInput).first().clear();
+            await $$(this.selectors.newStatusInput).first().sendKeys(newStatus);
             await $$(this.selectors.localizeMenuButtons).first().click();
             await this.saveSetting();
         }

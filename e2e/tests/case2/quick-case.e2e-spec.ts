@@ -1,7 +1,12 @@
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import previewCasePo from '../../pageobject/case/case-preview.po';
+import { SOURCE_ACTIVE_NOT_ON_UI, SOURCE_DEPRECATED, SOURCE_INACTIVE, SOURCE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from "../../pageobject/case/quick-case.po";
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPo from "../../pageobject/common/login.po";
 import navigationPo from "../../pageobject/common/navigation.po";
@@ -11,11 +16,13 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import editCaseTemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import templateAccessTabPo from '../../pageobject/settings/case-management/template-access-tab.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import activityPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 
 describe("Quick Case", () => {
     const requester = "The requester of the case";
@@ -25,41 +32,45 @@ describe("Quick Case", () => {
         await browser.get(BWF_BASE_URL);
         await loginPo.login("qkatawazi");
 
-        //Creating new users
-        let userData1 = undefined, userData2 = undefined, userData3 = undefined, userData4 = undefined;
-        userData1 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData1",
-            "company": "Petramco"
-        }
-        userData2 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData2",
-            "company": "Petramco"
-        }
-        userData3 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData3",
-            "company": "Petramco"
-        }
-        userData4 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData4",
-            "company": "Petramco"
-        }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.createNewUser(userData3);
-        await apiHelper.associatePersonToCompany(userData3.userId, "Petramco");
-        await apiHelper.createNewUser(userData4);
-        await apiHelper.associatePersonToCompany(userData4.userId, "Petramco");
+        // //Creating new users
+        // let userData1 = undefined, userData2 = undefined, userData3 = undefined, userData4 = undefined;
+        // userData1 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData1",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // userData2 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData2",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // userData3 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData3",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // userData4 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData4",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.createNewUser(userData1);
+        // await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        // await apiHelper.createNewUser(userData2);
+        // await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        // await apiHelper.createNewUser(userData3);
+        // await apiHelper.associatePersonToCompany(userData3.userId, "Petramco");
+        // await apiHelper.createNewUser(userData4);
+        // await apiHelper.associatePersonToCompany(userData4.userId, "Petramco");
     });
 
     afterAll(async () => {
@@ -68,7 +79,7 @@ describe("Quick Case", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-771]: [Quick Case] Similar cases search in Resources', async () => {
+    it('[6403]: [Quick Case] Similar cases search in Resources', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = {
             "Requester": "apavlik",
@@ -81,7 +92,7 @@ describe("Quick Case", () => {
         let categoryvalues: string[] = [caseData.Summary, caseData.description];
         for (let i = 0; i < categoryvalues.length; i++) {
             let result: boolean = undefined;
-            await quickCasePo.selectRequesterName('Adam Pavlik');
+            await quickCasePo.selectRequesterName('Allen Allbrook');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;
@@ -91,7 +102,7 @@ describe("Quick Case", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
+    it('[6382]: [Quick Case] Case creation with inactive template (negative)', async () => {
         let randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
             "templateName": randomStr + "CaseTemplate DRDMV797",
@@ -115,34 +126,35 @@ describe("Quick Case", () => {
         await utilityCommon.closePopUpMessage();
     });
 
-    it('[DRDMV-1205]: [Quick Case] People search', async () => {
+    it('[6325]: [Quick Case] People search', async () => {
         await navigationPo.gotoQuickCase();
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('Allen');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('Allbrook');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '2');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('all');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '3');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('aallbrook');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '4');
         await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('Al Allbrook');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        await quickCasePo.selectRequesterName('Allen Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '5');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('allen.allbrook@petramco.com');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '6');
     });
 
-    describe('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
-        it('[DRDMV-794]: Employee people selection', async () => {
-            await quickCasePo.clickStartOverButton();
+    describe('[6385]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
+        it('[6385]: Employee people selection', async () => {
+            await navigationPo.gotoQuickCase();
+            // await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('allen');
             expect(await quickCasePo.getDrpDownValueByIndex(1)).toBe('The requester of the case');
-            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.selectRequesterName('pavlik');
             expect(await quickCasePo.getDrpDownValueByIndex(2)).toBe('Related to');
             await quickCasePo.selectRequesterName('bpitt');
             expect(await quickCasePo.getDrpDownValueByIndex(3)).toBe('Related to');
@@ -151,7 +163,7 @@ describe("Quick Case", () => {
             await quickCasePo.selectDrpDownValueByIndex('Target', 1);
             expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy('Save button Enabled');
         });
-        it('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
+        it('[6385]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
             await quickCasePo.selectRequesterName('kye');
             expect(await quickCasePo.getDrpDownValueByIndex(5)).toBe('The requester of the case');
             expect(await quickCasePo.getDrpDownValueByIndex(1)).toBe('Target');
@@ -163,9 +175,10 @@ describe("Quick Case", () => {
             expect(await quickCasePo.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
             await quickCasePo.setCaseSummary('address');
             await quickCasePo.saveCase();
-            expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
-            expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
-            await quickCasePo.gotoCaseButton();
+            expect(await casePreviewPo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy('Requester Name is not displayed');
+            expect(await casePreviewPo.isContactNameDisplayed('Allen Allbrook')).toBeTruthy('Contact Name is name displayed');
+            //await browser.sleep(10000000);
+            await casePreviewPo.clickGoToCaseButton();
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -173,16 +186,16 @@ describe("Quick Case", () => {
         });
     });
 
-    it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
+    it('[6379]: [Quick Case] Case creation with requester having same name as other company users', async () => {
         await navigationPo.gotoQuickCase();
-        await quickCasePo.selectRequesterName('Person1 Person1');
+        await quickCasePo.selectRequesterName('Mary');
         await quickCasePo.setCaseSummary('caseSummary');
         await quickCasePo.createCaseButton();
-        await quickCasePo.gotoCaseButton();
-        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
+        await casePreviewPo.clickGoToCaseButton();
+        expect(await viewCasePo.getRequesterName()).toBe('Mary Mann');
     });
 
-    describe('[DRDMV-786]: [Quick Case] Case creation with all case statuses in template', async () => {
+    describe('[6391]: [Quick Case] Case creation with all case statuses in template', async () => {
         let templateData1, templateData2, templateData3, templateData4, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             templateData1 = {
@@ -197,9 +210,9 @@ describe("Quick Case", () => {
             templateData2 = {
                 "templateName": randomStr + "CaseTemplate2 DRDMV786",
                 "templateSummary": randomStr + "Summary2 DRDMV786",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -213,9 +226,9 @@ describe("Quick Case", () => {
             templateData3 = {
                 "templateName": randomStr + "CaseTemplate3 DRDMV786",
                 "templateSummary": randomStr + "Summary3 DRDMV786",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -229,9 +242,9 @@ describe("Quick Case", () => {
             templateData4 = {
                 "templateName": randomStr + "CaseTemplate4 DRDMV786",
                 "templateSummary": randomStr + "Summary4 DRDMV786",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -249,44 +262,46 @@ describe("Quick Case", () => {
             await apiHelper.createCaseTemplate(templateData3);
             await apiHelper.createCaseTemplate(templateData4);
         });
-        it('[DRDMV-786]: Creating the case with diffrent statuses', async () => {
+        it('[6391]: Creating the case with diffrent statuses', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData1.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
+            await navigationPo.signOut();
+            await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData2.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
         });
-        it('[DRDMV-786]: [Quick Case] Case creation with all case statuses in template', async () => {
-            await navigationPo.signOut();
-            await loginPo.login('fritz');
+        it('[6391]: [Quick Case] Case creation with all case statuses in template', async () => {
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData4.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData3.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
         afterAll(async () => {
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
         });
     });
 
-    describe('[DRDMV-1087]: [Quick Case] Case Template search via !', async () => {
+    describe('[6361]: [Quick Case] Case Template search via !', async () => {
         let templateData, templateData1, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let threeCharacterString = randomStr.substr(0, 3);
         beforeAll(async () => {
@@ -318,7 +333,7 @@ describe("Quick Case", () => {
             await apiHelper.apiLogin('gwixillian');
             await apiHelper.createCaseTemplate(templateData1);
         });
-        it('[DRDMV-1087]: Checking change case template button for In Progress', async () => {
+        it('[6361]: Checking change case template button for In Progress', async () => {
             //Draft Template Search 
             await navigationPo.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
@@ -326,23 +341,24 @@ describe("Quick Case", () => {
             expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeFalsy("Draft Template is founded");;
             //Active Template Verification
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         });
-        it('[DRDMV-1087]: Checking change case template button', async () => {
-            await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+        it('[6361]: Checking change case template button', async () => {
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
             await editCaseTemplatePo.clickOnEditCaseTemplateMetadata();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.setCaseSummary(randomStr);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-1087]: [Quick Case] Case Template search via !', async () => {
+        it('[6361]: [Quick Case] Case Template search via !', async () => {
             //Different Company Search
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
@@ -359,7 +375,7 @@ describe("Quick Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
+    describe('[6384]: [Quick Case] Case template search in Resources', async () => {
         let caseTemplateDraftStatus, caseTemplatePsilon, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateDraftStatus = {
@@ -369,11 +385,11 @@ describe("Quick Case", () => {
                 "templateStatus": "Draft",
                 "description": randomStr + 'Description',
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseTemplatePsilon = {
                 "templateName": randomStr + 'PsilonCaseTemplate DRDMV795',
@@ -390,29 +406,30 @@ describe("Quick Case", () => {
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(caseTemplatePsilon);
         });
-        it('[DRDMV-795]: Case template search in Resources', async () => {
+        it('[6384]: Case template search in Resources', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateDraftStatus.templateName)).toBeFalsy("Draft case template present");
         });
-        it('[DRDMV-795]: Draft Case template search in Resources', async () => {
+        it('[6384]: Draft Case template search in Resources', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplatePsilon.templateName)).toBeFalsy('Psilon case template present');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         });
-        it('[DRDMV-795]: Psilon Case template search in Resources', async () => {
+        it('[6384]: Psilon Case template search in Resources', async () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateDraftStatus.templateName);
             await editCaseTemplatePo.clickOnEditCaseTemplateMetadata();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplatePsilon.templateName)).toBeFalsy('Different organization case template present');
         });
-        it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
+        it('[6384]: [Quick Case] Case template search in Resources', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('adam');
@@ -429,7 +446,7 @@ describe("Quick Case", () => {
     });
 
     //apdeshmu
-    describe('[DRDMV-767]: [Quick Case] Case creation with template (end-to-end)', async () => {
+    describe('[6407]: [Quick Case] Case creation with template (end-to-end)', async () => {
         let tasktemplateData, caseTemplateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV767";
         beforeAll(async () => {
@@ -439,29 +456,29 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseTemplateData = {
                 "templateName": commonName,
                 "templateSummary": randomStr + "Summary DRDMV767",
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "Fritz",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "supportCompany": "Petramco",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "priority": "Low",
             }
             let caseData = {
@@ -470,29 +487,30 @@ describe("Quick Case", () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "Assignee": "qkatawazi"
             }
             let assignmentData = {
                 "assignmentMappingName": commonName,
                 "company": "Petramco",
                 "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
                 "supportGroup": "Employee Relations",
-                "assignee": "qliu",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "assignee": "Elizabeth",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "priority": "Low",
             }
             let articleData1 = {
                 "knowledgeSet": "HR",
                 "title": commonName,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "region": "Australia",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
@@ -500,7 +518,7 @@ describe("Quick Case", () => {
                 "assigneeSupportGroup": "AU Support 3",
                 "assignee": "KWilliamson"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(tasktemplateData);
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
@@ -508,21 +526,18 @@ describe("Quick Case", () => {
             await apiHelper.createCase(caseData);
             await apiHelper.createKnowledgeArticle(articleData1);
         });
-        it('[DRDMV-767]: Case creation with template', async () => {
-            await navigationPo.signOut();
-            await loginPo.login('fritz');
+        it('[6407]: Case creation with template', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
         });
-        it('[DRDMV-767]: Case creation with template', async () => {
+        it('[6407]: Case creation with template', async () => {
             await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("chetan");
             await quickCasePo.setCaseSummary(caseTemplateData.templateName);
-            await utilCommon.waitUntilSpinnerToHide();
             await quickCasePo.pinRecommendedCases(0);
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
@@ -530,20 +545,19 @@ describe("Quick Case", () => {
             await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
             await resourcesPo.pinRecommendedKnowledgeArticles(1);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-767]: [Quick Case] Case creation with template (end-to-end)', async () => {
+        it('[6407]: [Quick Case] Case creation with template (end-to-end)', async () => {
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateData.templateName, "Template is not Found");
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card', "Category is not displaying");
-            expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies', "Category is not displaying");
-            expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance', "Category is not displaying");
+            expect(await viewCasePo.getCategoryTier1Value()).toBe('Employee Relations', "Category is not displaying");
+            expect(await viewCasePo.getCategoryTier2Value()).toBe('Compensation', "Category is not displaying");
+            expect(await viewCasePo.getCategoryTier3Value()).toBe('Bonus', "Category is not displaying");
             expect(await viewCasePo.getCaseStatusValue()).toBe('In Progress', "Status is not displaying");
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('US Support 3');
+            expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
             expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateData.templateName);
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
-            await utilityCommon.scrollUpOrDownTillElement(viewCasePo.selectors.addedTaskFromCaseTemplate);
             expect(await viewCasePo.isCoreTaskPresent(tasktemplateData.templateSummary)).toBeTruthy("Task Is not added from Case Template");
             await viewCasePo.clickOnTab('Resources');
             await resourcesPo.clickOnAdvancedSearchOptions();
@@ -561,7 +575,7 @@ describe("Quick Case", () => {
     });
 
     //ptidke
-    describe('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
+    describe('[6401]: [Quick Case] Case template selection via !', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, templateDataDraft, templateDataPsilon;
         beforeAll(async () => {
@@ -571,11 +585,11 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
             templateDataDraft = {
                 "templateName": randomStr + "CaseTemplateDraft DRDMV773",
@@ -583,9 +597,9 @@ describe("Quick Case", () => {
                 "templateStatus": "Draft",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateDataDraft);
@@ -602,26 +616,26 @@ describe("Quick Case", () => {
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(templateDataPsilon);
         });
-        it('[DRDMV-773]: Case template selection via !', async () => {
+        it('[6401]: Case template selection via !', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
-            expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeTruthy('template is present1');
+            expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeTruthy('template is not present1');
         });
-        it('[DRDMV-773]: Case template selection via !', async () => {
+        it('[6401]: Case template selection via !', async () => {
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectRoleValue('Related to');
             expect(await quickCasePo.selectCaseTemplate(templateDataDraft.templateName)).toBeFalsy('template is present2');
         });
-        it('[DRDMV-773]: Case template selection via !', async () => {
-            await quickCasePo.selectRequesterName('fritz');
+        it('[6401]: Case template selection via !', async () => {
+            await quickCasePo.selectRequesterName('qtao');
             expect(await quickCasePo.selectCaseTemplate(templateDataPsilon.templateName)).toBeFalsy('template is present3');
         });
-        it('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
+        it('[6401]: [Quick Case] Case template selection via !', async () => {
             await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseTemplateText()).toBe(templateData.templateName);
         });
         afterAll(async () => {
@@ -631,19 +645,18 @@ describe("Quick Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-796]: [Quick Case] Resources preview', async () => {
+    describe('[6383]: [Quick Case] Resources preview', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV796";
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
             let manualTaskTemplateData = {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseTemplateData = {
                 "templateName": commonName,
@@ -651,9 +664,9 @@ describe("Quick Case", () => {
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "casePriority": "Low",
             };
             let caseData = {
@@ -687,9 +700,9 @@ describe("Quick Case", () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
         });
-        it('[DRDMV-796]: Creating case with template/Knowledge selection', async () => {
+        it('[6383]: Creating case with template/Knowledge selection', async () => {
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.selectRequesterName('pavlik');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
             await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
             expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(caseTemplateData.templateSummary);
@@ -699,22 +712,23 @@ describe("Quick Case", () => {
             expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Low");
             await previewCaseTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
+        it('[6383]: [Quick Case] Resources preview', async () => {
+            await browser.sleep(5000); //Hard wait for KA Indexing
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');           
-            await resourcesPo.clickArrowFirstRecommendedKnowledge();
+            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');
+            await resourcesPo.clickArrowFirstRecommendedKnowledge('Recommended Knowledge');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             await previewKnowledgePo.clickOnBackButton();
             await quickCasePo.createCaseButton();
-            expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
-            expect(await previewCasePo.isCaseSummaryDisplayed(caseTemplateData.templateSummary)).toBeTruthy();
-            expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
-            expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
-            expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateData.templateName}`)).toBeTruthy();
-            await previewCasePo.clickGoToCaseButton();
+            expect(await casePreviewPo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
+            expect(await casePreviewPo.isCaseSummaryDisplayed(caseTemplateData.templateSummary)).toBeTruthy();
+            expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco');
+            expect(await casePreviewPo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
+            expect(await casePreviewPo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateData.templateName}`)).toBeTruthy();
+            await casePreviewPo.clickGoToCaseButton();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -724,43 +738,50 @@ describe("Quick Case", () => {
     });
 
     //ptidke 
-    describe('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
+    describe('[6428]: [Quick Case] UI validation including Source field in Quick Case', async () => {
         let activeSourceUI, inActiveSource741, sourceDeprecated741, activeSourceNotUI;
         beforeAll(async () => {
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            activeSourceUI = await menuItemDataFile['sourceMenuItem'].menuItemName + randomStr;
-            menuItemDataFile['sourceMenuItem'].menuItemName = activeSourceUI;
             await apiHelper.apiLogin('qkatawazi');
+
             //active yes on UI
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceMenuItem']);
-            inActiveSource741 = await menuItemDataFile['sourceInActive'].menuItemName + randomStr;
-            menuItemDataFile['sourceInActive'].menuItemName = inActiveSource741;
+            let sourceMenuItemData = cloneDeep(SOURCE_MENU_ITEM);
+            activeSourceUI = sourceMenuItemData.menuItemName + randomStr;
+            sourceMenuItemData.menuItemName = activeSourceUI;
+            await apiHelper.createNewMenuItem(sourceMenuItemData);
+
             //Inactive 
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceInActive']);
-            sourceDeprecated741 = await menuItemDataFile['sourceDeprecated'].menuItemName + randomStr;
-            menuItemDataFile['sourceDeprecated'].menuItemName = sourceDeprecated741;
+            let sourceInActiveData = cloneDeep(SOURCE_INACTIVE);
+            inActiveSource741 = sourceInActiveData.menuItemName + randomStr;
+            sourceInActiveData.menuItemName = inActiveSource741;
+            await apiHelper.createNewMenuItem(sourceInActiveData);
+
             //deprecated
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceDeprecated']);
-            activeSourceNotUI = await menuItemDataFile['sourceActiveNotOnUI'].menuItemName + randomStr;
-            menuItemDataFile['sourceActiveNotOnUI'].menuItemName = activeSourceNotUI;
+            let sourceDeprecatedData = cloneDeep(SOURCE_DEPRECATED);
+            sourceDeprecated741 = sourceDeprecatedData.menuItemName + randomStr;
+            sourceDeprecatedData.menuItemName = sourceDeprecated741;
+            await apiHelper.createNewMenuItem(sourceDeprecatedData);
+
             //Not on UI
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceActiveNotOnUI']);
+            let sourceActiveNotOnUIData = cloneDeep(SOURCE_ACTIVE_NOT_ON_UI);
+            activeSourceNotUI = sourceActiveNotOnUIData.menuItemName + randomStr;
+            sourceActiveNotOnUIData.menuItemName = activeSourceNotUI;
+            await apiHelper.createNewMenuItem(sourceActiveNotOnUIData);
         });
-        it('[DRDMV-741]: Creating the case with source values', async () => {
+        it('[6428]: Creating the case with source values', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             expect(await quickCasePo.getDescriptionDetails()).toContain("Begin by entering person's name, email, login ID or employee ID after the @ symbol. Then enter a description of the case.");
             expect(await quickCasePo.getResourcesText()).toContain('Quick Case finds resources for you while you take notes');
             expect(await quickCasePo.getSelectedSourceValue()).toContain('Agent');
-            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary('new case creation');
             await quickCasePo.selectSourceValue(activeSourceUI);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getSourceValue()).toContain(activeSourceUI);
         });
-        it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
+        it('[6428]: [Quick Case] UI validation including Source field in Quick Case', async () => {
             await navigationPo.gotoQuickCase();
             expect(await quickCasePo.isValuePresentInSourceDropDown(sourceDeprecated741)).toBeFalsy(sourceDeprecated741 + 'is present');
             expect(await quickCasePo.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741 + 'is present');
@@ -772,13 +793,13 @@ describe("Quick Case", () => {
         });
     });
 
-    it('[DRDMV-8387]: UI validation Email Option via Quick case', async () => {
+    it('[5509]: UI validation Email Option via Quick case', async () => {
         await navigationPo.gotoQuickCase();
         await quickCasePo.selectRequesterName('adam');
         await quickCasePo.setCaseSummary('new case');
         await quickCasePo.createCaseButton();
         await utilityCommon.closePopUpMessage();
-        await quickCasePo.gotoCaseButton();
+        await casePreviewPo.clickGoToCaseButton();
         let quickCaseId: string = await viewCasePo.getCaseID();
         await viewCasePo.clickOnEmailLink();
         expect(await composeMailPo.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
@@ -795,106 +816,127 @@ describe("Quick Case", () => {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
-    // tgarud 
-    it('[DRDMV-559]: [Quick Case] Knowledge article search in Resources', async () => {
+    // tgarud
+    describe('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
+        let articleData, unPublishedKA, publishedKA, publishKA_GUID;
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let unPublishedKA_Name = randomStr + ' UnPublished KA'
-        let publishedKA_Name = randomStr + ' Published KA'
-        let articleData = {
-            "knowledgeSet": "HR",
-            "title": "KnowledgeArticle",
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "keyword": "ArticleKeyword",
-            "articleDesc": "ArticleDescription",
-            "categoryTier1": "Applications",
-            "categoryTier2": "Help Desk",
-            "categoryTier3": "Incident",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United Kingdom Support",
-            "assigneeSupportGroup": "GB Support 1",
-            "assignee": "KMills"
-        };
-        await apiHelper.apiLogin('kmills');
-        // Draft article
-        articleData.title = unPublishedKA_Name;
-        let unPublishedKA = await apiHelper.createKnowledgeArticle(articleData);
-        expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
-        // Published article
-        articleData.title = publishedKA_Name;
-        articleData.keyword = `${randomStr}_keyword`;
-        articleData.articleDesc = `${randomStr}_description`;
-        let publishedKA = await apiHelper.createKnowledgeArticle(articleData);
-        let publishKA_GUID = publishedKA.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "SMEReview", "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "PublishApproval")).toBeTruthy("Article with Published status not updated.");
-        await browser.sleep(5000); // hardwait to get KA indexed
-        // search draft article, should not find
-        await navigationPo.gotoQuickCase();
-        await quickCasePo.selectRequesterName('fritz');
-        await quickCasePo.setCaseSummary(unPublishedKA_Name);
-        expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Draft KA not disaplyed in Recommended Knowledge`);
-        // search published article by name, should find
-        await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('fritz');
-        await quickCasePo.setCaseSummary(publishedKA_Name);
-        expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} not disaplyed in Recommended Knowledge`);
-        // search published article by keyword, should find.. this is failing keyword based search not working 
-        await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('fritz');
-        await quickCasePo.setCaseSummary(articleData.keyword);
-        expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Keyword search not disaplyed in Recommended Knowledge`);
-        // search published article by description, should find
-        await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('fritz');
-        await quickCasePo.setCaseSummary(articleData.articleDesc);
-        expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Description search Published KA not disaplyed in Recommended Knowledge`);
-        // Change KA status to closed so that can be used in last step
-        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "RetireApproval")).toBeTruthy("Article with Closed status not updated.");
-        await browser.sleep(5000); //API takes time to update and reflect the status
-        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Closed")).toBeTruthy("Article with Closed status not updated.");
-        await browser.sleep(3000); // hardwait to reflect KA status as closed
-        // search In Progress article, should not find
-        expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "In Progres")).toBeTruthy("Article with Draft status not updated.");
-        await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('fritz');
-        await quickCasePo.setCaseSummary(unPublishedKA_Name);
-        expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} In Progress KA not disaplyed in Recommended Knowledge`);
-        // search Canceled article, should not find
-        expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "Canceled")).toBeTruthy("Article with Canceled status not updated.");
-        await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('fritz');
-        await quickCasePo.setCaseSummary(unPublishedKA_Name);
-        expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Canceled KA not disaplyed in Recommended Knowledge`);
-        // search Closed article, should not find
-        await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('fritz');
-        await quickCasePo.setCaseSummary(publishedKA_Name);
-        expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeFalsy(`${publishedKA_Name} Closed KA disaplyed in Recommended Knowledge`);
+        let unPublishedKA_Name = randomStr + 'UnPublishedKA';
+        let publishedKA_Name = randomStr + 'PublishedKA';
+        beforeAll(async () => {
+            articleData = {
+                "knowledgeSet": "HR",
+                "title": "KnowledgeArticle",
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "keyword": "ArticleKeyword",
+                "articleDesc": "ArticleDescription",
+                "categoryTier1": "Applications",
+                "categoryTier2": "Help Desk",
+                "categoryTier3": "Incident",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
+            };
+            await apiHelper.apiLogin('kmills');
+            // Draft article
+            articleData.title = unPublishedKA_Name;
+            unPublishedKA = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
+            // Published article
+            articleData.title = publishedKA_Name;
+            articleData.keyword = `${randomStr}_keyword`;
+            articleData.articleDesc = `${randomStr}_description`;
+            publishedKA = await apiHelper.createKnowledgeArticle(articleData);
+            publishKA_GUID = publishedKA.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "SMEReview", "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "PublishApproval")).toBeTruthy("Article with Published status not updated.");
+            await browser.sleep(8000); // hardwait to get KA indexed
+        });
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
+            // search draft article, should not find
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.setCaseSummary(unPublishedKA_Name);
+            expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Draft KA not disaplyed in Recommended Knowledge`);
+        });
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.setCaseSummary(publishedKA_Name);
+            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} not disaplyed in Recommended Knowledge`);
+        });
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.setCaseSummary(articleData.keyword);
+            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Keyword search not disaplyed in Recommended Knowledge`);
+        });
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
+            // search published article by description, should find
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.setCaseSummary(articleData.articleDesc);
+            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Description search Published KA not disaplyed in Recommended Knowledge`);
+            // Change KA status to closed so that can be used in last step
+            expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "RetireApproval")).toBeTruthy("Article with Closed status not updated.");
+            await browser.sleep(5000); //API takes time to update and reflect the status
+            expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Closed")).toBeTruthy("Article with Closed status not updated.");
+            await browser.sleep(3000); // hardwait to reflect KA status as closed
+        });
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
+            expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "In Progres")).toBeTruthy("Article with Draft status not updated.");
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.setCaseSummary(unPublishedKA_Name);
+            expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} In Progress KA not disaplyed in Recommended Knowledge`);
+            expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "Canceled")).toBeTruthy("Article with Canceled status not updated.");
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.setCaseSummary(unPublishedKA_Name);
+            expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Canceled KA not disaplyed in Recommended Knowledge`);
+        });
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
+            await navigationPo.gotoCaseConsole();
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.setCaseSummary(publishedKA_Name);
+            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeFalsy(`${publishedKA_Name} Closed KA disaplyed in Recommended Knowledge`);
+            await resourcesPo.clickOnAdvancedSearchOptions();
+            await resourcesPo.enterAdvancedSearchText(publishedKA_Name);
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Closed KA disaplyed in Recommended Knowledge`);
+        });
+        afterAll(async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+        });
     });
 
     //radhiman
-    it('[DRDMV-18972]: Populating fields in Quick Case if only Required parameter is specified', async () => {
+    it('[3928]: Populating fields in Quick Case if only Required parameter is specified', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18972';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=PET00000104&desc=&contact=');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1, '1');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy;
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=&contact=');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '2');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy;
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=61288992922&desc=&contact=');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=Qiwei Liu&desc=&contact=');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy();
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '3');
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=&contact=');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '4');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy;
     });
 
     //radhiman
-    it('[DRDMV-18973]: Populating fields in Quick Case when all parameters are specified', async () => {
+    it('[3927]: Populating fields in Quick Case when all parameters are specified', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18973';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=PET00000104');
@@ -905,7 +947,7 @@ describe("Quick Case", () => {
         await browser.sleep(1000);
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=14085719604');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=Thad Esser');
         await browser.sleep(1000);
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
@@ -916,13 +958,13 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[DRDMV-18980]: Populating fields in Quick Case with Required and one optional parameter', async () => {
+    it('[3925]: Populating fields in Quick Case with Required and one optional parameter', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18980';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=Change my Last Name&contact');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=&contact=14085719604');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=&contact=PET00000104');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy();
@@ -932,7 +974,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[DRDMV-18977]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
+    it('[3926]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=&desc=Change my Last Name&contact=PET000000000484');
         expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=&desc=Change my Last Name&contact=');
@@ -944,7 +986,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[DRDMV-18983]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
+    it('[3924]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18983';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=Test1&desc=Change my Last Name&contact=qliu');
@@ -953,5 +995,342 @@ describe("Quick Case", () => {
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=Change my Last Name&contact=test1');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+    });
+
+    describe('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1, templateData2;
+        beforeAll(async () => {
+            templateData1 = {
+                "templateName": randomStr + "CaseTemplate1",
+                "templateSummary": randomStr + "Summary1",
+                "templateStatus": "Draft",
+                "company": "- Global -",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+            }
+            templateData2 = {
+                "templateName": randomStr + "CaseTemplate2",
+                "templateSummary": randomStr + "Summary2",
+                "templateStatus": "Draft",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(templateData1);
+            await apiHelper.createCaseTemplate(templateData2);
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            
+            await templateAccessTabPo.clickOnAccessButton('Agent Access');
+            await templateAccessTabPo.selectAgent('Qianru Tao', 'Agent');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Agent');
+
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Qianru Tao')).toBeTruthy('Qianru Tao does not have read access');
+            
+            await utilityCommon.refresh();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Qianru Tao')).toBeTruthy('Qianru Tao does not have read access');
+
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary("CaseSummary1" + randomStr);
+            await createCasePo.clickSelectCaseTemplateButton();
+            expect(await createCasePo.isTemplateNamePresent(templateData1.templateName)).toBeTruthy('template is present1');
+            await selectCasetemplateBladePo.clickOnCancelButton();
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+            await navigationPo.gotoCaseConsole();
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary("CaseSummary1" + randomStr);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(templateData1.templateName);
+            await createCasePo.clickSaveCaseButton();
+            expect(await casePreviewPo.isCaseTemplateDisplayed(templateData1.templateName)).toBeTruthy('Case Template is missing');
+            await casePreviewPo.clickGoToCaseButton();
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeTruthy('template is present1');
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary("CaseSummary2" + randomStr);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(templateData2.templateName);
+            await createCasePo.clickSaveCaseButton();
+            expect(await casePreviewPo.isCaseTemplateDisplayed(templateData2.templateName)).toBeTruthy('Case Template is missing');
+            await casePreviewPo.clickGoToCaseButton();
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            // Verify template is accesible with Readaccess support group user
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is present');
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            //Restored the support group and validate
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            // Verify template is accesible with Readaccess support group user
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is not present');
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('fritz');
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy('template is present');
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeFalsy('template is present');
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
+            await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeFalsy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
+            await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeFalsy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            // Verify With Remove LOB
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Compensation and Benefits');
+            await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Human Resource')).toBeFalsy('Support Group does not have read access');
+
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Compensation and Benefits');
+            await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Human Resource')).toBeFalsy('Support Group does not have read access');
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+
+            await viewCasetemplatePo.clickBackArrowBtn();
+            // Verify template is accessible with reporter user
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is present');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeTruthy('template is present');
+
+            // Verify template is accesible with Readaccess support group user
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy('template is present');
+            await quickCasePo.clickStartOverButton
+
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeFalsy('template is present');
+        });
+        afterAll(async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+        });
     });
 });

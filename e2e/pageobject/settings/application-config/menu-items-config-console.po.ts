@@ -1,6 +1,5 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import utilGrid from '../../../utils/util.grid';
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityGrid from '../../../utils/utility.grid';
 
 class MenuItemsConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -11,39 +10,42 @@ class MenuItemsConsolePage {
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
-        await utilGrid.searchOnGridConsole(value);
+        await utilityGrid.searchRecord(value);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async isMenuItemRecordPresentOnGridConsole(value: string): Promise<void> {
+        await utilityGrid.isGridRecordPresent(value);
+    }
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.addGridColumn(columnHeader, this.selectors.gridGuid);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearGridSearchBox(): Promise<void> {
-        await utilGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.removeGridColumn(columnHeader,this.selectors.gridGuid);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.gridGuid);
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.gridGuid);
     }
 
     async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.areColumnHeaderMatches(columnHeader, this.selectors.gridGuid);
     }
 
     async searchAndEditMenuOption(menuOption: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(menuOption);
+        await utilityGrid.searchAndOpenHyperlink(menuOption);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 

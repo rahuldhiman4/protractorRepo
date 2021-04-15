@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions, $$, browser } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 
 class PreviewTaskTemplateBlade {
@@ -12,20 +12,26 @@ class PreviewTaskTemplateBlade {
         taskPriority: 'f4a0b2ba-433c-471f-89b1-e94d0c0f3b43',
         taskPriorityValue: '[rx-view-component-id="f4a0b2ba-433c-471f-89b1-e94d0c0f3b43"] label ~ *',
         taskSummary: 'a790b9d4-46d5-408c-8f86-4e04a683bc3d',
-        taskCategoryTier1: '516cbfcd-dda1-4d15-8508-4e90f7699846',
-        taskCategoryTier2: 'ffb8c92f-ff09-41b2-8bd3-fff86c983416',
-        taskCategoryTier3: '56354504-a395-4c39-b2ee-c1d937c57349',
-        taskCategoryTier4: '9df7b305-6be0-4f50-8c2f-88a61ed85cb4',
+        taskCategoryTier1: 'b3c01a87-de23-409d-bbd8-2893ae57594f',
+        taskCategoryTier2: '3555d678-bd9f-486a-9f87-d1847478eac1',
+        taskCategoryTier3: 'b4e25583-320c-4e46-84db-9adf9cf8701a',
+        taskCategoryTier4: 'fee46083-3316-45b8-8600-190e851bee3b',
         taskType: 'd7598602-1dce-4cf8-af9b-b0083df0e721',
         taskTypeValue: '[rx-view-component-id="d7598602-1dce-4cf8-af9b-b0083df0e721"] label ~ *',
-        label: 'ef679736-6aaf-4b21-867a-307e154464d8',
+        labelGuid:'ef679736-6aaf-4b21-867a-307e154464d8',
+        label: "[rx-view-component-id='ef679736-6aaf-4b21-867a-307e154464d8'] label",
         taskDescription: 'f663f6d7-ef45-4170-9dda-6ca2459fad08',
         processName: 'f79145f8-5b9f-4ef5-b573-7920752f860a',
         backButton: '[rx-view-component-id="cbb794a3-d696-4fff-81df-27e73e1438d8"] button',
-        getTaskCategoryTier4: '[rx-view-component-id="9df7b305-6be0-4f50-8c2f-88a61ed85cb4"] p',
+        getTaskCategoryTier4: '[rx-view-component-id="fee46083-3316-45b8-8600-190e851bee3b"] .read-only-content',
         dynamicFieldName: '[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] span',
-        assigneeText: '[rx-view-component-id="67c57532-6ca8-4e44-b6b1-244e872c2b70"] .person-link',
-        showMoreDescriptionLink:'.bwf-description-read-state button'
+        assigneeText: '[rx-view-component-id="1f5a6ff8-d488-4f3d-9de3-5da1512b9438"] .person-link',
+        showMoreDescriptionLink:'.bwf-description-read-state button',
+        assigneeGuid: '1f5a6ff8-d488-4f3d-9de3-5da1512b9438',
+        supportGroupGuid: '1f5a6ff8-d488-4f3d-9de3-5da1512b9438',
+        supportCompanyGuid: '1f5a6ff8-d488-4f3d-9de3-5da1512b9438',
+        previewBladeGuid: '5ac76d38-6032-4d80-a6bb-1630e59d8cda',
+        assigneeFieldValue: '.person-main a'
     }
 
     async clickShowMoreDescriptionLink():Promise<void>{
@@ -63,6 +69,18 @@ class PreviewTaskTemplateBlade {
         return await $(this.selectors.taskPriorityValue).getText();
     }
 
+    async getSupportGroup(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.supportGroupGuid}"] .read-only-content`).getText();
+    }
+
+    async getSupportCompany(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.supportCompanyGuid}"] .read-only-content`).getText();
+    }
+
+    async getDescription(): Promise<string> {
+        return await $$(`[rx-view-component-id="${this.selectors.taskDescription}"] .collapse-block div`).get(2).getText();
+    }
+
     async isTaskSummaryTitleDisplayed(taskSummary: string): Promise<boolean> {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskSummary, taskSummary);
     }
@@ -96,11 +114,31 @@ class PreviewTaskTemplateBlade {
     }
 
     async isLabelTitleDisplayed(label: string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.label, label);
+        return await element(by.cssContainingText(this.selectors.label, label)).isPresent().then(async (result) => {
+            if (result){
+                return await element(by.cssContainingText(this.selectors.label, label)).isDisplayed();
+            }else return false;
+        });
     }
 
-    async isTaskDescriptionTitleDisplayed(taskDescription: string): Promise<boolean> {
-        return await $('[rx-view-component-id="f663f6d7-ef45-4170-9dda-6ca2459fad08"] bwf-description label').getText() == taskDescription;
+    async isTaskDescriptionTitleDisplayed(): Promise<boolean> {
+        let taskDescriptionLocator = await element(by.cssContainingText('[rx-view-component-id="f663f6d7-ef45-4170-9dda-6ca2459fad08"] label', 'Task Description'));
+        return await taskDescriptionLocator.isPresent().then(async (result) => {
+            if(result) return await taskDescriptionLocator.isDisplayed();
+            else return false;
+        });
+    }
+
+    async isAssigneeTitleDisplayed(assignee: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.assigneeGuid, assignee);
+    }
+
+    async isSupportGroupTitleDisplayed(supportGroup: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportGroupGuid, supportGroup);
+    }
+
+    async isSupportCompanyTitleDisplayed(supportCompany: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportCompanyGuid, supportCompany);
     }
 
     async isProcessNameTitleDisplayed(processName: string): Promise<boolean> {
@@ -124,6 +162,14 @@ class PreviewTaskTemplateBlade {
 
     async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeText).getText();
+    }
+
+    async isFieldLabelDisplayed(fieldName: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.previewBladeGuid, fieldName);
+    }
+
+    async getAssigneeFieldValue(): Promise<string> {
+        return (await $$(this.selectors.assigneeFieldValue).first().getText()).trim();
     }
 }
 

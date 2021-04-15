@@ -12,8 +12,12 @@ export const KNOWLEDGE_SET = {
         },
         "1000000001": {
             "id": 1000000001,
-            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
-        }
+            "value": "Petramco"
+        },
+        "450000420": {
+          "id": 450000420,
+          "value": "HumanResource",
+        },
     }
 };
 
@@ -40,7 +44,7 @@ export const KNOWLEDGESET_PERMISSION = {
           "Record Instance ID": "AGGADGG8ECDC0AQGP93GQFRLM69GW0",
           "Operation": "DELETE",
           "Type": "GROUP",
-          "Value": "63f30d7fdd662b1bc8312d2314334292b6a023b4bbedcd47db3b2f9c8a8a0e7f6aa7ebf3036e11e141c325730a9c3bf407c79264f4e6788b04c6bef1bd241a81",
+          "Value": null,
           "Security Type": "READ"
         }
 }

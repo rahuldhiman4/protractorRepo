@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from "../../../utils/util.common";
-import utilGrid from "../../../utils/util.grid";
+import utilityGrid from "../../../utils/utility.grid";
 
 class CaseTemplateConsole {
 
@@ -11,52 +10,59 @@ class CaseTemplateConsole {
         copyCaseTemplate: '[rx-view-component-id="92e13921-bf7b-494e-9d65-609a07c36505"] button',
         gridGUID: "1c10246e-18ed-4201-91b7-210e7a975f9c",
         searchButton: "1c10246e-18ed-4201-91b7-210e7a975f9c",
-        gridLink: '.ui-grid__link',
-        recordvalue: '.ui-grid-canvas .ui-grid-row'
+        gridLink: 'a.no-href-link',
+        recordvalue: '.at-radiobutton-cell input'
     }
 
     async clickOnCreateCaseTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTemplate)));
         await $(this.selectors.createCaseTemplate).click();
+        await browser.sleep(4000); //Defect --> DRDMV-25992  Need this sleep becoz default owner group/organization/company loading let and case template not gets save
+    }
+
+    async isCreateCaseTemplateEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTemplate)));
+        return await $(this.selectors.createCaseTemplate).isEnabled();
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.copyCaseTemplate)));
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyCaseTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.copyCaseTemplate)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyCaseTemplate)));
         await $(this.selectors.copyCaseTemplate).click();
     }
 
     async searchAndClickOnCaseTemplate(caseTemplateValue: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(caseTemplateValue, this.selectors.gridGUID);
+        await utilityGrid.searchAndOpenHyperlink(caseTemplateValue, this.selectors.gridGUID);
     }
 
     async searchAndselectCaseTemplate(caseTemplateValue: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.gridGUID);
+        await browser.sleep(5000); //Unable to search record in given time frame
+        await utilityGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.gridGUID);
     }
 
     async getCaseTemplateNamePresentOnGrid(templateName: string): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.gridLink), templateName))));
+        //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.gridLink), templateName))));
         return await element(by.cssContainingText((this.selectors.gridLink), templateName)).getText();
     }
 
     async addColumnOnGrid(columnName: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGUID, columnName);
+        await utilityGrid.addGridColumn(columnName, this.selectors.gridGUID);
     }
 
     async removeColumnFromGrid(columnName: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGUID, columnName)
+        await utilityGrid.removeGridColumn(columnName, this.selectors.gridGUID)
     }
 
     async getFirstRecordValue(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGUID, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName, this.selectors.gridGUID);
     }
 
     async clickOnClearSearchIcon(): Promise<void> {
-        await utilGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
     }
 
     async moreRecordsArePresentAfterClear(): Promise<number> {
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.recordvalue).count();
     }
 

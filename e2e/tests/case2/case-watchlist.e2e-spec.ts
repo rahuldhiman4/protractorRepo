@@ -1,10 +1,11 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
 import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
 import editCase from '../../pageobject/case/edit-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignment from "../../pageobject/common/change-assignment-blade.po";
+import changeAssignment from "../../pageobject/common/change-assignment.po";
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from '../../pageobject/common/navigation.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -41,12 +42,12 @@ describe('Case Watchlist', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(qfengStr);
-        await utilityGrid.clearFilter();
-        await utilityGrid.sortGridColumn('Case ID', 'desc');
-        await apiHelper.apiLogin("tadmin");
-        await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
-        await apiHelper.setDefaultNotificationForUser(qfengStr, "Alert");
-        await apiHelper.setDefaultNotificationForUser(qtaoStr, "Alert");
+        // await utilityGrid.clearFilter();
+        // await utilityGrid.sortGridColumn('Case ID', 'desc');
+        // await apiHelper.apiLogin("tadmin");
+        // await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
+        // await apiHelper.setDefaultNotificationForUser(qfengStr, "Alert");
+        // await apiHelper.setDefaultNotificationForUser(qtaoStr, "Alert");
     });
 
     afterAll(async () => {
@@ -54,18 +55,16 @@ describe('Case Watchlist', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-15985]: Verify that all the selected Cases are available in Watchlist modal', async () => {
+    it('[4382]: Verify that all the selected Cases are available in Watchlist modal', async () => {
         try {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-15985";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -88,18 +87,16 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16015]: Verify that Case Agent can select, un-select and sort the cases in Watchlist modal', async () => {
+    it('[4369]: Verify that Case Agent can select, un-select and sort the cases in Watchlist modal', async () => {
         try {
             await apiHelper.apiLogin(qtaoStr);
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16015";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseId: string[] = [];
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -124,12 +121,12 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16017]: Verify that Case Agent can search the cases in modal', async () => {
+    it('[4368]: Verify that Case Agent can search the cases in modal', async () => {
         try {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16017";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
@@ -155,16 +152,17 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16018]: Verify the default columns and total columns available in Watchlist modal', async () => {
+    it('[4367]: Verify the default columns and total columns available in Watchlist modal', async () => {
         try {
             await caseConsole.clickOnWatchlistIcon();
+            let expectedColumns: string[] = ["Assigned Company", "Assigned Group", "Assignee", "Case ID", "ID", "Priority", "Status", "Summary"];
             let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee"];
             expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default columns are not matching");
             let remainingColumns: string[] = ["Assigned Company", "ID"];
             await caseWatchlist.addWatchlistGridColumn(remainingColumns);
-            let expectedColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Assigned Company", "ID"];
             expect(await caseWatchlist.areWatchlistColumnMatches(expectedColumns)).toBeTruthy("All columns are not matching");
             await caseWatchlist.removeWatchlistGridColumn(remainingColumns);
+            await caseWatchlist.clickOnBackBtn();
         } catch (ex) {
             throw ex;
         }
@@ -173,12 +171,12 @@ describe('Case Watchlist', () => {
         }
     });
 
-    describe('[DRDMV-16019]: Verify that Case Agent can filter the cases in Watchlist modal', async () => {
+    describe('[4366]: Verify that Case Agent can filter the cases in Watchlist modal', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16019";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[0] = response.displayId;
             for (let i: number = 1; i < 4; i++) {
@@ -191,7 +189,7 @@ describe('Case Watchlist', () => {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
             }
         });
-        it('[DRDMV-16019]: Verify that Case Agent can filter the cases in Watchlist modal', async () => {
+        it('[4366]: Verify that Case Agent can filter the cases in Watchlist modal', async () => {
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
@@ -206,18 +204,17 @@ describe('Case Watchlist', () => {
         });
     });
 
-    it('[DRDMV-16043]: Verify that Case Agent can remove the cases from Watchlist', async () => {
+    it('[4348]: Verify that Case Agent can remove the cases from Watchlist', async () => {
         try {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist_Resolved'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16043";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
             for (let i: number = 0; i < 2; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 2; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -241,9 +238,9 @@ describe('Case Watchlist', () => {
         }
     });
 
-    describe('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+    describe('[4365]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16020";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseGuid;
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
@@ -268,11 +265,10 @@ describe('Case Watchlist', () => {
             }
             await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQannis);
         });
-        it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+        it('[4365]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
             //login with qannis and Add the case to Watchlist
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -282,21 +278,19 @@ describe('Case Watchlist', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+        it('[4365]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
             //login with qtao and update the case assignment and case status
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+        it('[4365]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
             //login with qannis, verify the notifications and remove the case from watchlist
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
@@ -313,21 +307,20 @@ describe('Case Watchlist', () => {
             await caseWatchlist.clickOnRemoveBtn();
             await caseWatchlist.clickOnBackBtn();
         });
-        it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+        it('[4365]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
             //Login with qtao and update the case status and assignment
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(pendingStr);
-            await updateStatusBladePo.setStatusReason(customerResponseStr);
+            await updateStatusBladePo.changeStatus(pendingStr);
+            await updateStatusBladePo.selectStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, "Peter Kahn");
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, "Peter Kahn");
             await editCase.clickSaveCase();
         });
-        it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+        it('[4365]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
             //login with qannis, verify the notifications are not present
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
@@ -339,20 +332,21 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(qfengStr);
         });
     });
 
-    it('[DRDMV-16033]: Verify that Case Agent is notified for OOB status changes in Case life cycle once Case Agent follow the case status change', async () => {
+    it('[4358]: Verify that Case Agent is notified for OOB status changes in Case life cycle once Case Agent follow the case status change', async () => {
         try {
             await apiHelper.apiLogin(qtaoStr);
             //Create case
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16033"
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let response = await apiHelper.createCase(caseDataForTest);
             let caseId = response.displayId;
-
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -363,18 +357,18 @@ describe('Case Watchlist', () => {
             await utilityCommon.closePopUpMessage();
 
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            await updateStatusBladePo.changeCaseStatus(pendingStr);
-            await updateStatusBladePo.setStatusReason(customerResponseStr);
+            await updateStatusBladePo.changeStatus(pendingStr);
+            await updateStatusBladePo.selectStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            await updateStatusBladePo.changeCaseStatus(resolvedStr);
-            await updateStatusBladePo.setStatusReason("No Further Action Required");
+            await updateStatusBladePo.changeStatus(resolvedStr);
+            await updateStatusBladePo.selectStatusReason("No Further Action Required");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            await updateStatusBladePo.changeCaseStatus("Closed");
+            await updateStatusBladePo.changeStatus("Closed");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId, inProgressStr, qiaoFengStr);
@@ -399,18 +393,17 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16029]: Verify that all the Case Agents having write access can follow/unfollow the cases', async () => {
+    it('[4360]: Verify that all the Case Agents having write access can follow/unfollow the cases', async () => {
         try {
             await apiHelper.apiLogin(qfengStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16029";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clickRefreshIcon();
-            await utilityGrid.searchRecord(caseDataForTest.Summary);
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId[1]);
             await viewCasePage.clickAddToWatchlistLink();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -418,11 +411,10 @@ describe('Case Watchlist', () => {
             await caseWatchlist.saveEvents();
             await utilityCommon.closePopUpMessage();
 
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -434,13 +426,12 @@ describe('Case Watchlist', () => {
             await caseWatchlist.clickOnBackBtn();
 
             await utilityGrid.searchAndOpenHyperlink(caseId[1]);
-            await updateStatusBladePo.changeCaseStatus(pendingStr);
-            await updateStatusBladePo.setStatusReason(customerResponseStr);
+            await updateStatusBladePo.changeStatus(pendingStr);
+            await updateStatusBladePo.selectStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
 
             let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], elizabethPetersStr, qiaoFengStr);
@@ -465,14 +456,14 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16044,DRDMV-16060]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
+    it('[4347,4337]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16060";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
-            await utilityGrid.clickRefreshIcon();
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             expect(await caseConsole.getAddToWatchlistText()).toBe("Add to Watchlist", "Label is not matching");
@@ -507,14 +498,14 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16554]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Edit', async () => {
+    it('[4262]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Edit', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16554";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
-            await utilityGrid.clickRefreshIcon();
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickAddToWatchlistLink();
             await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
@@ -523,22 +514,14 @@ describe('Case Watchlist', () => {
 
             //Assign the case to Au Suppport 1 Group
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.selectBusinessUnit('Australia Support');
-            await changeAssignment.selectSupportGroup(auSupport1Str);
-            await changeAssignment.selectAssignToSupportGroup();
-            await changeAssignment.clickOnAssignButton();
+            await changeAssignment.setDropDownValue('AssignedGroup', auSupport1Str);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
             //Stop watching and change the Group Assignee to Compensation and Benefits
             await viewCasePage.clickStopWatchingLink();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
-            await changeAssignment.selectAssignToSupportGroup();
-            await changeAssignment.clickOnAssignButton();
+            await changeAssignment.setDropDownValue('AssignedGroup', compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -561,62 +544,60 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16555]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
-        await apiHelper.apiLogin(qfengStr);
-        let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16555";
-        let response = await apiHelper.createCase(caseDataForTest);
-        let caseId = response.displayId;
-        await utilityGrid.clickRefreshIcon();
-        await utilityGrid.searchRecord(caseDataForTest.Summary);
-        await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
-        await caseConsole.clickOnAddToWatchlist();
-        await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
-        await caseWatchlist.saveEvents();
-        await utilityGrid.searchAndOpenHyperlink(caseId);
+    describe('[4261]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
+        let caseId;
+        it('[4261]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
+            await apiHelper.apiLogin(qfengStr);
+            let caseDataForTest = caseData['caseWatchlist'];
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let response = await apiHelper.createCase(caseDataForTest);
+            caseId = response.displayId;
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchRecord(caseDataForTest.Summary);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
+            await caseConsole.clickOnAddToWatchlist();
+            await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
+            await caseWatchlist.saveEvents();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
 
-        //Assign the case to Au Suppport 1 Group
-        await viewCasePage.clickEditCaseButton();
-        await editCase.clickChangeAssignmentButton();
-        await changeAssignment.selectBusinessUnit('Australia Support');
-        await changeAssignment.selectSupportGroup(auSupport1Str);
-        await changeAssignment.selectAssignToSupportGroup();
-        await changeAssignment.clickOnAssignButton();
-        await editCase.clickSaveCase();
+            //Assign the case to Au Suppport 1 Group
+            await viewCasePage.clickEditCaseButton();
+            await changeAssignment.setDropDownValue('AssignedGroup', auSupport1Str);
+            await editCase.clickSaveCase();
 
-        //Stop watching and change the Group Assignee to Compensation and Benefits
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.clickOnWatchlistIcon();
-        await caseWatchlist.selectCase(caseId);
-        await caseWatchlist.clickOnRemoveBtn();
-        await caseWatchlist.clickOnBackBtn();
-        await utilityGrid.searchAndOpenHyperlink(caseId);
+            //Stop watching and change the Group Assignee to Compensation and Benefits
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.clickOnWatchlistIcon();
+            await caseWatchlist.selectCase(caseId);
+            await caseWatchlist.clickOnRemoveBtn();
+            await caseWatchlist.clickOnBackBtn();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+        });
 
-        //Assign the case to Compensation and Benefits Group
-        await viewCasePage.clickEditCaseButton();
-        await editCase.clickChangeAssignmentButton();
-        await changeAssignment.selectBusinessUnit('HR Support');
-        await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
-        await changeAssignment.selectAssignToSupportGroup();
-        await changeAssignment.clickOnAssignButton();
-        await editCase.clickSaveCase();
-        await utilityCommon.closePopUpMessage();
+        it('[4261]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
+            //Assign the case to Compensation and Benefits Group
+            await viewCasePage.clickEditCaseButton();
+            await changeAssignment.setDropDownValue('AssignedGroup', compensationAndBenefitsStr);
+            await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
 
-        await utilityCommon.refresh();//required to get the notification
-        await notificationAlerts.clickOnNotificationIcon();
-        let groupAssignmentNotification1 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qiaoFengStr);
-        let groupAssignmentNotification2 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qiaoFengStr);
+            await utilityCommon.refresh();//required to get the notification
+            await notificationAlerts.clickOnNotificationIcon();
+            let groupAssignmentNotification1 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qiaoFengStr);
+            let groupAssignmentNotification2 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qiaoFengStr);
 
-        expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
-        expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
-        await notificationAlerts.clickOnNotificationIcon();
+            expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
+            expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
+            await notificationAlerts.clickOnNotificationIcon();
+        });
     });
 
-    it('[DRDMV-16556]: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
+    // woking on cicd except dropdown issue
+    it('[4260]: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
         await apiHelper.apiLogin(qtaoStr);
 
         let caseDataForTest = caseData['caseWatchlist_2'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16556";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         let caseGuid = response.id;
@@ -633,7 +614,6 @@ describe('Case Watchlist', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -649,19 +629,14 @@ describe('Case Watchlist', () => {
             await caseWatchlist.saveEvents();
             await caseWatchlist.clickOnBackBtn();
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr); // Dropdown issue
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
-            await changeAssignment.selectAssignToSupportGroup();
-            await changeAssignment.clickOnAssignButton();
+            await changeAssignment.setDropDownValue('AssignedGroup', compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -688,10 +663,11 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16557]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
+    // woking on cicd except dropdown issue
+    it('[4259]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist_1'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16557";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         let caseGuid = response.id;
@@ -731,19 +707,14 @@ describe('Case Watchlist', () => {
             await caseWatchlist.clickOnBackBtn();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
-            await changeAssignment.selectAssignToSupportGroup();
-            await changeAssignment.clickOnAssignButton();
+            await changeAssignment.setDropDownValue('AssignedGroup', compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
-            await updateStatusBladePo.changeCaseStatus("Assigned");
+            await updateStatusBladePo.changeStatus("Assigned");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
 
             //Verify the notifications
@@ -769,15 +740,15 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('[DRDMV-16062]: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
+    it('[4335]: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16062";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
             //Add the case to watchlist
-            await utilityGrid.clickRefreshIcon();
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -788,21 +759,21 @@ describe('Case Watchlist', () => {
 
             //Update the case status and case assignment
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
+
 
             //Stop Watching the case from Case and update Case Status & Case Assignment
             await viewCasePage.clickStopWatchingLink();
-            await updateStatusBladePo.changeCaseStatus(pendingStr);
-            await updateStatusBladePo.setStatusReason(customerResponseStr);
+            await updateStatusBladePo.changeStatus(pendingStr);
+            await updateStatusBladePo.selectStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -829,24 +800,24 @@ describe('Case Watchlist', () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.gotoCaseConsole();
         }
-
-
     });
 
-    describe('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
-        let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16061";
+    describe('[4336]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
+        let caseDataForTest = cloneDeep(caseData['caseWatchlist']);
         let caseId: string[] = [];
         beforeAll(async () => {
+            caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await apiHelper.apiLogin(qtaoStr);
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
         });
-        it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
-            await utilityGrid.clickRefreshIcon();
+        it('[4336]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
+            await browser.sleep(5000); // All the records to apper with same summary
+            await utilityGrid.clickRefreshIcon();
             //Adding the cases to watchlist
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -858,8 +829,7 @@ describe('Case Watchlist', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 3 selected case(s) to the watchlist.");
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
-            await utilityGrid.clickRefreshIcon();
+        it('[4336]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             //Adding the cases to watchlist again
             for (let i: number = 0; i < 3; i++) {
@@ -878,14 +848,14 @@ describe('Case Watchlist', () => {
         });
     });
 
-    it('[DRDMV-16059]: Verify that Save and Close buttons on Event Add are working correctly', async () => {
+    it('[4338]: Verify that Save and Close buttons on Event Add are working correctly', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16059";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
-            await utilityGrid.clickRefreshIcon();
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -911,9 +881,9 @@ describe('Case Watchlist', () => {
         }
     });
 
-    describe('[DRDMV-16058]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
+    describe('[4339]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16058";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseGuid;
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
@@ -937,10 +907,10 @@ describe('Case Watchlist', () => {
             }
             await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQannis);
         });
-        it('[DRDMV-16058]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
+        it('[4339]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
-            await utilityGrid.clickRefreshIcon();
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -950,15 +920,14 @@ describe('Case Watchlist', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16058]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
+        it('[4339]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
             await navigationPage.signOut();
             await loginPage.login(qfengStr);
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await apiHelper.apiLogin(qfengStr);
@@ -971,13 +940,12 @@ describe('Case Watchlist', () => {
             }
             await apiHelper.updateCaseAccess(caseGuid, caseAccessRemoveDataQannis);
         });
-        it('[DRDMV-16058]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
-            await updateStatusBladePo.changeCaseStatus(pendingStr);
-            await updateStatusBladePo.setStatusReason(customerResponseStr);
+        it('[4339]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
+            await updateStatusBladePo.changeStatus(pendingStr);
+            await updateStatusBladePo.selectStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -1004,12 +972,13 @@ describe('Case Watchlist', () => {
         });
     });
 
-    describe('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
-        let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16055";
+    // woking on cicd except dropdown issue
+    describe('[4340]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
+        let caseDataForTest = cloneDeep(caseData['caseWatchlist']);
         let caseId: string[] = [];
         let caseGuid: string[] = [];
         beforeAll(async () => {
+            caseDataForTest.Summary = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await apiHelper.apiLogin(qtaoStr);
             for (let i: number = 0; i < 2; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
@@ -1026,7 +995,7 @@ describe('Case Watchlist', () => {
             await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
             await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
         });
-        it('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
+        it('[4340]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             //Adding the cases to watchlist
@@ -1046,15 +1015,14 @@ describe('Case Watchlist', () => {
             await caseWatchlist.saveEvents();
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
         });
-        it('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
+        it('[4340]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
             //Change the case status and case assignment for first case
             await utilityGrid.searchAndOpenHyperlink(caseId[0]);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             //Update the events of second case from Watchlist blade
@@ -1067,16 +1035,15 @@ describe('Case Watchlist', () => {
             await caseWatchlist.saveEvents();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
+        it('[4340]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
             //Change the case status and case assignment for second case
             await caseWatchlist.clickOnBackBtn();
             await utilityGrid.searchAndOpenHyperlink(caseId[1]);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -1100,11 +1067,12 @@ describe('Case Watchlist', () => {
         });
     });
 
-    describe('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
+    // woking on cicd except dropdown issue
+    describe('[4341]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
         let caseId: string[] = [];
         let caseGuid: string[] = [];
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16052";
+        caseDataForTest.Summary = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + '4341';
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
             for (let i: number = 0; i < 2; i++) {
@@ -1122,7 +1090,7 @@ describe('Case Watchlist', () => {
             await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
             await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
         });
-        it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
+        it('[4341]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             //Adding the cases to watchlist
@@ -1144,14 +1112,13 @@ describe('Case Watchlist', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
+        it('[4341]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
             //Change the case status and case assignment for first case
             await utilityGrid.searchAndOpenHyperlink(caseId[0]);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -1165,15 +1132,14 @@ describe('Case Watchlist', () => {
             await caseWatchlist.saveEvents();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
+        it('[4341]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
             //Change the case status and case assignment for second case
             await caseWatchlist.clickOnBackBtn();
             await utilityGrid.searchAndOpenHyperlink(caseId[1]);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -1196,39 +1162,36 @@ describe('Case Watchlist', () => {
         });
     });
 
-    describe('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
+    describe('[4343]: Verify that write access Agent can add the case to watchlist from Case', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16050";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
             let response = await apiHelper.createCase(caseDataForTest);
             caseId = response.displayId;
         });
-        it('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
+        it('[4343]: Verify that write access Agent can add the case to watchlist from Case', async () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickAddToWatchlistLink();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.saveEvents();
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
         });
-        it('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
+        it('[4343]: Verify that write access Agent can add the case to watchlist from Case', async () => {
             await viewCasePage.clickStopWatchingLink();
-            await updateStatusBladePo.changeCaseStatus(pendingStr);
-            await updateStatusBladePo.setStatusReason(customerResponseStr);
+            await updateStatusBladePo.changeStatus(pendingStr);
+            await updateStatusBladePo.selectStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -1253,12 +1216,12 @@ describe('Case Watchlist', () => {
         });
     });
 
-    describe('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
+    describe('[4350]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
         let caseId;
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16041";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let response = await apiHelper.createCase(caseDataForTest);
             caseId = response.displayId;
             let caseGuid = response.id;
@@ -1279,7 +1242,7 @@ describe('Case Watchlist', () => {
             }
             await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQannis);
         });
-        it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
+        it('[4350]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -1291,15 +1254,14 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(inProgressStr);
+            await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
+        it('[4350]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
             await navigationPage.gotoCaseConsole();
@@ -1310,16 +1272,15 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus(pendingStr);
-            await updateStatusBladePo.setStatusReason(customerResponseStr);
+            await updateStatusBladePo.changeStatus(pendingStr);
+            await updateStatusBladePo.selectStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
-            await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, "Peter Kahn");
+            await changeAssignment.setAssignee(compensationAndBenefitsStr, "Peter Kahn");
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
+        it('[4350]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
             //Verification of notifications

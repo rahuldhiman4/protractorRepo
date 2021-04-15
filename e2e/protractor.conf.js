@@ -37,9 +37,12 @@ exports.config = {
     case2: ["./tests/case2/*.e2e-spec.ts"],
     cognitive: ["./tests/cognitive/*.e2e-spec.ts"],
     email: ["./tests/email/*.e2e-spec.ts"],
+    filter: ["./tests/filter/*.e2e-spec.ts"],
     flowset: ["./tests/flowset/*.e2e-spec.ts"],
     knowledge: ["./tests/knowledge/*.e2e-spec.ts"],
+    lob: ["./tests/lob/*.e2e-spec.ts"],
     notification: ["./tests/notification/*.e2e-spec.ts"],
+    search: ["./tests/search/*.e2e-spec.ts"],
     slm: ["./tests/slm/*.e2e-spec.ts"],
     social: ["./tests/social/*.e2e-spec.ts"],
     task: ["./tests/task/*.e2e-spec.ts"],
@@ -51,7 +54,7 @@ exports.config = {
   framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 240 * 1000,
+    defaultTimeoutInterval: 400 * 1000,
     print: function () { },
   },
 
@@ -64,9 +67,9 @@ exports.config = {
     await browser.manage().timeouts().implicitlyWait(5000);
 
     var width = 1300;
-    var height = 700;
+    var height = 750;
     browser.driver.manage().window().setSize(width, height);
-    //browser.driver.manage().window().maximize();
+    // browser.driver.manage().window().maximize();
 
     // Disable NG&css animation
     // var disableAnimation = function () {

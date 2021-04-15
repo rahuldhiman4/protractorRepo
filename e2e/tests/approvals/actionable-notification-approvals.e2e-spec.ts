@@ -5,13 +5,11 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';
 import notificationTemplateEditPage from '../../pageobject/settings/notification-config/edit-notification-template.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
-const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
 let requestSecondaryStr: string = 'Request Secondary';
 
 describe("Actionable Notification Approval", () => {
@@ -24,20 +22,18 @@ describe("Actionable Notification Approval", () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-        await utilGrid.addFilter('Company', '- Global -', 'text');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
-        await apiHelper.setDefaultNotificationForUser('qdu', "Alert");
-        await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+        // await utilityGrid.clearFilter();
+        // await utilityGrid.addFilter('Company', '- Global -', 'text');
+        // await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        // await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('qdu', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
 
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData = {
             "templateName": 'caseTemplateName' + randomStr,
             "templateSummary": 'caseTemplateSummary' + randomStr,
-            "categoryTier1": 'Failure',
-            "categoryTier2": 'Computer',
-            "categoryTier3": 'Memory',
             "casePriority": "Low",
             "templateStatus": "Active",
             "company": "Petramco",
@@ -62,26 +58,26 @@ describe("Actionable Notification Approval", () => {
             "company": "Petramco",
             "mappingName": "Bulk Operation Mapping"
         }
-        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-        await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateResponse.id, approvalMappingId.id);
+        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+        await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateResponse.id, approvalMappingId.id);
 
         //Create Approval Flow. Category 1 = Applications, Category 2 = Social and Category 3 = Chatter
         let approvalFlowData = {
             "flowName": `Bulk Operation ${randomStr}`,
             "approver": "qkatawazi",
-            "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.3191c35b400e44f4d4713ae358a43839d9bc9871fcabf0457ea0e73b477a86ab9f90c3f495aa7868bf1bb98b3077c6af56e114c89234f179071b03d05665ec32.304405421}"
+            "qualification": "'Priority' = \"Low\"",
         }
-        await apiHelper.createApprovalFlow(approvalFlowData,caseModule);
+        await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 
         caseData = {
-            "Requester": "qkatawazi",
+            "Requester": "apavlik",
             "Summary": "All Categories selected",
             "Origin": "Agent",
             "Case Template ID": caseTemplateDisplayId
         }
 
-        await apiHelper.apiLogin('sasadmin');
-        await apiHelper.enableActionableNotificationSetting();
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.enableActionableNotificationSetting();
     });
 
     afterAll(async () => {
@@ -92,23 +88,24 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16856]: Check out of the box notification-"New Signature Template" is actionable for type Alert', async () => {
+    it('[4164]: Check out of the box notification-"New Signature Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
 
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.searchAndOpenHyperlink('New Signature Template');
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('New Signature Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been sent for approval.');
@@ -120,7 +117,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16863]: Check out of the box notification-"Approve Template " is actionable for type Alert', async () => {
+    it('[4159]: Check out of the box notification-"Approve Template " is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -130,17 +127,18 @@ describe("Actionable Notification Approval", () => {
 
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.searchAndOpenHyperlink('Approve Template');
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('Approve Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+            await utilityCommon.closeAllBlades();
 
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been approved');
@@ -152,7 +150,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16869]: Check out of the box notification-"Cancel Template" is actionable for type Alert', async () => {
+    it('[4156]: Check out of the box notification-"Cancel Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -161,17 +159,17 @@ describe("Actionable Notification Approval", () => {
 
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.searchAndOpenHyperlink('Cancel Template');
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('Cancel Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Approval for Case ${response.displayId} has been canceled.`)
@@ -183,7 +181,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16859]: Check out of the box notification-"Reject Template " is actionable for type Alert', async () => {
+    it('[4161]: Check out of the box notification-"Reject Template " is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -192,17 +190,17 @@ describe("Actionable Notification Approval", () => {
 
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.searchAndOpenHyperlink('Reject Template');
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('Reject Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been rejected.');
@@ -214,7 +212,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16864]: Check out of the box notification-"Reassign Template" is actionable for type Alert', async () => {
+    it('[4158]: Check out of the box notification-"Reassign Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -223,15 +221,16 @@ describe("Actionable Notification Approval", () => {
         await apiHelper.approverAction(response.id, 'Reassign', 'qfeng');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-        await utilGrid.searchAndOpenHyperlink('Reassign Template');
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+        await utilityGrid.searchAndOpenHyperlink('Reassign Template');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -249,7 +248,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16873]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
+    it('[4152]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -259,17 +258,18 @@ describe("Actionable Notification Approval", () => {
 
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.searchAndOpenHyperlink('Hold Template');
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('Hold Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+            await utilityCommon.closeAllBlades();
 
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Approval for Case ${response.displayId} has been put on hold.`);
@@ -281,7 +281,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16875]: Check out of the box notification-"More Info Template" is actionable for type Alert', async () => {
+    it('[4150]: Check out of the box notification-"More Info Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -290,16 +290,17 @@ describe("Actionable Notification Approval", () => {
 
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.searchAndOpenHyperlink('More Info Template');
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('More Info Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`An approver has requested for additional information about Case ${response.displayId}.`);
@@ -311,7 +312,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16872]: Check out of the box notification-"More Info Return Template" is actionable for type Alert', async () => {
+    it('[4153]: Check out of the box notification-"More Info Return Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -322,16 +323,17 @@ describe("Actionable Notification Approval", () => {
 
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.searchAndOpenHyperlink('More Info Return Template');
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('More Info Return Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Additional information about Case ${response.displayId} has been provided.`);

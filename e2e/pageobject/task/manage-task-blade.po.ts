@@ -1,4 +1,5 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 class ManageTaskBlade {
@@ -13,12 +14,15 @@ class ManageTaskBlade {
         recommendedTemplateCheckbox: '[rx-view-component-id="da1ffbb0-567a-4199-b94f-413bee7f149b"] input[type="radio"]',
         closeButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
         columnHeaders: '.c-header-container .c-header-name',
-        taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
         taskSummaryLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary__name',
-        taskDisplayId: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card .task-meta-data__display-id'
+        taskDisplayId: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card .task-meta-data__display-id',
+        taskCardLocator: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card',
+        rerunBtn: 'button.btn-rerun',
+        gridGuid: 'da1ffbb0-567a-4199-b94f-413bee7f149b'
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(await $(this.selectors.addTaskFromTemplateButton)), 4000);
         await $(this.selectors.addTaskFromTemplateButton).isPresent().then(async (link) => {
             if (link) await $(this.selectors.addTaskFromTemplateButton).click();
             else console.log('AddTaskFromTemplate button not found');
@@ -43,8 +47,8 @@ class ManageTaskBlade {
         await browser.sleep(1500); // wait until sorting
     }
 
-    async getTaskDisplayIdFromManageTaskBlade():Promise<string>{
-     return await $(this.selectors.taskDisplayId).getText();  
+    async getTaskDisplayId(): Promise<string> {
+        return await $(this.selectors.taskDisplayId).getText();
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {
@@ -70,6 +74,8 @@ class ManageTaskBlade {
             return count >= 1;
         }), 5000);
         await element(by.cssContainingText(this.selectors.taskSummaryLink, taskSummary)).click();
+        // due to defect we are adding below code
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
@@ -94,11 +100,13 @@ class ManageTaskBlade {
         return summaryLinkTxt === taskSummary;
     }
 
-    async addTaskFromTaskTemplate(templateSummary: string): Promise<void> {
+    async addTaskFromTaskTemplate(templateName: string, expectedTaskCount?: number): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
         await utilityGrid.clearFilter();
-        await utilityGrid.searchAndSelectGridRecord(templateSummary);
+        await utilityGrid.searchAndSelectGridRecord(templateName);
         await this.clickTaskGridSaveButton();
+        if (expectedTaskCount) await this.waitUntilNumberOfTaskLinkAppear(expectedTaskCount);
+        else await this.waitUntilNumberOfTaskLinkAppear(1);
     }
 
     async waitUntilNumberOfTaskLinkAppear(taskCount: number): Promise<boolean> {
@@ -106,6 +114,34 @@ class ManageTaskBlade {
             let count = await $$(this.selectors.taskSummaryLink).count();
             return count >= taskCount;
         }), 5000);
+    }
+
+    async getTaskStatus(taskName: string): Promise<string> {
+        let totalTaskCard = await $$(this.selectors.taskCardLocator).count();
+        let statusValue: string = '';
+        for (let i = 0; i < totalTaskCard; i++) {
+            if (await $$(this.selectors.taskCardLocator).get(i).$('a.task-summary__name').getText() == taskName) {
+                statusValue = await $$(this.selectors.taskCardLocator).get(i).$('.task-assigned-group div[title]').getText();
+                break;
+            }
+        }
+        return statusValue.trim();
+    }
+
+    async clickRerunBtn(): Promise<void> {
+        await $(this.selectors.rerunBtn).click();
+    }
+
+    async searchTaskTemplate(templateName: string): Promise<void> {
+        await utilityGrid.searchRecord(templateName, this.selectors.gridGuid);
+    }
+
+    async getGridRecordValue(columnHeader: string): Promise<string> {
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader, this.selectors.gridGuid);
+    }
+
+    async isRecordPresent(record: string): Promise<boolean> {
+        return await utilityGrid.isGridRecordPresent(record, this.selectors.gridGuid);
     }
 }
 

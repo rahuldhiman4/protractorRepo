@@ -1,6 +1,6 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import { IAutomatedStatusTransitionConfig } from '../../../data/ui/interface/automatedStatusTransition.interface';
+import utilityCommon from '../../../utils/utility.common';
+import { IAutomatedStatusTransitionConfigUI } from '../../../data/interface/template.interface';
 
 class AutomatedStatusTransitionConfigCreatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,20 +10,22 @@ class AutomatedStatusTransitionConfigCreatePage {
         nameGuid: 'aff3dedf-fc28-480a-9014-8a3bfc5091ec',
         companyGuid: '896946e9-8da3-435b-93b1-28a25a90668a',
         fromStatusGuid: 'c6f4a14a-1efe-435e-b04d-5f7e7055e7bc',
-        fromStatus: '[rx-view-component-id="c6f4a14a-1efe-435e-b04d-5f7e7055e7bc"] .ui-select-container',
+        fromStatus: '[rx-view-component-id="c6f4a14a-1efe-435e-b04d-5f7e7055e7bc"] .dropdown-toggle',
         toStatusGuid: 'a596199c-daa0-41c9-91eb-cfab6d140cbd',
         changeStatusAfter: '[rx-view-component-id="ad284e33-4443-43a3-948a-4b3e81f89b08"] input',
         changeStatusAfterGuid: 'ad284e33-4443-43a3-948a-4b3e81f89b08',
         saveButton: '[rx-view-component-id="7ab1dc87-1489-41c8-b910-6ae40b1e5e87"] button',
-        label: '[rx-view-component-id="35c243d5-d4a5-46df-aee5-7e7ce2deb445"] .ui-select-toggle',
-        labelGuid: '0db3f64c-6dbf-4410-b6ae-6a8bf58296e6',
+        label: '[rx-view-component-id="3dee9321-1250-4f24-8087-bdbffbcf3f63"] .dropdown-toggle',
+        labelGuid: '3dee9321-1250-4f24-8087-bdbffbcf3f63',
         cancelButton: '[rx-view-component-id="25d8d454-8a06-423c-aed5-0cfd25e4cbe2"] button',
-        flowsetGuid: '0cfddbcb-0905-4c1b-a1a7-2baa548e1a9b',
+        flowsetGuid: 'e131ba62-cde5-4c44-8249-1e5bb1b321ce',
         fromStatusReasonGuid: '49178f00-fd4d-4bd2-8ce0-f9912af5caf2',
         toStatusReasonGuid: '422772e5-851f-4a96-aad1-7445ff75b519',
-        categoryTier2: '0ffc06aa-d9dd-4158-bb95-090b1a366577',
-        categoryTier3: 'b9b68d67-302e-4e3c-815b-bdfd67698e7f',
-        categoryTier4: '6f11bf75-31c3-4088-8e30-b539e385db0c',
+        categoryTier1: '6500c9a2-5bf8-4613-9c27-f66a71cffae6',
+        categoryTier2: '57b5b1cc-fefe-49f9-aac0-182745294a1a',
+        categoryTier3: 'd5675baf-0b9a-44c4-80aa-316af5a38b22',
+        categoryTier4: 'a7304073-97ae-4fd1-8061-1d56bafcc203',
+        lobValue: '[rx-view-component-id="6b1b5eda-4725-4fda-890a-57ad98995b33"] .pull-left'
     }
 
     async setName(name: string): Promise<void> {
@@ -31,55 +33,55 @@ class AutomatedStatusTransitionConfigCreatePage {
         await $(this.selectors.name).sendKeys(name);
     }
 
-    async setCategoryTier1Value(categoryTier1: string): Promise<void> {
-        await utilCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', categoryTier1).catch(async (error) => {
-            if (error) await utilCommon.selectDropDown('e352fa1a-9440-4a8c-a77d-e2030beec03b', categoryTier1);
+    async setCategoryTier1Value(value: string): Promise<void> {
+        await utilityCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', value).catch(async (error) => {
+            if (error) await utilityCommon.selectDropDown(this.selectors.categoryTier1, value);
         });
     }
 
     async setCategoryTier2Value(categoryTier2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
     }
 
     async setCategoryTier3Value(categoryTier3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
     }
 
     async setCategoryTier4Value(categoryTier4: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
     }
 
     async setLabelValue(label: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, label);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
     }
 
     async isNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.nameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.nameGuid);
     }
 
     async setCompany(companyName: string): Promise<void> {
-        return await utilCommon.selectDropDown(this.selectors.companyGuid, companyName);
+        return await utilityCommon.selectDropDown(this.selectors.companyGuid, companyName);
     }
 
     async isCompanyRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isFromStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fromStatusGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fromStatusGuid);
     }
 
     async isToStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.toStatusGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.toStatusGuid);
     }
 
     async isChangeStatusAferRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.changeStatusAfterGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.changeStatusAfterGuid);
     }
 
     async setFromStatus(status: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
-        await utilCommon.selectDropDown(this.selectors.fromStatusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.fromStatusGuid, status);
     }
 
     async isFromStatusEnabled(): Promise<boolean> {
@@ -89,7 +91,7 @@ class AutomatedStatusTransitionConfigCreatePage {
 
     async setToStatus(status: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
-        await utilCommon.selectDropDown(this.selectors.toStatusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.toStatusGuid, status);
     }
 
     async setChangeStatusAfter(days: string): Promise<void> {
@@ -100,39 +102,40 @@ class AutomatedStatusTransitionConfigCreatePage {
     async saveConfig(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.closePopUpMessage();
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
-    async createAutomatedStatusTransition(data: IAutomatedStatusTransitionConfig): Promise<void> {
+    async createAutomatedStatusTransition(data: IAutomatedStatusTransitionConfigUI): Promise<void> {
         await this.setName(data.name);
         await this.setCompany(data.company);
         await this.setFromStatus(data.fromStatus);
         await this.setToStatus(data.toStatus);
         await this.setChangeStatusAfter(data.changeStatusAfter.toString());
         await this.saveConfig();
-    }
+    } 
 
     async setFromStatusReason(reason: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.fromStatusReasonGuid, reason);
+        await utilityCommon.selectDropDown(this.selectors.fromStatusReasonGuid, reason);
     }
 
     async setToStatusReason(reason: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.toStatusReasonGuid, reason);
+        await utilityCommon.selectDropDown(this.selectors.toStatusReasonGuid, reason);
     }
 
     async setFlowset(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowsetGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.flowsetGuid, value);
     }
 
     async isFlowsetDrpdownValueDisplayed(value: string[]): Promise<void> {
-        await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowsetGuid, value);
+        await utilityCommon.isAllDropDownValuesMatches(this.selectors.flowsetGuid, value);
     }
 
-    async clickOCancelBtn(): Promise<void> {
+    async clickCancelBtn(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new AutomatedStatusTransitionConfigCreatePage();

@@ -1,5 +1,6 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser, ElementFinder } from "protractor";
 import utilityCommon from '../../utils/utility.common';
+import { DropDownType } from '../../utils/constants';
 
 class GlobalSearch {
 
@@ -21,11 +22,15 @@ class GlobalSearch {
         peopleGuid: '04d2b294-42c4-4d11-ac7a-4d17b5621f70',
         caseTemplatesGuid: 'e69a451f-fccb-488b-ab70-33018801f747',
         taskTemplateGuid: 'fe57b0e4-2546-407e-a2ea-c6f01868a835',
+        recentSearchDropDownValue: '.dropdown-item',
+        recentSearchDropDown: '[rx-view-component-id="8d5a0a18-39ae-4305-bf38-c13e53cb957e"] .dropdown-menu'
     }
 
     async searchRecord(record: string): Promise<void> {
-        await $$(this.selectors.searchBox).get(1).clear();
-        await $$(this.selectors.searchBox).get(1).sendKeys(record + protractor.Key.ENTER);
+        await $(this.selectors.searchBox).clear();
+        await $(this.selectors.searchBox).sendKeys(record);
+        await $(this.selectors.searchBox).sendKeys(protractor.Key.ENTER);
+
     }
 
     async isSearchBoxLabelDisplayed(): Promise<boolean> {
@@ -72,12 +77,47 @@ class GlobalSearch {
 
     async isCategoryAllDropDownValuesMatches(data: string[]): Promise<boolean> {
         let element = await $(this.selectors.categoryDropDown);
-        return await utilityCommon.isAllDropDownValuesMatches(element, data);
+        return await utilityCommon.isAllDropDownValuesMatches(element, data, DropDownType.WebElement);
     }
 
     async selectCategoryDropDownValue(categoryDropdownValue: string): Promise<void> {
         let elemeent = await $(this.selectors.categoryDropDown);
-        await utilityCommon.selectDropDown(elemeent, categoryDropdownValue);
+        await utilityCommon.selectDropDown(elemeent, categoryDropdownValue,DropDownType.WebElement);
+    }
+
+    async clickOnRecentSearchDropDownButton(): Promise<void> {
+        await $(this.selectors.searchBox).click();
+        await $(this.selectors.recentSearch).click();
+    }
+
+    async selectRecentSearchDropDownValue(value: string): Promise<void> {
+        await $(this.selectors.recentSearch).click();
+        await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).click();
+    }
+
+    async getCountOfRecentDropDownValue(value: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).count();
+    }
+
+    async isRecentSearchDropdownPopupDisplayed(): Promise<boolean> {
+        return await $(this.selectors.recentSearchDropDown).isPresent().then(async (link) => {
+            if (link) {
+                return await $$(this.selectors.recentSearchDropDown).isDisplayed();
+            } else return false;
+        });
+    }
+
+
+    async isRecentSearchesDropDownValueDisplayed(value: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async getRecentSerachDropDownValue(recordNumber): Promise<string> {
+        return await $$(this.selectors.recentSearchDropDownValue).get(recordNumber - 1).getText();
     }
 
     async isLeftGlobalSearchPannelDisplayed(): Promise<boolean> {
@@ -115,7 +155,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -155,7 +195,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -166,20 +206,24 @@ class GlobalSearch {
         }
 
         let booleanVal: boolean;
+        booleanVal= await $(`[rx-view-component-id="${guid}"] h2`).isPresent();
+        if(booleanVal==true){
         for (let i: number = 0; i < 12; i++) {
             let moduleTitleText = await $(`[rx-view-component-id="${guid}"] h2`).getText();
             if (moduleTitleText.includes(moduleTitle)) {
                 booleanVal = true;
                 break;
             } else {
+                await browser.sleep(2000);//Need this sleep because after create record it takes time to show on UI
                 booleanVal = false;
                 await this.searchRecord(record);
             }
         }
+    }
         return booleanVal;
     }
 
-    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string): Promise<boolean> {
+    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string, recordNumber?: number): Promise<boolean> {
         let guid;
         switch (moduleName) {
             case "Case": {
@@ -206,7 +250,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -215,15 +259,22 @@ class GlobalSearch {
                 break;
             }
         }
-
-        return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isPresent().then(async (link) => {
-            if (link) {
-                    return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isDisplayed();
-            } else return false;
-        });
+        if (recordNumber) {
+            return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber - 1).isPresent().then(async (link) => {
+                if (link) {
+                    return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber - 1).isDisplayed();
+                } else return false;
+            });
+        } else {
+            return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isPresent().then(async (link) => {
+                if (link) {
+                    return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isDisplayed();
+                } else return false;
+            });
+        }
     }
 
-    async clickOnLeftPannelRecord(record: string, moduleName: string): Promise<void> {
+    async clickOnLeftPannelRecord(record: string, moduleName: string, recordNumber?:number): Promise<void> {
         let guid;
         switch (moduleName) {
             case "Case": {
@@ -250,7 +301,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -259,7 +310,12 @@ class GlobalSearch {
                 break;
             }
         }
-        await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).click();
+
+        if (recordNumber) {
+            await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber-1).click();  
+        } else {
+            await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).click();     
+           }
     }
 
     async clickOnPaginationPageNo(moduleName: string, pageNo: string): Promise<void> {
@@ -289,7 +345,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -330,7 +386,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -374,7 +430,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -421,7 +477,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -437,5 +493,52 @@ class GlobalSearch {
             } else return false;
         });
     }
+
+    async getDate(): Promise<string> {
+        return await $('.bwf-show-more__content-row .bwf-text-overflow-ellipsis').getText();
+    }
+
+    async closeFilterDateLabel(): Promise<void> {
+        await $('.bwf-show-more__content-row a').click();
+    }
+
+    async getDateFormateOnLeftPannel(moduleName: string, recordNumber?: number): Promise<string> {
+        let guid;
+        switch (moduleName) {
+            case "Case": {
+                guid = this.selectors.caseGuid;
+                break;
+            }
+            case "Task": {
+                guid = this.selectors.taskGuid;
+                break;
+            }
+            case "Knowledge Article": {
+                guid = this.selectors.knowledgeArticleGuid;
+                break;
+            }
+            case "Documents": {
+                guid = this.selectors.documentsGuid;
+                break;
+            }
+            case "People": {
+                guid = this.selectors.peopleGuid;
+                break;
+            }
+            case "Case Templates": {
+                guid = this.selectors.caseTemplatesGuid;
+                break;
+            }
+            case "Task Templates": {
+                guid = this.selectors.taskTemplateGuid;
+                break;
+            }
+            default: {
+                console.log('Module name does not match');
+                break;
+            }
+        }
+            return await $$(`[rx-view-component-id="${guid}"] .list__item`).get(recordNumber - 1).$$('.bwf-search-fields span').get(1).getText();
+        }
 }
 export default new GlobalSearch();

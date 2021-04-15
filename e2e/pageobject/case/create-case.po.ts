@@ -2,7 +2,6 @@ import { resolve } from "path";
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import selectCasetemplateBladePo from './select-casetemplate-blade.po';
-import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,8 +11,8 @@ class CreateCasePage {
         attachmentLink: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] button',
         autoCategorization: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
         changeAssignment: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
-        assignedCompany: '[rx-view-component-id="8ac19557-eebc-4c14-9304-efc60d01e09f"] .adapt-select',
-        buisnessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] .adapt-select',
+        assignedCompany: '[rx-view-component-id="8bdf1730-165d-4703-a3fe-26a830a7f947"] button',
+        businessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] button',
         department: '[rx-view-component-id="a2a501d1-ac3c-460f-8422-2a559be7445e"] .adapt-select',
         assignedGroup: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] .adapt-select',
         assignee: '[rx-view-component-id="43c3e9ee-dde2-4e10-94e9-c6ee68217cda"] .dropdown-toggle',
@@ -24,17 +23,17 @@ class CreateCasePage {
         summaryGuid: 'd73c8aff-f9e0-4eef-8226-a65f19fab4db',
         contactInput: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input.form-control',
         contacts: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] .dropdown-item',
-        siteDropDown: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] .dropdown-toggle',
-        site: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] input.form-control',
-        siteOption: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] .dropdown_select__menu-content button',
+        siteDropDown: '[rx-view-component-id="d1a3e796-16c6-4e94-82d4-9ffc5dedfbb3"] .dropdown-toggle',
+        site: '[rx-view-component-id="d1a3e796-16c6-4e94-82d4-9ffc5dedfbb3"] input.form-control',
+        siteOption: '[rx-view-component-id="d1a3e796-16c6-4e94-82d4-9ffc5dedfbb3"] .rx-select__options button',
         priorityDropDown: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown-toggle',
-        priorityOption: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown_select__menu-content button',
+        priorityOption: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown-item',
         descriptionGuid: 'e494b462-7749-44aa-922e-fc5d9b3dd5cb',
-        categoryTier1Guid: '9e97113b-b045-4cd6-b776-368bea50f137',
-        categoryTier2Guid: '20067485-2b38-44a0-a6ed-aec998df377b',
-        categoryTier3Guid: '9bfb3795-0543-4a17-a374-28dc586d1e03',
-        categoryTier4Guid: 'ba093458-4486-4619-8587-4d3edbd45e45',
-        assignToMeButton: '[rx-view-component-id="000ed75a-487c-4fa2-b615-7d7b0bddc6dc"] button',
+        categoryTier1Guid: '51754f35-9122-4c1f-8e31-e1061aa52002',
+        categoryTier2Guid: 'f29162d1-0c65-48be-988b-9255a48303f8',
+        categoryTier3Guid: '485e16b5-feb8-400e-8013-0b3f7469c047',
+        categoryTier4Guid: '0d2b0cd6-a316-401b-b812-d6c8117fcbff',
+        assignToMeButton: '[rx-view-component-id="8bdf1730-165d-4703-a3fe-26a830a7f947"] .d-icon-left-user_plus',
         saveCaseButton: '[rx-view-component-id="cdb4375b-706d-4efc-be66-a8f32b1434ed"] button',
         selectCaseTemplateButton: '[rx-view-component-id="db1cc7ef-0430-42ad-8f28-1e524347cfb3"] button',
         clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
@@ -42,11 +41,25 @@ class CreateCasePage {
         contactGuid: 'e1f5a770-e416-4ed1-bfea-eefeed86544b',
         assigneGuid: '43c3e9ee-dde2-4e10-94e9-c6ee68217cda',
         assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
-        labelGuid: '47f29467-cdd3-4e04-a7f2-ceb795e8b6e5',
+        labelGuid: 'b7b2b2c3-a4a2-432c-afab-2dd3bca10356',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
         clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .d-icon-cross',
-        templateValue: 'td .btn-link',
-        cancelButton: '[rx-view-component-id="3e34f97b-e0f1-492e-bb7d-609b5ccc8d4f"] button'
+        templateValue: 'td .no-href-link',
+        cancelButton: '[rx-view-component-id="3e34f97b-e0f1-492e-bb7d-609b5ccc8d4f"] button',
+        autoCategorize: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
+        recommendedTemplate: 'div.bwf-search-fields__title-text',
+        categoryTier1Value: '[rx-view-component-id="51754f35-9122-4c1f-8e31-e1061aa52002"] .dropdown-toggle',
+        categoryTier2Value: '[rx-view-component-id="f29162d1-0c65-48be-988b-9255a48303f8"] .dropdown-toggle',
+        categoryTier3Value: '[rx-view-component-id="485e16b5-feb8-400e-8013-0b3f7469c047"] .dropdown-toggle',
+        categoryTier4Value: '[rx-view-component-id="0d2b0cd6-a316-401b-b812-d6c8117fcbff"] .dropdown-toggle',
+        lobLabel: '[rx-view-component-id="f0aa7414-4a27-400f-8d0a-c0e7adaab0fc"] .form-control-label span',
+        lobValue: '[rx-view-component-id="f0aa7414-4a27-400f-8d0a-c0e7adaab0fc"] button',
+        lobSection: '[rx-view-component-id="f0aa7414-4a27-400f-8d0a-c0e7adaab0fc"] adapt-select',
+        lineofbusiness: '[rx-view-component-id="f0aa7414-4a27-400f-8d0a-c0e7adaab0fc"] .rx-select__search-button-title',
+        lobGuid: 'f0aa7414-4a27-400f-8d0a-c0e7adaab0fc',
+        assignedBusinessUnitValue: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] button',
+        assignedSupportGroupValue: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] button',
+        assigneeValue: '[rx-view-component-id="43c3e9ee-dde2-4e10-94e9-c6ee68217cda"] button'
     }
 
     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
@@ -103,6 +116,18 @@ class CreateCasePage {
         return await utilityCommon.isRequiredTagToField('a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88');
     }
 
+    async getLineOfBusinessLabel(): Promise<string> {
+        return await $(this.selectors.lobLabel).getText();
+    }
+
+    async isLineOfBusinessFieldEnabled(): Promise<boolean> {
+        return await $(this.selectors.lobSection).isEnabled();
+    }
+
+    async getLineOfBusinessFieldValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
+
     async isSelectCaseTemplateButtonEnabled(): Promise<boolean> {
         return await $(this.selectors.selectCaseTemplateButton).isEnabled();
     }
@@ -112,11 +137,11 @@ class CreateCasePage {
     }
 
     async isAssignedCompanyReadOnly(): Promise<boolean> {
-        return await $(this.selectors.assignedCompany).getAttribute('aria-readonly') == 'true';
+        return await $(this.selectors.assignedCompany).getAttribute('disabled') == 'true';
     }
 
-    async isBuisnessUnitReadOnly(): Promise<boolean> {
-        return await $(this.selectors.buisnessUnit).getAttribute('aria-readonly') == 'true';
+    async isBusinessUnitReadOnly(): Promise<boolean> {
+        return await $(this.selectors.businessUnit).getAttribute('aria-readonly') == 'true';
     }
 
     async isDepartmentReadOnly(): Promise<boolean> {
@@ -132,6 +157,7 @@ class CreateCasePage {
     }
 
     async selectRequester(requester: string): Promise<void> {
+        await $(this.selectors.requesterInput).clear();
         await $(this.selectors.requesterInput).sendKeys(requester);
         await $$(this.selectors.requesters).first().click();
     }
@@ -145,6 +171,10 @@ class CreateCasePage {
 
     async setLabel(label: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
+    }
+
+    async setSource(value: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.sourceGuid, value);
     }
 
     async setPriority(priorityVal: string): Promise<void> {
@@ -164,12 +194,20 @@ class CreateCasePage {
         await $(this.selectors.summary).sendKeys(summary);
     }
 
+    async clearSummary(): Promise<void> {
+        await $(this.selectors.summary).clear();
+    }
+
     async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
         return await utilityCommon.isAllDropDownValuesMatches(this.selectors.priorityGuid, list);
     }
 
     async setDescription(description: string): Promise<void> {
         await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
+    }
+
+    async isCategoryTier1DropDownValueDisplayed(categValue: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.categoryTier1Guid, categValue);
     }
 
     async selectCategoryTier1(categValue: string): Promise<void> {
@@ -257,6 +295,105 @@ class CreateCasePage {
 
     async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async clickOnAutoCategorize(): Promise<void> {
+        //await utilityCommon.scrollToElement($(this.selectors.autoCategorize));
+        await $(this.selectors.autoCategorize).isEnabled().then(async (result) => {
+            if (result) await $(this.selectors.autoCategorize).click();
+        });
+    }
+
+    async isRecommendedTemplatePresent(templateName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.recommendedTemplate, templateName)).isPresent();
+    }
+
+    async isAutoCategorizeButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.autoCategorize).isEnabled();
+    }
+
+    async getCategoryTier1Value(): Promise<string> {
+        return await $(this.selectors.categoryTier1Value).getText();
+    }
+
+    async getCategoryTier2Value(): Promise<string> {
+        return await $(this.selectors.categoryTier2Value).getText();
+    }
+
+    async getCategoryTier3Value(): Promise<string> {
+        return await $(this.selectors.categoryTier3Value).getText();
+    }
+
+    async getCategoryTier4Value(): Promise<string> {
+        return await $(this.selectors.categoryTier4Value).getText();
+    }
+
+    async isSaveCaseButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.saveCaseButton).getAttribute("disabled") == "true";
+    }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.labelGuid;
+                break;
+            }
+            case "Source": {
+                guid = this.selectors.sourceGuid;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1Guid;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2Guid;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3Guid;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4Guid;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
+    async isLineOfBusinessDisabled(): Promise<boolean> {
+        return await $(this.selectors.lineofbusiness).getAttribute("disabled") == "true";
+    }
+
+    async getLineOfBusinessValue(): Promise<string> {
+        let elementPresent = await $(this.selectors.lineofbusiness).isPresent()
+          if (elementPresent == true) return await $(this.selectors.lineofbusiness).getText();
+      }
+
+    async selectLineOfBusiness(value: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.lobGuid, value);
+    }
+
+    async isValuePresentInLineOfBusinessDropDown(value: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.lobGuid, value);
+    }
+
+    async getAssigneeGroupValue(): Promise<string> {
+        return await $(this.selectors.assignedSupportGroupValue).getText();
+    }
+
+    async getAssigneeBusinessUnitValue(): Promise<string> {
+        return await $(this.selectors.assignedBusinessUnitValue).getText();
+    }
+
+    async getAssigneeValue(): Promise<string> {
+        return await $(this.selectors.assigneeValue).getText();
     }
 }
 

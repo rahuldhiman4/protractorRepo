@@ -20,7 +20,7 @@ export class NewExclusiveSubject {
 
     async selectGlobal(boolean: string): Promise<void> {
         //pass True or False
-        let newLocator: string = `[rx-view-component-id="b23f309d-bb24-486d-a9c8-736af6f97c8a"] .d-button-group__item button[aria-label="${boolean}"]`
+        let newLocator: string = `[rx-view-component-id="b23f309d-bb24-486d-a9c8-736af6f97c8a"] [aria-label="${boolean}"]`
         await $(newLocator).click();
     }
 

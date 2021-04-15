@@ -15,15 +15,11 @@ class NotificationAlerts {
     async isAlertPresent(msg: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.notificationButtons).get(0)));
         let cnt: number = await $$(this.selectors.alerts).count();
-        let status = false;
         for (let i = 0; i < cnt; i++) {
-            let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text p').getText();
-            if (notification.replace(/\s/g, "").includes(msg.replace(/\s/g, ""))) {
-                status = true;
-                break;
-            }
+            let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text').getText();
+            if (notification.replace(/\s/g, "").includes(msg.replace(/\s/g, ""))) return true
         }
-        return status;
+        return false;
     }
 
     async clickActionableLink(msg: string): Promise<void> {

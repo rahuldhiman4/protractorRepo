@@ -6,15 +6,11 @@ class QuickCasePage {
 
     selectors = {
         recommendedTitle: '.bwf-search-result .bwf-search-fields__title-text span',
-        drpdownHeader: '.sr-preview-item .dropdown-toggle',
+        drpdownHeader: '.sr-preview-item .dropdown-toggle div.rx-select__search-button-title',
         startOver: '.text-muted .btn-secondary',
         smartSearchTextBox: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .sr-input',
         confirmedItemSelection: '.sr-preview-pane .sr-preview-item-header',
         caseTemplate: '.bwf-selectable-list-item .sr-template-name',
-        gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
-        validateButton: '[rx-view-component-id="390a77cd-518e-4d67-abb4-bc4d410ce3df"] button',
-        pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
-        pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
         quickCaseGuid: 'ac36dcad-30f0-4ab0-86a4-11fee7195051',
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
@@ -24,8 +20,8 @@ class QuickCasePage {
         arrowFirstRecommendedCase: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"] .list__item__preview-icon',
         arrowFirstRecommendedKnowledge: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .list__item__preview-icon',
         roleDropDown: '.sr-preview-pane .sr-preview-item-header .btn-secondary',
-        sourceValue: '.sr-select-bar .btn-xs',
-        roleValue: '.select_option_container span',
+        sourceValue: '.sr-select-bar .rx-select__search-button-title',
+        roleValue: '.rx-select__option-content div',
         descriptionText: 'div.sr-placeholder div.large',
         resources: '.empty-state__label',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
@@ -35,7 +31,8 @@ class QuickCasePage {
         recommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
         recommendedCaseTemplateGuid: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"]',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
-        dropdownSourceValue: '.dropdown-item span',
+        dropdownSourceValue: '.dropdown-item .rx-select__option-content',
+        recommendedTemplateDetail: '.rx-ellipsis span'
     }
 
     async pinRecommendedCases(numberOfCases: number): Promise<void> {
@@ -57,7 +54,7 @@ class QuickCasePage {
 
     }
 
-    async getDrpDownValueByIndex(indexValue: number): Promise<string> {
+    async getDrpDownValueByIndex(indexValue: number): Promise<string> {        
         return await $$(this.selectors.drpdownHeader).get(indexValue - 1).getText();
     }
 
@@ -70,9 +67,16 @@ class QuickCasePage {
     }
 
     async selectRequesterName(name: string): Promise<void> {
-        await $(this.selectors.smartSearchTextBox).sendKeys(`@${name}`);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
-        await $$(this.selectors.requesters).first().click();
+        let str: string[] = name.split(' ');
+        await $(this.selectors.smartSearchTextBox).sendKeys(`@`);
+        for (let i = 0; i < str.length; i++) {
+            if (i == str.length - 1) await $(this.selectors.smartSearchTextBox).sendKeys(`${str[i]}`);
+            else await $(this.selectors.smartSearchTextBox).sendKeys(`${str[i]} `);
+        }
+        await element(by.cssContainingText('bwf-selectable-list-item .person-name, .person-email span', name)).isPresent().then(async (result) => {
+            if(result) await element(by.cssContainingText('bwf-selectable-list-item .person-name, .person-email span', name)).click();
+            else await $$(this.selectors.requesters).first().click();
+        });
     }
 
     async setCaseSummary(summary: string): Promise<void> {
@@ -119,16 +123,12 @@ class QuickCasePage {
         await $(this.selectors.createCaseButton).click();
     }
 
-    async gotoCaseButton(): Promise<void> {
-        await $(this.selectors.gotoCaseButton).click();
-    }
-
     async pinFirstRecommendedCase(): Promise<void> {
         await $$(this.selectors.pinFirstRecommendedCase).first().click();
     }
 
     async clickArrowFirstRecommendedCaseTemplate(): Promise<void> {
-        await browser.sleep(2000); // hardwait to build case template hyperlink 
+        await browser.sleep(2000); // hardwait to build case template hyperlink
         await $(this.selectors.recommendedCaseTemplateGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 
@@ -136,16 +136,22 @@ class QuickCasePage {
         await $(this.selectors.createCaseButton).click();
     }
 
+    async getRecommendedTemplateHeaderValue(headerValue: string): Promise<string> {
+        return await browser.element(by.cssContainingText(this.selectors.recommendedTemplateDetail, headerValue)).getText();
+    }
+
     async selectCaseTemplate(templateName: string): Promise<boolean> {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
             console.log(templateName, "search case template count: ", i);
-            browser.sleep(1000);
+            browser.sleep(1000); // Wait For Populate Case template Hyperlink
             let template: string = "!" + templateName;
             await $(this.selectors.smartSearchTextBox).sendKeys(template);
             success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent().then(async (result) => {
                 if (result) {
+                    browser.sleep(500); // Wait to populate case template option
                     await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
+                    browser.sleep(500); // Wait to populate recommended section
                     return true;
                 } else false;
             });
@@ -158,13 +164,6 @@ class QuickCasePage {
             }
         }
         return success;
-    }
-
-    async validatePin(): Promise<void> {
-        await $(this.selectors.validateButton).click();
-        await $(this.selectors.pinValidateInput).sendKeys("1234");
-        await $(this.selectors.pinOk).click();
-
     }
 
     async getDescriptionDetails(): Promise<string> {
@@ -212,11 +211,11 @@ class QuickCasePage {
 
     async clickOnCaseTemplate(templateName: string): Promise<void> {
         await browser.sleep(2000); // hardwait to build case template hyperlink
-        await $(`bwf-search-result-fields div[title=${templateName}] span`).isPresent().then(async (present) => {
+        await $(`bwf-search-result-fields div[title="${templateName}"] span`).isPresent().then(async (present) => {
             if (present) {
-                await $(`bwf-search-result-fields div[title=${templateName}] span`).isDisplayed().then(async (displayed) => {
+                await $(`bwf-search-result-fields div[title="${templateName}"] span`).isDisplayed().then(async (displayed) => {
                     if (displayed)
-                        await $(`bwf-search-result-fields div[title=${templateName}] span`).click();
+                        await $(`bwf-search-result-fields div[title="${templateName}"] span`).click();
                 });
             }
         });
@@ -226,7 +225,7 @@ class QuickCasePage {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
             await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
-            browser.sleep(1000);
+            browser.sleep(1000); // Wait For Populate Recommanded Case Hyperlink.
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
                     await $(`div[title=${caseID}]`).click();
@@ -248,7 +247,7 @@ class QuickCasePage {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
             await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
-            browser.sleep(1000);
+            browser.sleep(2000); // Wait For Populate Recommanded Case Pin.
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
                     await $(this.selectors.pinFirstRecommendedCase).click();
@@ -264,6 +263,10 @@ class QuickCasePage {
             }
         }
         return success;
+    }
+
+    async clickFirstRecommendedCases(): Promise<void> {
+        await $(this.selectors.recommendedCaseGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 }
 export default new QuickCasePage();

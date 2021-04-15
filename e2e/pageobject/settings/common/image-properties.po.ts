@@ -11,7 +11,8 @@ class ImagePropertiesPopUp {
         preViewBoxImg: '.ImagePreviewBox img[style]',
         inputFieldsOnImageInfoTab: '.cke_dialog_ui_hbox_first input.cke_dialog_ui_input_text',
         inputBox: 'input.cke_dialog_ui_input_text',
-        imageDialogWindow: '.cke_dialog_body'
+        imageDialogWindow: '.cke_dialog_body',
+        crossIcon: '[class="cke_dialog_close_button"]',
     }
 
     async getImageParentElementIndex(): Promise<number> {
@@ -73,6 +74,13 @@ class ImagePropertiesPopUp {
 
     async clickOnSendItToServerButton(): Promise<void> {
         await $(this.selectors.sendItToServerButton).click();
+    }
+
+    async clickOnCrossIcon(): Promise<void> {
+        await $(this.selectors.crossIcon).isPresent().then(async (present) => {
+            if (present) return await $(this.selectors.crossIcon).click();
+            else return null;
+        });
     }
 
     async clickOnTab(menuName: string): Promise<void> {

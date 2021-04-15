@@ -1,22 +1,22 @@
 {
     "caseData_DRDMV18972": {
         "requester1": "Thad Esser",
-        "requester2": "RA3 Liu",
+        "requester2": "Qiwei Liu",
         "caseSummary": "Creating Quick Case"
     },
     "caseData_DRDMV18973": {
-        "requester": "RA3 Liu",
+        "requester": "Qiwei Liu",
         "contact": "Thad Esser",
         "caseSummary": "Change my Last Name"
     },
     "caseData_DRDMV18980": {
-        "requester": "RA3 Liu",
+        "requester": "Qiwei Liu",
         "requester2": "Qiang Du",
         "description": "Change my Last Name",
         "contact": "Thad Esser"
     },
     "caseData_DRDMV18983": {
-        "requester": "RA3 Liu",
+        "requester": "Qiwei Liu",
         "description": "Change my Last Name",
         "warningMsg": "Requester not found"
     },
@@ -32,7 +32,7 @@
         "Support Group": "US Support 3",
         "Assignee": "qkatawazi"
     },
-    "DRDMV-14087": {
+    "4584": {
         "Status": "2000",
         "Assigned Company": "Petramco",
         "Description": "This case was created by java integration tests",
@@ -42,7 +42,7 @@
         "Business Unit": "HR Support",
         "Support Group": "Compensation and Benefits"
     },
-    "DRDMV-14088": {
+    "4583": {
         "Status": "2000",
         "Assigned Company": "Petramco",
         "Description": "This case was created by java integration tests",
@@ -113,7 +113,7 @@
     },
     "bulkCaseAssignee_New": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
+        "Requester": "apavlik",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
         "Assigned Company": "Petramco",
@@ -124,7 +124,7 @@
     },
     "bulkCaseAssignee_Assigned": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
+        "Requester": "apavlik",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
         "Assigned Company": "Petramco",
@@ -133,31 +133,9 @@
         "Assignee": "qkatawazi",
         "Status": "2000"
     },
-    "bulkCaseAssignee_InProgress": {
-        "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
-        "Priority": "4000",
-        "Summary": "Bulk Case Assignee",
-        "Assigned Company": "Petramco",
-        "Business Unit": "United States Support",
-        "Support Group": "US Support 3",
-        "Assignee": "qkatawazi",
-        "Status": "3000"
-    },
-    "bulkCaseAssignee_Resolved": {
-        "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
-        "Priority": "4000",
-        "Summary": "Bulk Case Assignee",
-        "Assigned Company": "Petramco",
-        "Business Unit": "United States Support",
-        "Support Group": "US Support 3",
-        "Assignee": "qkatawazi",
-        "Status": "5000"
-    },
     "bulkCaseAssigneeWithAllAssigneeFields": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
+        "Requester": "apavlik",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
         "Assigned Company": "Petramco",

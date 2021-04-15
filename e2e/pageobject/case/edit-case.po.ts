@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
 import utilityCommon from "../../utils/utility.common";
+import ckeEditor from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,7 +10,7 @@ class CaseEditPage {
         editLink: '.edit-link',
         changeCaseTemplate: '[rx-view-component-id="f6cc5a13-26cd-4412-ae4e-6c6cc5e21908"] button',
         selectCaseTemplate: '[rx-view-component-id="702fa086-4ddb-4741-b2cf-f16e22a49826"] button',
-        assignToMe: '[rx-view-component-id="094f8581-1f5f-4e45-ad67-fd92d81c8e94"] button',
+        assignToMe: 'button.d-icon-left-user_plus',
         changeAssignment: '[rx-view-component-id="459e6f41-abd3-4726-8dc2-25bab758877f"] button',
         saveCaseButton: '[rx-view-component-id="518308c0-34ea-4e75-a3a8-b4b07fc91de9"] button',
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] input',
@@ -19,17 +20,18 @@ class CaseEditPage {
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
         priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .btn-secondary',
         clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-cross',
-        categoryTier1Guid: '593784cc-6bce-4bfd-82e1-7ca55aa28517',
-        categoryTier2Guid: '7beae951-8345-4f97-9cac-48933083928f',
-        categoryTier3Guid: '68d56b74-b9ad-444e-8dfc-ddec1e16897f',
-        categoryTier4Guid: 'aa75da42-eeb4-4a6f-946b-74d5316b7641',
-        categoryTier1Drpbox: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] adapt-select',
-        categoryTier2Drpbox: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] adapt-select',
-        categoryTier3Drpbox: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] adapt-select',
-        labelGuid: 'd9b7ead5-02e4-4af4-b87e-9103439922b7',
-        siteGuid: '664af3b6-dde6-47a7-84f9-4a5ad721e993',
+        categoryTier1Guid: '59769557-4b17-4a1a-952f-63e9418fb7ff',
+        categoryTier2Guid: '0aa422df-d89a-40ac-8956-c4f5480b2e36',
+        categoryTier3Guid: 'f59cd305-9f35-4d39-891e-8824a97724e2',
+        categoryTier4Guid: '7f7f2d24-1f78-427e-b972-f99e55f1d070',
+        categoryTier1Drpbox: '[rx-view-component-id="59769557-4b17-4a1a-952f-63e9418fb7ff"] button',
+        categoryTier2Drpbox: '[rx-view-component-id="0aa422df-d89a-40ac-8956-c4f5480b2e36"] button',
+        categoryTier3Drpbox: '[rx-view-component-id="f59cd305-9f35-4d39-891e-8824a97724e2"] button',
+        labelGuid: '5ea1ef24-abf0-45da-86e6-23a90c8b215b',
+        caseLabel: '[rx-view-component-id="5ea1ef24-abf0-45da-86e6-23a90c8b215b"] .btn-secondary',
+        siteGuid: '52af2f63-7a8e-45ab-9344-3c326d4340a1',
         clearSiteField: '[rx-view-component-id="664af3b6-dde6-47a7-84f9-4a5ad721e993"] .btn-secondary',
-        resolutionCodeGuid: '32eeffe4-f5c1-4fc8-9c91-25946cc86d66',
+        resolutionCodeGuid: '155eb52a-4680-42a4-ae91-7505ab92eb31',
         siteChangeReason: '[rx-view-component-id="54d1727e-1b2d-4f4f-8fb4-a3174746ee1d"] input',
         targetDateDate: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] .ng-valid-date',
         targetDateHours: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] input[ng-model="hours"]',
@@ -37,7 +39,8 @@ class CaseEditPage {
         targetDateMeredian: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] button.d-timepicker__input',
         resolutionDescription: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] textarea',
         attachLink: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
-        requesterPersonImage: 'img.person-profile-image',
+        requesterPersonImage: '.person-summary .person-thumbnail',
+        requesterDefaultImage: '.person-summary .default-thumbnail',
         requesterText: '.person-main .text-field',
         siteText: '.person-location span',
         requesterPersonNameLink: '.person-name a',
@@ -47,12 +50,11 @@ class CaseEditPage {
         contactNameLink: '.dropdown-item .flexi-type-ahead-person-card-item',
         cancelBtn: '[rx-view-component-id="f535ec30-5892-4150-a4a2-ffa74c9135cb"] button',
         caseTitle: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] span',
-        assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] adapt-select',
+        assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] button',
         assigneeCompanyGuid: '196878af-30b3-4ae2-ae7f-4c65baa5d951',
         department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] adapt-select',
-        assigneee: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] adapt-select',
-        buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] adapt-select',
-        assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] adapt-select',
+        buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] button',
+        assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] button',
         assignedGroupGuid: '116edc77-c040-42db-8a32-dc836e4cb254',
         activityFeed: '.activity__wrapper  .activity__body a',
         activityChangeFile: '.d-icon-file_plus_o',
@@ -66,6 +68,11 @@ class CaseEditPage {
         dynamicFieldInput: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] input',
         dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
+        dynamciFieldDownLoadIcon: '.bwf-text-color-active',
+        lobValue: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] button',
+        lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .adapt-select',
+        assigneeValue: '[rx-view-component-id="13635426-50b0-4b53-8026-a1682ab656e8"] button div.rx-select__search-button-title',
+        dynamicFields: '.simple-field .form-control-label',
     }
 
     async removeAttachment(): Promise<void> {
@@ -85,8 +92,7 @@ class CaseEditPage {
     }
 
     async clickSaveCase(): Promise<void> {
-        let saveButton = this.selectors.saveCaseButton + '[disabled="disabled"]';
-        await browser.wait(this.EC.invisibilityOf($(saveButton)), 3000);
+        await utilityCommon.scrollToElement($(this.selectors.saveCaseButton));
         await $(this.selectors.saveCaseButton).click();
     }
 
@@ -133,6 +139,13 @@ class CaseEditPage {
         await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
     }
 
+    async isCaseLabelValueDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isDisplayed();
+            else return false;
+        });
+    }
+
     async updateCaseSite(caseSite: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.siteGuid, caseSite);
     }
@@ -166,8 +179,16 @@ class CaseEditPage {
         await utilityCommon.selectDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
+    async isResolutionCodePresent(resolutionCode: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+    }
+
     async isValuePresentInResolutionCode(resolutionCode: string): Promise<void> {
         await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+    }
+
+    async isValuePresentInCategoryTier1(categoryTier1: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.categoryTier1Guid, categoryTier1);
     }
 
     async setResolutionDescription(resolutionDescription: string): Promise<void> {
@@ -196,11 +217,11 @@ class CaseEditPage {
     }
 
     async isSummaryRequiredText(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.summaryGuid);
+        return await utilityCommon.isRequiredTagPresent(this.selectors.summaryGuid);
     }
 
     async isPriorityRequiredText(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.priorityGuid);
+        return await utilityCommon.isRequiredTagPresent(this.selectors.priorityGuid);
     }
 
     async isAssignedCompanyRequiredText(): Promise<boolean> {
@@ -268,10 +289,6 @@ class CaseEditPage {
         return await $(this.selectors.department).getAttribute('aria-disabled');
     }
 
-    async getAssigneeReadable(): Promise<string> {
-        return await $(this.selectors.assigneee).getAttribute('aria-disabled');
-    }
-
     async getBuisnessUnitReadable(): Promise<string> {
         return await $(this.selectors.buisnessUnit).getAttribute('aria-disabled');
     }
@@ -293,7 +310,7 @@ class CaseEditPage {
     }
 
     async isRequesterImageDisplayed(): Promise<boolean> {
-        return await $(this.selectors.requesterPersonImage).isDisplayed();
+        return await $(this.selectors.requesterPersonImage).isDisplayed() || await $(this.selectors.requesterDefaultImage).isDisplayed();
     }
 
     async isSiteTextPresent(): Promise<boolean> {
@@ -309,7 +326,8 @@ class CaseEditPage {
     }
 
     async clickOnSelectCaseTemplate(): Promise<void> {
-        return await $(this.selectors.selectCaseTemplate).click();
+        await utilityCommon.scrollToElement($(this.selectors.selectCaseTemplate));
+        await $(this.selectors.selectCaseTemplate).click();
     }
 
     async getChangeCaseTemplate(): Promise<string> {
@@ -317,6 +335,7 @@ class CaseEditPage {
     }
 
     async clickOnChangeCaseTemplate(): Promise<void> {
+        await utilityCommon.scrollToElement($(this.selectors.changeCaseTemplate));
         await $(this.selectors.changeCaseTemplate).click();
     }
 
@@ -325,17 +344,20 @@ class CaseEditPage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFieldLocator = `.simple-field .form-control-label`;
+        let dynamicFieldLocator = `[rx-view-component-id="465ce519-19f3-4d8f-8725-888255768aa7"] .simple-field .form-control-label`;
         let dynamicFields: number = await $$(dynamicFieldLocator).count();
-        for (let i = 0; i < dynamicFields; i++) {
+        await utilityCommon.scrollToElement($(dynamicFieldLocator));
+        let status: boolean = false;
+        for (let i: number = 0; i < dynamicFields; i++) {
             let field = await (await $$(dynamicFieldLocator).get(i).getText()).trim();
             if (fieldName == field) {
-                return true;
+                status = true;
+                break;
             }
         }
-        return false;
+        return status;
     }
-
+    
     async addAttachment(attachmentField: string, fileToUpload: string[]): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         let dynamicFieldLabel: number = await $$(this.selectors.dynamicFieldsName).count();
@@ -347,10 +369,9 @@ class CaseEditPage {
         }
     }
 
-    async addDescriptionAttachment(fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        console.log(absolutePath);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
@@ -365,15 +386,12 @@ class CaseEditPage {
     }
 
     async setDateValueInDynamicField(value: string): Promise<void> {
+        await $(this.selectors.dynamicFieldDate).clear();
         await $(this.selectors.dynamicFieldDate).sendKeys(value);
     }
 
     async clickOnTrueValueOfDynamicField(): Promise<void> {
         await $(this.selectors.dynamicBooleanValue).click();
-    }
-
-    async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await utilityCommon.setDateField('376ec3d3-9381-4613-bb06-1e8dbbaf6b18', value);
     }
 
     async setInvalidDateTimeDynamicField(value: string): Promise<void> {
@@ -387,6 +405,78 @@ class CaseEditPage {
     async setTimeInDynamicField(value: string): Promise<void> {
         await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
+
+    async getCategoryTier1(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier1Guid}"] button`).getText();
+    }
+
+    async getCategoryTier2(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier2Guid}"] button`).getText();
+    }
+
+    async getCategoryTier3(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier3Guid}"] button`).getText();
+    }
+
+    async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] button`).getText();
+    }
+
+    async getAssigneeValue(): Promise<string> {
+        return await $$(this.selectors.assigneeValue).last().getText();
+    }
+
+    async clickDownloadDynamicFile(downloadButtonNumber: number): Promise<void> {
+        await $$(this.selectors.dynamciFieldDownLoadIcon).get(downloadButtonNumber - 1).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    };
+
+    async isLineOfBusinessReadOnly(): Promise<boolean> {
+        return await $(this.selectors.lineofbusiness).getAttribute('aria-readonly') == 'true';
+    }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.labelGuid;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1Guid;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2Guid;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3Guid;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4Guid;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
+    async setDescriptionNumberList(values: string[]): Promise<void> {
+        await ckeEditor.setNumberList(values, this.selectors.descriptionGuid);
+    }
+
+    async setDescriptionBulletList(values: string[]): Promise<void> {
+        await ckeEditor.setBulletList(values, this.selectors.descriptionGuid);
+    }
+
 }
 
 export default new CaseEditPage();

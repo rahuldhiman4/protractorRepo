@@ -1,6 +1,5 @@
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class EditRegisterProcessPage {
 
@@ -11,7 +10,8 @@ class EditRegisterProcessPage {
         statusGuid: '82350ab4-c2fb-4c35-9481-b5db8e85aa6f',
         saveButton: '[rx-view-component-id="03d04373-17d2-4b19-af55-1a26e04ee7f1"] button',
         summaryField1: 'input[role="search"]',
-        searchButton1: 'button[rx-id="submit-search-button"]',
+        searchButton1: 'button[rx-id="submit-search-button"]',//not found
+        cancelButton: '[rx-view-component-id="65530a7e-0b78-471c-b355-4196f98a3baa"] button'
     }
 
     async setAliasName(alias: string): Promise<void> {
@@ -20,11 +20,11 @@ class EditRegisterProcessPage {
     }
    
     async searchAndGetDescription(description: string): Promise<string> {
-        return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText();
+        return await element(by.cssContainingText('.at-data-cell', description)).getText();
     }
 
     async getDescription(description: string): Promise<string> {
-        return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText();
+        return await element(by.cssContainingText('.at-data-cell', description)).getText();
     }
 
     async setDescription(description: string): Promise<void> {
@@ -33,12 +33,17 @@ class EditRegisterProcessPage {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async clickOnSaveButton(): Promise<void> {
         await $(this.selectors.saveButton).click();
     }
+
+    async clickOnCancelButton(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
+    }
+
 }
 
 export default new EditRegisterProcessPage();

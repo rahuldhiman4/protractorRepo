@@ -14,6 +14,11 @@
             "304410911": {
                 "id": 304410911,
                 "value": 100
+            },
+            "304417331": {
+              "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+              "id": 304417331,
+              "value": "HumanResource"
             }
         }
     },
@@ -36,6 +41,11 @@
             "304416171": {
               "id": 304416171,
               "value": "1"
+            },
+            "304417331": {
+              "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+              "id": 304417331,
+              "value": "HumanResource"
             }
         }
     }

@@ -1,5 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from "../../../utils/utility.common";
 import consoleNoteTemplate from './console-notestemplate.po';
 
 class createNotesTemplate {
@@ -9,64 +9,51 @@ class createNotesTemplate {
         status: 'a6f36df8-bb54-405f-ab71-7ac3b4b3e71d',
         company: '8072a3c4-6972-4760-86be-d5526dac8c8d',
         language: '951065ca-a003-4465-aed5-9623a689fd4f',
-        label: 'c31f5d9c-3f30-43fa-bc65-0245bf3b6495',
-        insertField: '[rx-view-component-id="96169de5-0dff-4627-8834-ffc528787e4e"] .cke_button__expressioneditor',
-        fieldVariable: '.rx-data-dictionary-item-value',
-        parentFields: '.rx-tree-node-parent',
-        okButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_primary',
-        cancelButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_secondary',
+        insertField: '.cke_button__rtfexpressioneditor_icon',
         body: '.cke_wysiwyg_div',
-        saveButton: '[rx-view-component-id="d735ac20-de9c-4b76-a226-2d9c577d4bd0"] .d-button_primary',
-        cancelButton: '[rx-view-component-id="85dcb9ba-5367-4f65-8613-920291ce4786"] .d-button_secondary',
-        statusDD: '[rx-view-component-id="a6f36df8-bb54-405f-ab71-7ac3b4b3e71d"] .d-textfield__label',
-        companyDD: '[rx-view-component-id="43cf35b1-9b8e-46ac-bae9-1cca6b245c52"] .d-textfield__label',
-        notesTemplate: '[rx-view-component-id="ec3b4b22-122a-480c-a4d7-b62647710c87"] button',
-        settingsButton: 'rx-shell .d-n-action__settings',
-        languageDD: '[rx-view-component-id="951065ca-a003-4465-aed5-9623a689fd4f"] .d-textfield__label',
+        saveButton: '[rx-view-component-id="d735ac20-de9c-4b76-a226-2d9c577d4bd0"] button',
+        cancelButton: '[rx-view-component-id="85dcb9ba-5367-4f65-8613-920291ce4786"] button',
+        statusDD: '[rx-view-component-id="a6f36df8-bb54-405f-ab71-7ac3b4b3e71d"] button',
+        companyDD: '[rx-view-component-id="8072a3c4-6972-4760-86be-d5526dac8c8d"] button',
+        languageDD: '[rx-view-component-id="951065ca-a003-4465-aed5-9623a689fd4f"] button',
         fieldValueInBody:'[rx-view-component-id="55da6dac-fe85-435e-9937-5b917d4b7971"] .cke_wysiwyg_div span',
+        lobValue: '[rx-view-component-id="efe5a0b6-8fd5-4677-9048-0cdb8a6e661e"] .rx-select__search-button-title'
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(templateNameValue);
     }
 
     async setStatusValue(statusValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, statusValue);
+        await utilityCommon.selectDropDown(this.selectors.status, statusValue);
     }
 
     async setCompanyValue(companyValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.company, companyValue);
+        await utilityCommon.selectDropDown(this.selectors.company, companyValue);
     }
 
     async setLanguageValue(languageValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.language, languageValue);
+        await utilityCommon.selectDropDown(this.selectors.language, languageValue);
     }
 
     async setLabelValue(labelValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, labelValue);
+        await utilityCommon.selectDropDown(this.selectors.status, labelValue);
     }
 
     async setBody(bodyValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.body)));
         await $(this.selectors.body).sendKeys(bodyValue);
     }
 
     async clickOnInsertFieldLink(): Promise<void> {
-       // await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)),3000);
         await $(this.selectors.insertField).click();
     }
 
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        await utilCommon.closePopUpMessage();
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).isEnabled();
     }
 
@@ -79,7 +66,7 @@ class createNotesTemplate {
         await this.setLanguageValue('English (United States)');
         await this.setBody("This is new notes template " + randomStr);
         await this.clickOnSaveButton();
-//        await utilCommon.closePopUpMessage();
+    //    await utilityCommon.closePopUpMessage();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         return randomStr;
     }
@@ -100,13 +87,21 @@ class createNotesTemplate {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.languageDD)));
         let g: boolean = await $(this.selectors.languageDD).isDisplayed();
         await $(this.selectors.cancelButton).click();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         return (a == b == c == d == e == f == g == true);
     }
 
     async isDynamicFieldDisplayedInBody(value:string):Promise<boolean>{
         return await element(by.cssContainingText(this.selectors.fieldValueInBody, value)).isDisplayed();
+    }
+
+    async clickCancelButton():Promise<void>{
+        await $(this.selectors.cancelButton).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 export default new createNotesTemplate();

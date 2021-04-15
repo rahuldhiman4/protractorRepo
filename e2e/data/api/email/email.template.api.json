@@ -9,10 +9,11 @@
       "Module": "Cases",
       "TemplateName": "newtemplate",
       "EmailMessageSubject": "Leave summary",
+      "Line of Business":"HumanResource",
       "Category": 10,
       "Locale": "en_US",
       "Status": 1,
-      "Company": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330",
+      "Company": "Petramco",
       "Public": "0",
       "Application ID": "com.bmc.dsm.case-lib",
       "Source Definition Name": "com.bmc.dsm.case-lib:Case",
@@ -33,11 +34,12 @@
       "Category": 20,
       "Locale": "en_US",
       "Status": 1,
-      "Company": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330",
+      "Company": "Petramco",
       "Public": "0",
       "Application ID": "com.bmc.dsm.case-lib",
       "Source Definition Name": "com.bmc.dsm.case-lib:Case",
-      "EmailMessageBody": "<p>HiTeam ,</p><p>&nbsp;</p><p>I am taking leave today.</p><p>&nbsp;</p><p>Thanks.</p>"
+      "EmailMessageBody": "<p>HiTeam ,</p><p>&nbsp;</p><p>I am taking leave today.</p><p>&nbsp;</p><p>Thanks.</p>",
+      "Line of Business":"HumanResource"
     }
   }
 }

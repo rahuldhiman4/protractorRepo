@@ -8,14 +8,12 @@ import showApproversBladePo from "../../pageobject/common/show-approvers-list-ta
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe("Case Level Up Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
-    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
     let caseModule = 'Case';
 
     beforeAll(async () => {
@@ -31,8 +29,8 @@ describe("Case Level Up Approval Tests", () => {
         await navigationPage.signOut();
     });
 
-    //skhobrag
-    describe('[DRDMV-16542]:Verify Manager Approval Flow - Approve Reject Approve', async () => {
+    //skhobrag #passed
+    describe('[4263]:Verify Manager Approval Flow - Approve Reject Approve', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated Manager Level Approval" + randomStr;
@@ -69,8 +67,8 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Manager Level Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -80,51 +78,44 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-16542]:Create Level Up Approval Flow', async () => {
+        it('[4263]:Create Level Up Approval Flow', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('Level Up Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New Level Flow');
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Level up flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
             await approvalConfigurationPage.setNoOfLevels('1');
             await approvalConfigurationPage.clickExpressionLink();
             await browser.sleep(5000); //Sleep added for expression builder loading
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await browser.sleep(1000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); //Sleep added for expression builder loading
+
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Workforce Administration"');
+            await approvalConfigurationPage.clickModelOkButton();
+
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-16542]:Create a case and verify approval details on case', async () => {
+        it('[4263]:Create a case and verify approval details on case', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -138,8 +129,8 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(1);
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -149,15 +140,13 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-16542]:approve the created case and verify the approval details on case', async () => {
+        it('[4263]:approve the created case and verify the approval details on case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();
@@ -166,14 +155,14 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-16542]:Verify the approvals details on case activity after case approved', async () => {
+        it('[4263]:Verify the approvals details on case activity after case approved', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -183,19 +172,18 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-16542]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+        it('[4263]:update the case status to approval trigger status and see if approval is triggered', async () => {
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Reject');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -207,14 +195,14 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was rejected');
         });
 
-        it('[DRDMV-16542]:Verify the case details after the case is rejected', async () => {
+        it('[4263]:Verify the case details after the case is rejected', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Rejected')).toContain('Rejected');
@@ -223,19 +211,18 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-16542]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+        it('[4263]:update the case status to approval trigger status and see if approval is triggered', async () => {
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -246,14 +233,14 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-16542]:Verify the approvals details on case activity', async () => {
+        it('[4263]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -272,8 +259,8 @@ describe("Case Level Up Approval Tests", () => {
 
     });
 
-    //skhobrag
-    describe('[DRDMV-10833]:[Approval] - Case Re Approval by moving Case Status back to Trigger status', async () => {
+    //skhobrag #passed
+    describe('[5149]:[Approval] - Case Re Approval by moving Case Status back to Trigger status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated General Level Approval" + randomStr;
@@ -310,8 +297,8 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for General Level Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -321,56 +308,45 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-10833]:Create General Approval Flow', async () => {
+        it('[5149]:Create General Approval Flow', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Level up flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
+            // await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
+            await approvalConfigurationPage.setNoOfLevels('1');
             await approvalConfigurationPage.clickExpressionLink();
             await browser.sleep(5000); //Sleep added for expression builder loading
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); //Sleep added for expression builder loading
+
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Talent Management"');
+            await approvalConfigurationPage.clickModelOkButton();
+
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-10833]:Create a case and verify approval details on case', async () => {
+        it('[5149]:Create a case and verify approval details on case', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -383,9 +359,9 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Pending Approval')).toContain('Pending Approval (1)');
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
-            expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversCount()).toBe(1);
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -395,12 +371,11 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10833]:approve the created case and verify the approval details on case', async () => {
+        it('[5149]:approve the created case and verify the approval details on case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -411,14 +386,14 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-10833]:Verify the approvals details on case activity after case approved', async () => {
+        it('[5149]:Verify the approvals details on case activity after case approved', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
-            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -428,19 +403,18 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10833]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+        it('[5149]:update the case status to approval trigger status and see if approval is triggered', async () => {
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Reject');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -451,35 +425,34 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was rejected');
         });
 
-        it('[DRDMV-10833]:Verify the case details after the case is rejected', async () => {
+        it('[5149]:Verify the case details after the case is rejected', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
-            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
-            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Rejected')).toContain('Rejected');
+            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Rejected')).toContain('Rejected'); // ??
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10833]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+        it('[5149]:update the case status to approval trigger status and see if approval is triggered', async () => {
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -490,14 +463,14 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-10833]:Verify the approvals details on case activity', async () => {
+        it('[5149]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
-            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -516,8 +489,8 @@ describe("Case Level Up Approval Tests", () => {
 
     });
 
-    //skhobrag
-    describe('[DRDMV-1369,DRDMV-1368]:[Approval] Details of approvers in sequenced approval', async () => {
+    //skhobrag #passed
+    describe('[6218,6219]:[Approval] Details of approvers in sequenced approval', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseData = undefined;
@@ -531,7 +504,7 @@ describe("Case Level Up Approval Tests", () => {
             caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case',
-                "categoryTier1": 'Project Accounting',
+                "categoryTier1": 'Projectors',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -555,8 +528,8 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Level Up Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             //Create Approval Mapping through API
             approvalMappingData1 = {
@@ -568,8 +541,8 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Level Up Approval Another"
             }
-            let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule,approvalMappingData1);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
+            let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule, approvalMappingData1);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -579,53 +552,45 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Create One must approval configuration', async () => {
+        it('[6218,6219]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
+            // await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Level up flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
+            // await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
+            await approvalConfigurationPage.setNoOfLevels('1');
             await approvalConfigurationPage.clickExpressionLink();
             await browser.sleep(5000); //Sleep added for expression builder loading
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); //Sleep added for expression builder loading
+
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Projectors"');
+            await approvalConfigurationPage.clickModelOkButton();
+
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Create a case and verify Show Approvers Blade information', async () => {
-            await apiHelper.apiLogin('qfeng');
+        it('[6218,6219]:Create a case and verify Show Approvers Blade information', async () => {
+            await apiHelper.apiLogin('qkatawazi');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -636,10 +601,9 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Pending Approval')).toContain('Pending Approval (1)');
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
-            expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversCount()).toBe(1);
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -649,19 +613,18 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
+        it('[6218,6219]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Verify the approvals details on case activity', async () => {
+        it('[6218,6219]:Verify the approvals details on case activity', async () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
@@ -671,26 +634,24 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Pending Approval')).toContain('Pending Approval (1)');
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
-            expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversCount()).toBe(1);
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovalStatusLabel()).toContain('Awaiting Approval');
             await showApproversBladePo.clickApproversTab('Approval Decision');
-            await browser.sleep(2000);
+            await browser.sleep(2000); // Hard wait added to load content on approval blade
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
+        it('[6218,6219]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'On Hold');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -714,8 +675,8 @@ describe("Case Level Up Approval Tests", () => {
 
     });
 
-    //skhobrag
-    describe('[DRDMV-12182]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when case enters approval cycle', async () => {
+    //skhobrag #passed
+    describe('[4982]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when case enters approval cycle', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated One must Approval Case" + randomStr;
@@ -729,7 +690,7 @@ describe("Case Level Up Approval Tests", () => {
             caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case',
-                "categoryTier1": 'Local Statutory Support',
+                "categoryTier1": 'Facilities',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -753,8 +714,8 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "- Global -",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             //Create Approval Mapping through API
             approvalMappingData1 = {
@@ -766,8 +727,8 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule,approvalMappingData1);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
+            let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule, approvalMappingData1);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -777,49 +738,39 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-12182]:Create One must approval configuration', async () => {
+        it('[4982]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
+            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval flows');
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Level up flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
+            // await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
+            await approvalConfigurationPage.setNoOfLevels('1');
             await approvalConfigurationPage.clickExpressionLink();
             await browser.sleep(5000); //Sleep added for expression builder loading
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); //Sleep added for expression builder loading
+
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Facilities"');
+            await approvalConfigurationPage.clickModelOkButton();
+
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-12182]:Create a case and verify approval mapping trigger preference', async () => {
+        it('[4982]:Create a case and verify approval mapping trigger preference', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -835,10 +786,9 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Pending Approval')).toContain('Pending Approval (1)');
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
-            expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversCount()).toBe(1);
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -848,12 +798,11 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-12182]:Approve the case and verify the case details', async () => {
+        it('[4982]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -864,20 +813,17 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-12182]:Verify the approvals details on case activity', async () => {
+        it('[4982]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
-            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
-            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Closed')).toContain('Closed');
-            expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed');
             expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
@@ -887,14 +833,15 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
 
     });
 
-    //skhobrag
-    describe('[DRDMV-12181]:[Approval] Case enters approval cycle for global company', async () => {
+    //skhobrag #passed
+    describe('[4983]:[Approval] Case enters approval cycle for global company', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated One must Approval Case" + randomStr;
@@ -907,7 +854,7 @@ describe("Case Level Up Approval Tests", () => {
             caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case',
-                "categoryTier1": 'Accounts Receivable',
+                "categoryTier1": 'Total Rewards',
                 "casePriority": "Critical",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -932,8 +879,8 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "- Global -",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -943,49 +890,39 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-12181]:Create One must approval configuration', async () => {
+        it('[4983]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
+            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval flows');
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Level up flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
+            // await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
+            await approvalConfigurationPage.setNoOfLevels('2');
             await approvalConfigurationPage.clickExpressionLink();
             await browser.sleep(5000); //Sleep added for expression builder loading
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); //Sleep added for expression builder loading
+
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Total Rewards"');
+            await approvalConfigurationPage.clickModelOkButton();
+
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-12181]:Create a case and verify approval mapping triggered based on global company', async () => {
+        it('[4983]:Create a case and verify approval mapping triggered based on global company', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -1001,10 +938,10 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Pending Approval')).toContain('Pending Approval (1)');
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
-            expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversCount()).toBe(1);
+            // expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -1014,12 +951,11 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-12181]:Approve the case and verify the case details', async () => {
+        it('[4983]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -1030,20 +966,17 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-12181]:Verify the approvals details on case activity', async () => {
+        it('[4983]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
-            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
-            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Closed')).toContain('Closed');
-            expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed');
             expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);

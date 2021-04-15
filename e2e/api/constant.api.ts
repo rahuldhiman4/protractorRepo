@@ -19,6 +19,12 @@ export enum TaskTemplate {
     Inactive = 3000,
 };
 
+export enum LOBStatus {
+    Active = 1,
+    Draft = 0,
+    Inactive = 2,
+};
+
 export enum Case {
     Assigned = 2000,
     New = 1000,
@@ -72,7 +78,8 @@ export enum TaskStatus {
     Closed = 7000,
     Failed = 5500,
     BeforeCompleted = 3500,
-    AfterCompleted = 5250
+    AfterCompleted = 5250,
+    ApprovalRejected = 1900
 };
 
 export enum CasePriority {
@@ -91,10 +98,63 @@ export enum SupportGroup {
 };
 
 export enum ApplicationConfigurationsGuid {
-    ADD_DWP_SURVEY_ON_CASE = 'AGGADGG8ECDC0AQBWONEQAYYYH1NA0',
-    NEXT_REVIEW_PERIOD = 'AGGAA5V0H3XY6AOTOXQROSSUUV80EW'
+    ADD_DWP_SURVEY_ON_CASE = 'AGGADG11ILYPXAQP7UJKQP7UJKHU10',
+    NEXT_REVIEW_PERIOD = 'AGGADGJYIH7F6AQO1KE7QO1KE7HLGX',
+    RESOLUTION_CODE_MANDATORY = 'AGGADGJYIH7F6AQO1KG4QO1KG4HLKM',
+    RESOLUTION_DESCRIPTION_MANDATORY = 'AGGADGJYIH7F6AQO1KHGQO1KHGHLOW',
 };
 
 export enum ApplicationConfigurationsValue {
     '1_MONTH' = '2629743',
+    '1_MINUTE' = '60',
+    '2_MINUTE' = '120',
+    'ENFORCED' = 2,
+    'OPTIONAL' = 1,
+    'NONE' = 0
+};
+
+export enum FunctionalRoleGuid {
+    'Knowledge Coach' = 'AGGAA5V0H3XY6AOTLKINOSP72R7YAE',
+    'Knowledge Publisher' = 'AGGAA5V0H3XY6AOTLL9ROSP8NW7YD9',
+    'Case Agent' = 'AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA',
+    'Case Manager' = 'AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ',
+    'Case Business Analyst' = 'AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7',
+    'Document Manager' = 'AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8',
+    'Person Activity Read' = 'AGGADG1AAO0VGAPSXWAEPSA6PDZAG6',
+    'Foundation Read' = 'AGGAA5V0GEON8AOZHHGIOY0UZNXGOR',
+    'Knowledge Contributor' = 'AGGAA5V0H3XY6AOTLLLEOSP8PI7YDM',
+    'Knowledge Candidate' = 'AGGAA5V0H3XY6AOTLLPTOSP8TY7YDT',
+    'Case Catalog Administrator' = 'AGGADG1AANVNMAP1JE54P02183EGA9',
+    'Human Resource' = 'AGGADGG8ECDC0AQ8GNQUQ7I1EPFJ7D'
+};
+
+export enum TaskFailConfiguration {
+    'Do Not Proceed' = 1000,
+    'Proceed With Next Task' = 2000
+};
+
+export enum FlowsetFunctions {
+    Initialization = 70,
+    'User Activity Feeds' = 80
+};
+
+export enum ProcessFlowsetMappingStatus {
+    Active = 10
+}
+
+// this enum needs to be removed once code is stable
+export enum LOB {
+    "Human Resource" = "HumanResource",
+    "Facilities" = "Facilities",
+    "Finance" = "Finance",
+    "Kingston HR" = "AGGADGG8ECDC0AQ84B56Q75O9WWIP3",
+    "Oracle HR" = "AGGADGG8ECDC0AQ84B5NQ75OKDWIPX",
+    "Kingston Legal" = "AGGADGG8ECDC0AQ84BQUQ75OV0W4BJ",
+    "Ericsson HR" = "AGGADGG8ECDC0AQ72Q2RQ644TH8OX5",
+    "Ericsson SAM" = "AGGADGG8ECDC0AQ72Q2ZQ644T58OZX",
+    "KingstonOracle Finance" = "AGGADGG8ECDC0AQ88BAWQ79OADDSFJ"
+}
+
+export enum ArticleTemplateStatus {
+    Disable = 10,
 };

@@ -1,44 +1,84 @@
 {
     "BusinessUnitData": {
         "orgName": "UI-BusinessUnit",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitData19501": {
         "orgName": "UI-BusinessUnit-19501",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitData19082": {
         "orgName": "UI-BusinessUnit-19082",
         "relatedOrgId": null,
-        "domainTag":"FacilityDomain"
+        "domainTag": "FacilityDomain"
     },
     "BusinessUnitData_BulkOperation": {
         "orgName": "BulkOperationBusinessUnit",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitData12111": {
         "orgName": "UI-BusinessUnit-12111",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
-     "BusinessUnitData2002": {
+    "BusinessUnitData2002": {
         "orgName": "UI-BusinessUnit-2002",
         "relatedOrgId": null,
-        "domainTag":"AccountsDomain"
+        "domainTag": "Human Resource"
     },
-    "BusinessUnitData11825":{
+    "BusinessUnitData11825": {
         "orgName": "UI-BusinessUnit-11825",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
-    "BusinessUnitData12080":{
-        "orgName": "UI-BusinessUnit-12080",
-        "relatedOrgId": null
-    },
-    "BusinessUnitData10410":{
+    "BusinessUnitData10410": {
         "orgName": "UI-BusinessUnit-10410",
         "relatedOrgId": null
     },
-    "BusinessUnitDataPsilon":{
+    "BusinessUnitDataPsilon": {
         "orgName": "UI-BusinessUnit-Psilon",
         "relatedOrgId": "b0446b99d8bb186e231cd17800e6c779233e9c57cff6d4352ac7a10fdf898e54f6c33615a2858395985b7cb5e2b65d53c8b084f4c456afdcc6bb9250318ee4fc"
+    },
+    "BusinessUnitDataPhylum1": {
+        "orgName": "UI-Phylum-BUnit1",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "BusinessUnitDataPhylum2": {
+        "orgName": "UI-Phylum-BUnit2",
+        "relatedOrgId": null
+    },
+    "BusinessUnitDataPhylum3": {
+        "orgName": "UI-Phylum-BUnit3",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "BusinessUnitDataPhylum4": {
+        "orgName": "UI-Phylum-BUnit4",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "BusinessUnitDataPhylum5": {
+        "orgName": "UI-Phylum-BUnit5",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "BusinessUnitDataPhylum6": {
+        "orgName": "UI-Phylum-BUnit6",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "PhylumBusinessUnitHRData": {
+        "orgName": "UI-BusinessUnitHR",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
+    },
+    "PsilonBusinessUnitHRLOB": {
+        "orgName": "HRLOB-BusinessUnit",
+        "relatedOrgId": null,
+        "domainTag": "HR"
     }
 }

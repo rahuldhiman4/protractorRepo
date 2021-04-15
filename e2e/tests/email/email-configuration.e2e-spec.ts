@@ -1,48 +1,59 @@
-
-
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import { EMAILCONFIG_COMPANY_ONE, EMAILCONFIG_COMPANY_PSILON, EMAILCONFIG_COMPANY_TWO, INCOMINGMAIL_COMPANY_ONE, INCOMINGMAIL_COMPANY_PSILON, INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_TWO } from '../../data/api/email/email.configuration.data.api';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import consoleEmailConfig from '../../pageobject/settings/email/console-email-configuration.po';
+import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import createEmailConfigPo from '../../pageobject/settings/email/create-email-config.po';
+import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import editEmailConfigPo from '../../pageobject/settings/email/edit-email-config.po';
 import editExclusiveSubjectPo from '../../pageobject/settings/email/edit-exclusive-subject.po';
 import newExclusiveSubjectPo from '../../pageobject/settings/email/new-exclusive-subject.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
-import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
-import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
 import utilityGrid from '../../utils/utility.grid';
 
+let userData1, userData2 = undefined;
+
 describe('Email Configuration', () => {
-    let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
-    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    let emailID = "bmctemptestemail@gmail.com";
+    let facilitiesEmailID = "bwfqa2019@gmail.com"
+   
+    let incomingEmail = {
+        'mailBoxName': 'testEmail@gmail.com'
+    }
+
+    let emailConfig = {
+        email: emailID,
+        incomingMailBoxName: incomingEmail.mailBoxName,
+    }
+
+    let emailConfig2 = {
+        email: "newbmctemp@gmail.com",
+        incomingMailBoxName: incomingEmail.mailBoxName,
+    }
+
+    let emailConfigFacilities = {
+        email: emailID,
+        incomingMailBoxName: incomingEmail.mailBoxName,
+        lineOfBusiness: "Facilities"
+    }
+
+    let differntEmailConfigFacilities = {
+        email: "bwfqa2019@gmail.com",
+        incomingMailBoxName: incomingEmail.mailBoxName,
+        lineOfBusiness: "Facilities"
+    }
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
-        await apiHelper.createEmailConfiguration();
-        await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
-        await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
-
-        offlineSupportGroup = {
-            "orgName": "OfflineSupportGroup",
-            "relatedOrgId": null,
-            "status": "Offline"
-        };
-        offlineSupportGroup.relatedOrgId = await apiCoreUtil.getBusinessUnitGuid("BusinessUnitData10410");
-        await apiHelper.createSupportGroup(offlineSupportGroup);
+        await apiHelper.createEmailBox('incoming', incomingEmail);
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createEmailConfiguration(emailConfig);
     });
 
     afterAll(async () => {
@@ -52,62 +63,130 @@ describe('Email Configuration', () => {
         await navigationPage.signOut();
     });
 
-    async function foundationData(company: string, businessUnit: string, supportGroup: string) {
-        await apiHelper.apiLogin('tadmin');
-        let businessData = businessDataFile[businessUnit];
-        let suppGrpData = supportGrpDataFile[supportGroup];
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        await browser.sleep(5000); //waiting fordata to be reflected on UI
-        suppGrpData.relatedOrgId = businessUnitId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await browser.sleep(9000); //waiting fordata to be reflected on UI
-    };
-
-    //ankagraw
-    describe('[DRDMV-8528,DRDMV-8527]: [Email Configuration] Verify Email configuration Grid view', async () => {
-        it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
+    //ankagraw #passed
+    describe('[5463,5464]: [Email Configuration] Verify Email configuration Grid view', async () => {
+        it('[5463,5464]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            let emailHeaders: string[] = ["Email ID", "Company", "Default Email", "Status"];
-            let add: string[] = ["ID"];
-            let newEmailHeaders: string[] = ["Email ID", "ID", "Company", "Default Email", "Status"];
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            let emailHeaders: string[] = ["Email IDs", "Company", "Status"];
+            let add: string[] = ["Created By","Created Date", "Display ID", "ID","Modified By","Modified Date"];
+            let newEmailHeaders: string[] = ["Email IDs", "Company", "Status","Created By","Created Date", "Display ID", "ID","Modified By","Modified Date"];
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
             await consoleEmailConfig.addHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
             await consoleEmailConfig.removeHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
-
         });
-        it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
-            let msg: string = "ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
+        it('[5463,5464]: Verify Email configuration header', async () => {
             await consoleEmailConfig.searchAndSelectCheckbox(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleEmailConfig.clickNewEmailConfiguration();
-            await createEmailConfigPo.selectEmailID(emailID);
+            await createEmailConfigPo.setEmailID(emailID);
             await createEmailConfigPo.selectCompany("Petramco");
             await createEmailConfigPo.setDescription("test ");
             await createEmailConfigPo.selectStatus("Active");
-            await createEmailConfigPo.selectDefaultEmail("False");
+            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.clickSave();
-            await expect(utilCommon.isPopUpMessagePresent(msg)).toBeTruthy();
-            await createEmailConfigPo.selectDefaultEmail("True");
+            expect(await utilityCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
+        });
+        it('[5463,5464]: Verify email configuration is accessible to Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB are not displayed to the Case Manager of same LOB');
+        });
+        it('[5463,5464]: Verify email configuration is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB are not displayed to the Case Manager of Facilities LOB');
+        });
+        it('[5463,5464]: Verify email configuration is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB are not displayed to the Case Manager of Facilities LOB');
+
+        });
+        it('[5463,5464]: Verify email configuration are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB is not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
+
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB is not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
+
+        });
+        it('[5463,5464]: Verify email configuration are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qyuan');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB are not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
+
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB is not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
+        });
+        it('[5463,5464]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await consoleEmailConfig.clickNewEmailConfiguration();
+            await createEmailConfigPo.selectCompany("Petramco");
+            await createEmailConfigPo.setEmailID(emailID);
+            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
+            await createEmailConfigPo.setDescription("test");
             await createEmailConfigPo.clickSave();
+            expect(await utilityCommon.isPopUpMessagePresent('The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
+            await createEmailConfigPo.clickCancel();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+        it('[5463,5464]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            let facilitiesEmail = "facilitymail@gmail.com"
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            await consoleEmailConfig.clickNewEmailConfiguration();
+            await createEmailConfigPo.selectCompany("Petramco");
+            await createEmailConfigPo.setEmailID(facilitiesEmail);
+            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
+            await createEmailConfigPo.setDescription("test");
+            // verify LOB is there
+            expect(await createEmailConfigPo.getLobValue()).toBe("Facilities");
+            await createEmailConfigPo.clickSave();
+            // expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); SUCCESS MESSAGE IS NOT PRESENT ON UI
+            // open the record and verify LOB is on edit screen
+            await utilityGrid.searchAndOpenHyperlink(facilitiesEmail);
+            expect(await editEmailConfigPo.getLobValue()).toBe("Facilities");
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
     //ankagraw
-    describe('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: [Email Configuration] Verify Email configuration Grid view', async () => {
-        let randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Email configuration Grid view', async () => {
+    describe('[5474,5473,5472,5471,5470,5469]: [Email Configuration] Verify Email configuration Grid view', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[5474,5473,5472,5471,5470,5469]: Verify Email configuration Grid view', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             expect(await newExclusiveSubjectPo.isSaveButtonEnabled()).toBeFalsy();
             await newExclusiveSubjectPo.setSubject("Global" + randomStr);
@@ -115,7 +194,7 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.selectGlobal("True");
             await newExclusiveSubjectPo.clickSaveButton();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Email configuration Grid view and add new exclusive', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify Email configuration Grid view and add new exclusive', async () => {
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Delete" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
@@ -124,62 +203,193 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.setSubject("update" + randomStr);
             await newExclusiveSubjectPo.clickSaveButton();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Set the exclusion details ', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Set the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('update' + randomStr)).toBeTruthy();
-            await utilGrid.clickCheckBoxOfValueInGrid('update' + randomStr);
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('update' + randomStr);
             await editEmailConfigPo.editExclusiveSubjectsButton();
             await editExclusiveSubjectPo.setSubject('updated123' + randomStr);
             await editExclusiveSubjectPo.clickSaveButton();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify the exclusion details ', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeTruthy();
-            await utilGrid.clickCheckBoxOfValueInGrid('Delete' + randomStr);
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Delete' + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeFalsy();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Delete the Email configuration', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.clickCheckBoxOfValueInGrid(emailID);
+        it('[5474,5473,5472,5471,5470,5469]: Delete the Email configuration', async () => {
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityGrid.searchAndSelectGridRecord(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
-            await utilCommon.clickOnWarningOk();
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
-            await apiHelper.createEmailConfiguration();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Global Exclusion should be displayed', async () => {
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
-            await utilGrid.searchAndOpenHyperlink(emailID);
+        it('[5474,5473,5472,5471,5470,5469]: Verify Global Exclusion should be displayed', async () => {
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
+
+
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email configuration for Human Resource LOB is displayed to Facilities LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent(facilitiesEmailID)).toBeTruthy();
+            await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email configuration for Human Resource LOB is displayed to Facilities LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent(facilitiesEmailID)).toBeTruthy();
+            await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(facilitiesEmailID)).toBeFalsy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qyuan');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy('Email ID is not present');
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Record is not present in Exclusive grid');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Record is present in Exclusive grid');
+            await utilityCommon.closeAllBlades();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email ID is present');
+            await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Record is present in Exclusive grid');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Record is display in Exclusive grid');
+            await utilityCommon.closeAllBlades();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+        it('[5474,5473,5472,5471,5470,5469]: Verify new Global Value with existing or old configuration', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig2);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.searchAndOpenHyperlink(emailConfig2.email);
+            await editEmailConfigPo.clickNewExclusiveSubjectsButton();
+            expect(await newExclusiveSubjectPo.isSaveButtonEnabled()).toBeFalsy();
+            await newExclusiveSubjectPo.setSubject("Global2" + randomStr);
+            await newExclusiveSubjectPo.setSortOrder('20');
+            await newExclusiveSubjectPo.selectGlobal("True");
+            await newExclusiveSubjectPo.clickSaveButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global2' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            // Verify Global2 with old email id
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global2' + randomStr)).toBeFalsy();
+
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated('Global2' + randomStr);
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Global2' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+
+            // Change LOB and verify same
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global2' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated('Global2' + randomStr);
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Global2' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
-    //ankagraw
-    it('[DRDMV-10419]: Support Group: Default Email checkbox', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-        await utilGrid.searchAndOpenHyperlink(emailID);
-        await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-        await editEmailConfigPo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead")).toBeTruthy("Popup message not matched");
-        await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-        expect(await editEmailConfigPo.isSaveButtonEnabled()).toBeFalsy();
-        await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
-        await editEmailConfigPo.clickSaveButton();
-    });
-
-    //ankagraw
-    describe('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: [Email Configuration] Verify Email configuration Grid view', async () => {
+    //ankagraw #passed
+    describe('[5257,5258,5259,5232]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let acknowledgementTemplateHeaders: string[] = ["Type", "Operation Type", "Ticket Status", "Template Name"];
-        it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: Verify all templates', async () => {
+        it('[5257,5258,5259,5232]: Verify all templates', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             expect(await editEmailConfigPo.isColumnPresentInAcknowledgementTemplateGrid(acknowledgementTemplateHeaders)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid("Update"));
@@ -187,7 +397,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
         });
-        it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: update the delete template', async () => {
+        it('[5257,5258,5259,5232]: update the delete template', async () => {
             expect(await editEmailConfigPo.isTicketTypeAcknowledgementTemplateDisabled()).toBeTruthy("Ticket Type is enable");
             expect(await editEmailConfigPo.isOperationTypeAcknowledgementTemplateDisabled()).toBeTruthy("Operation Type is enable");
             expect(await editEmailConfigPo.isTicketStatusAcknowledgementTemplateDisabled()).toBeTruthy("Ticket status is enable");
@@ -200,91 +410,28 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw
-    describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
-        });
-        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            expect(await editEmailConfigPo.isSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
-            expect(await editEmailConfigPo.isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Facilities");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("Facilities");
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("UI-SupportGroup-10410");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("UI-SupportGroup-10410");
-            expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
-            await editEmailConfigPo.cancelEditEmailConfig();
-        });
-        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated(offlineSupportGroup.orgName);
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBeNull();
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("UI-SupportGroup-10410");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            expect(await utilCommon.isErrorMsgPresent()).toBeTruthy();
-        });
-        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('gwixillian');
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
-            expect(await utilGrid.isGridRecordPresent("psilon@gmail.com")).toBeTruthy();
-            await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-Psilon");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
-            await editEmailConfigPo.cancelEditEmailConfig();
-        });
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
-    //ankagraw
-    describe('[DRDMV-10461,DRDMV-10763,DRDMV-10458]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+    //ankagraw #passed
+    describe('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-10461,DRDMV-10763,DRDMV-10458]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+        it('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Private" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
             await newExclusiveSubjectPo.clickSaveButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeTruthy();
-            await utilGrid.clickCheckBoxOfValueInGrid("Private" + randomStr);
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid("Private" + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy();
         });
-        it('[DRDMV-10461,DRDMV-10763,DRDMV-10458]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+
+        it('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
             expect(await editEmailConfigPo.isNewAvailableGlobalSubjectsDisplayed()).toBeTruthy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
@@ -299,25 +446,37 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 
-    //ankagraw
-    describe('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+    //ankagraw #passed
+    describe('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createEmailConfiguration(emailConfigFacilities);
+            await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
+        });
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Private" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
             await newExclusiveSubjectPo.clickSaveButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
@@ -326,12 +485,13 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
@@ -339,20 +499,27 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.signOut();
-            await loginPage.login('gwixillian')
+            await loginPage.login('gwixillian');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('gwixillian');
+            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.mailBoxName, "company": "Psilon" });
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink("psilon@gmail.com");
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
         });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
-            await utilGrid.searchRecord("Private" + randomStr);
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy("Private comment is present");
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
@@ -361,6 +528,9 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -369,13 +539,20 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw
-    describe('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
+    //ankagraw #passed
+    describe('[5183]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-10762]: Add exclusive subject', async () => {
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
+        });
+        it('[5183]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Global" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
@@ -385,7 +562,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
         });
-        it('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
+        it('[5183]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Private" + randomStr);
@@ -394,19 +571,31 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 
-    //ankagraw
-    describe('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
+    //ankagraw #passed
+    describe('[5180,5179]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-10765,DRDMV-10766]: Add exclusive subject', async () => {
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createEmailConfiguration(emailConfigFacilities);
+        });
+        it('[5180,5179]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Global" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
@@ -416,85 +605,42 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
         });
-        it('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
+        it('[5180,5179]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
-            await navigationPage.signOut();
-            await loginPage.login('gwixillian')
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('gwixillian');
+            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.mailBoxName, "company": "Psilon" });
+
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink("psilon@gmail.com");
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
-        });
-    });
-
-    //ankagraw
-    describe('[DRDMV-10454, DRDMV-10424]: Support Group: Delete default email id for multiple email configurations', async () => {
-        beforeAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
+            await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration();
-        });
-        it('[DRDMV-10454, DRDMV-10424]: create email configurations', async () => {
-            await apiHelper.apiLogin('tadmin');
-            await browser.sleep(2000); // required to remove flackyness
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
-            await browser.sleep(2000); // required to remove flackyness
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
-        });
-        it('[DRDMV-10454, DRDMV-10424]: change the default mail to false', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-            await editEmailConfigPo.clickSaveButton();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink("bwfqa2018@gmail.com");
-            await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-            await editEmailConfigPo.clickSaveButton();
-        });
-        it('[DRDMV-10454, DRDMV-10424]: Delete default email id', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
-            await consoleEmailConfig.deleteConfigurationEmail();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10005): There are 2 other email-id configurations with Default email as false. Please set one of them set to true before de-activiating or deleting this record")).toBeTruthy();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink("bwfqa2018@gmail.com");
-            await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
-            await editEmailConfigPo.clickSaveButton();
-        });
-        it('[DRDMV-10454, DRDMV-10424]: Support Group: Delete default email id for multiple email configurations', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
-            await consoleEmailConfig.deleteConfigurationEmail();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the selected record?');
-            await utilCommon.clickOnWarningOk();
-            expect(await utilGrid.isGridRecordPresent("bwfqa2019@gmail.com")).toBeFalsy();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2018@gmail.com");
-            await consoleEmailConfig.deleteConfigurationEmail();
-            await utilCommon.clickOnWarningOk();
-            expect(await utilGrid.isGridRecordPresent("bwfqa2018@gmail.com")).toBeFalsy();
-            await utilGrid.searchRecord(emailID);
-            expect(await consoleEmailConfig.getColumnHeaderValue("Default Email")).toBe("True");
+            await apiHelper.createEmailBox('incoming');
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
         });
     });
 
-    describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+    //ankagraw #passed
+    describe('[5114,5251,5168,5104,5382]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -502,12 +648,14 @@ describe('Email Configuration', () => {
                 "templateSummary": 'CaseSummaryName' + randomStr,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(caseTemplateData);
             caseTemplateData.templateStatus = "Draft";
             caseTemplateData.templateName = randomStr + 'caseTemplateNameDraft'
@@ -515,98 +663,276 @@ describe('Email Configuration', () => {
             caseTemplateData.templateStatus = "Inactive";
             caseTemplateData.templateName = randomStr + 'caseTemplateNameInactive'
             await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
         });
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,DRDMV-9037]: Exclusion Subject : Default associated public exclusion subject list', async () => {
+        it('[5114,5251,5168,5104,5382]: Exclusion Subject : Default associated public exclusion subject list', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isCreateEmailTemplpateLinkDisplayed()).toBeTruthy();
-            expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent(randomStr + 'caseTemplateNameDraft')).toBeFalsy();
-            await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
+            expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateNameDraft')).toBeFalsy();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateNameInactive')).toBeFalsy();
-            await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateName')).toBeTruthy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeFalsy("AvailableExclusionsSubject");
-            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeTruthy("AssociatedExclusionsSubject");
+            expect(await editEmailConfigPo.isListAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeFalsy("AvailableExclusionsSubject");
+            expect(await editEmailConfigPo.isListAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeTruthy("AssociatedExclusionsSubject");
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
-            expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Closed Ack Template')).toBeTruthy("Coloumn");
+            expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Closed Ack Template')).toBeTruthy("'Case Closed Ack Template' record not present");
         });
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+        it('[5114,5251,5168,5104,5382]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
             await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10014): Out of box acknowledgment templates cannot be deleted")).toBeTruthy("ERROR (10014)");
+            expect(await utilityCommon.isPopUpMessagePresent("Template is already in use hence it can not be deleted.")).toBeTruthy("ERROR : Template is already in use hence it can not be deleted.");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate('Case Closed Ack Template');
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Inactive');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10006): The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("ERROR (10006)");
+            expect(await utilityCommon.isPopUpMessagePresent("The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("The Acknowledgement template is in use, so status cannot be changed");
             await editAcknowledgmentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
     });
 
-    describe('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
-        let randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
-
-            let templateData = {
+    // #passed
+    describe('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+        let templateData, randomStr = Math.floor(Math.random() * 1000000);
+        it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+            templateData = {
                 "templateName": 'GlobalCaseTemplateName' + randomStr,
                 "templateSummary": 'GlobalCaseTemplateSummary' + randomStr,
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "- Global -",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": 'United States Support',
+                "ownerGroup": "US Support 3",
                 "caseStatus": "Assigned",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-            await createAcknowledgmentTemplatesPo.setTemplateName('GlobaltemplateName' + randomStr);
+            await createAcknowledgmentTemplatesPo.setTemplateName(templateData.templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
             await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
             await createAcknowledgmentTemplatesPo.setDescription('description');
             await createAcknowledgmentTemplatesPo.setSubject('subject');
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
-
-        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+        it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-            await createAcknowledgmentTemplatesPo.setTemplateName('templateName' + randomStr);
+            await createAcknowledgmentTemplatesPo.setTemplateName('companytemplateName' + randomStr);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
             await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
             await createAcknowledgmentTemplatesPo.setDescription('description');
             await createAcknowledgmentTemplatesPo.setSubject('subject');
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
-
-        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+        it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent("GlobalCaseTemplateName" + randomStr)).toBeTruthy();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectDefaultCaseTemplate(templateData.templateName);
             await editEmailConfigPo.clickSaveButton();
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await utilityCommon.closeAllBlades();
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('GlobaltemplateName' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('companytemplateName' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5336,5337]: Verify acknowledgment template is accessible to Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case Manager of same LOB');
+            expect(await utilityGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case Manager of same LOB');
+        });
+
+        it('[5336,5337]: Verify acknowledgment template is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName('FacilitiesGlobalAckTemplate' + randomStr);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
+            await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+            await createAcknowledgmentTemplatesPo.setDescription('description');
+            await createAcknowledgmentTemplatesPo.setSubject('subject');
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName('FacilitiesAckTemplate' + randomStr);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
+            await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+            await createAcknowledgmentTemplatesPo.setDescription('description');
+            await createAcknowledgmentTemplatesPo.setSubject('subject');
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+        });
+
+        it('[5336,5337]: Verify acknowledgment template is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case manager of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case manager of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
+        });
+
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
+        });
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
+
+        });
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Acknowledgment Templates");
+            await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('companytemplateName' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Acknowledgment Templates");
+            await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qyuan');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
+
+        });
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
+            expect(await utilityGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
+    });
+
+    //ankagraw #passed
+    describe('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+        let trustedMail: string = "test@abc.com"
+        it('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Trusted Email");
+            await editEmailConfigPo.clickAddTrustedEmailBtn();
+            expect(await editEmailConfigPo.isMappedRequesterRequiredTextPresent()).toBeTruthy();
+            expect(await editEmailConfigPo.isNewTrustedEmailRequiredTextPresent()).toBeTruthy();
+            await editEmailConfigPo.setNewTrustedEmail(trustedMail);
+            expect(await editEmailConfigPo.isNewTrustedEmailSaveBtnDisabled()).toBeTruthy();
+            expect(await editEmailConfigPo.isValuePresentInDropDown("Barney")).toBeFalsy();
+            await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
+            expect(await editEmailConfigPo.isValuePresentInDropDown("Thorn")).toBeFalsy();
+            await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
+            expect(await editEmailConfigPo.isValuePresentInDropDown("Ochoa")).toBeFalsy();
+            await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+        it('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+            await editEmailConfigPo.clickAddTrustedEmailBtn();
+            await editEmailConfigPo.setNewTrustedEmail(trustedMail);
+            await editEmailConfigPo.selectMappedRequesterDropDown("Adam Pavlik");
+            await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
+            await editEmailConfigPo.selectAndClickCheckboxOnTrustedEmail(trustedMail);
+            await editEmailConfigPo.clickEditTrustedEmailButtonOnTrustedEmail();
+            await editEmailConfigPo.setEmailOnEditTrustedEmail("Test@xyz.com");
+            await editEmailConfigPo.clickEditTrustedEmailCancelButtonOnTrustedEmail();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
+            await editEmailConfigPo.clickEditTrustedEmailCancelButtonOnTrustedEmail();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.clickEditTrustedEmailButtonOnTrustedEmail();
+            await editEmailConfigPo.setEmailOnEditTrustedEmail("Test@xyz.com");
+            await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
+            expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("Test@xyz.com")).toBeTruthy();
         });
     });
 });

@@ -6,8 +6,8 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -40,11 +40,11 @@ describe('Case Status Verification', () => {
             "statusReason": "Auto Resolved",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": 'Facilities Support',
-            "ownerGroup": "Facilities",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
+            "ownerBU": 'United States Support',
+            "ownerGroup": "US Support 3",
             "allowCaseReopen": true
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -76,54 +76,57 @@ describe('Case Status Verification', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-22306]: Reopen Case With Resolved Status Without And With Case Template Configuration', async () => {
-        it('[DRDMV-22306]: Create case1 without case template', async () => {
+    describe('[3490]: Reopen Case With Resolved Status Without And With Case Template Configuration', async () => {
+        it('[3490]: Create case1 without case template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus('Resolved');
         });
 
-        it('[DRDMV-22306]: Verify case1 without case template', async () => {
+        it('[3490]: Verify case1 without case template', async () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.closePopUpMessage();
+            await browser.sleep(2000); // wait for the data reflect on UI
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22306]: Create case2 with case template1 (', async () => {
+        it('[3490]: Create case2 with case template1', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-22306]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
+        it('[3490]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22306]: Create case3 with case template2 & verify reopen not display (', async () => {
+        it('[3490]: Create case3 with case template2 & verify reopen not display (', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
@@ -136,79 +139,84 @@ describe('Case Status Verification', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
     });
 
-    describe('[DRDMV-22321]: Reopen Case With Closed Status Without And With Case Template Configuration', async () => {
-        it('[DRDMV-22321]: Create case1 without case template', async () => {
+    describe('[3489]: Reopen Case With Closed Status Without And With Case Template Configuration', async () => {
+        it('[3489]: Create case1 without case template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('case1_Summary');
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-22321]: Verify case1 without case template', async () => {
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason("Auto Resolved");
+        it('[3489]: Verify case1 without case template', async () => {
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason("Auto Resolved");
             await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus(statusClosed);
+            await updateStatusBladePo.changeStatus(statusClosed);
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg2: Closed status is missing');
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.closePopUpMessage();
+            await browser.sleep(2000);
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22321]: Create case2 with case template1', async () => {
+        it('[3489]: Create case2 with case template1', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('case2_Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate3);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-22321]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
+        it('[3489]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22321]: Create case3 with case template2 & verify reopen not display', async () => {
+        it('[3489]: Create case3 with case template2 & verify reopen not display', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('case3_Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplate4);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg1: reopen button is missing');
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
     });
 
-    it('[DRDMV-22322]: Verify Reopen Button Not Displayed With Some Case Statuses', async () => {
+    it('[3488]: Verify Reopen Button Not Displayed With Some Case Statuses', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('adam');
         await createCasePage.setSummary('Summary');
@@ -218,93 +226,92 @@ describe('Case Status Verification', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew, 'FailureMsg1: New status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg2: Case Reopen link displayed');
         await viewCasePage.clickEditCaseButton();
-        await editCasePo.clickOnAssignToMe();
+        await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
         await editCasePo.clickSaveCase();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned, 'FailureMsg3: Assigned status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg4: Case Reopen link displayed');
-        await updateStatusBladePo.changeCaseStatus(statusInProgress);
+        await updateStatusBladePo.changeStatus(statusInProgress);
         await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg5: In progress status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg6: Case Reopen link displayed');
-        await updateStatusBladePo.changeCaseStatus(statusPending);
-        await updateStatusBladePo.setStatusReason('Error');
+        await updateStatusBladePo.changeStatus(statusPending);
+        await updateStatusBladePo.selectStatusReason('Error');
         await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending, 'FailureMsg7: Pending status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg8: Case Reopen link displayed');
-        await updateStatusBladePo.changeCaseStatus(statusCanceled);
-        await updateStatusBladePo.setStatusReason('Approval Rejected');
+        await updateStatusBladePo.changeStatus(statusCanceled);
+        await updateStatusBladePo.selectStatusReason('Approval Rejected');
         await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled, 'FailureMsg9: Pending status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg10: Case Reopen link displayed');
     });
 
-    describe('[DRDMV-22361]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
+    describe('[3484]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
         let case1, case2;
-        it('[DRDMV-22361]: Create case1  With Resolved Status', async () => {
+        it('[3484]: Create case1  With Resolved Status', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             // Create case1
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case1_Summary');
-            await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz');
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentPo.setAssignee("CA Support 3", "Quigley Heroux");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             case1 = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-22361]: Give Access To Users For case1', async () => {
+        it('[3484]: Give Access To Users For case1', async () => {
             //Give Read Access User3
             await viewCasePage.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('Qing Yuan');
-            
-            //Give Write Access User3
-            await caseAccessTabPo.selectAgentWithWriteAccess('qstrong');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('Qing Yuan', 'Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
 
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qing Yuan')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            //Give Write Access User3
+            await accessTabPo.selectAgent('qstrong', 'Agent');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qing Yuan', 'Read')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-22361]: Create case2  With Closed Status', async () => {
+        it('[3484]: Create case2  With Closed Status', async () => {
             // Create case2
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case2_Summary');
-            await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz');
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentPo.setAssignee("CA Support 3", "Quigley Heroux");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             case2 = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-22361]: Give Access To Users For Case2 And Change Case Status To Closed', async () => {
+        it('[3484]: Give Access To Users For Case2 And Change Case Status To Closed', async () => {
             //Give Read Access User3
             await viewCasePage.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('Qing Yuan');
-            await expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qing Yuan')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('Qing Yuan', 'Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            await expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qing Yuan', 'Read')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
             //Give Write Access User3
-            await caseAccessTabPo.selectAgentWithWriteAccess('qstrong');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await accessTabPo.selectAgent('qstrong', 'Agent');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus(statusClosed);
+            await updateStatusBladePo.changeStatus(statusClosed);
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-22361]: Verify Reopen Button With Read Only Users3', async () => {
+        it('[3484]: Verify Reopen Button With Read Only Users3', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
             await caseConsolePo.searchAndOpenCase(case1);
@@ -318,7 +325,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg4: Close status is missing');
         });
 
-        it('[DRDMV-22361]: Verify Reopen Button With Write Access Users2', async () => {
+        it('[3484]: Verify Reopen Button With Write Access Users2', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(case1);
@@ -326,13 +333,15 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Quin Strong reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg14: Resolved status is missing');
 
@@ -341,30 +350,34 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg7: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg8: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Quin Strong reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg12: Text is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus(statusClosed);
+            await updateStatusBladePo.changeStatus(statusClosed);
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg13: Closed status is missing');
         });
 
-        it('[DRDMV-22361]: Verify Reopen Button With Assignee Users1', async () => {
+        it('[3484]: Verify Reopen Button With Assignee Users1', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('qheroux')
             await caseConsolePo.searchAndOpenCase(case1);
 
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('Fritz Schulz reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg6: Text is missing');
 
@@ -373,17 +386,13 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg7: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg8: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('Fritz Schulz reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg12: Text is missing');
         });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
     });
-
 });

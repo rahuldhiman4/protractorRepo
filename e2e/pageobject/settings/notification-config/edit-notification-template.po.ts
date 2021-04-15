@@ -1,57 +1,76 @@
-import { $, protractor, ProtractorExpectedConditions, $$, element, by, browser, ElementFinder } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { DropDownType } from "../../../utils/constants";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        cancelButton: '[rx-view-component-id="2a50e7b7-b260-4749-ad9d-1d7cb65b5d95"] button',
-        header: '.modal-title',
-        saveButton: '[rx-view-component-id="50e25982-5452-4f20-ac79-5682de7cb467"] button',
-        clickOnEmailTab: 'li.rx-tab a',
-        editButtonOnEmailTab: '[rx-view-component-id="0306ec1b-e16e-416d-952d-b39c3a8336f0"] button',
-        selectCheckBoxEmailTab: '[rx-view-component-id="66f56078-f1e0-4946-a41c-f0624ba3b4a8"] .ui-grid-selection-row-header-buttons',
-        selectAlertSubjectCheckbox: '[rx-view-component-id="2c84ca97-2ff6-4325-ae14-3f2ed0c556ac"] .ui-grid-selection-row-header-buttons',
-        editCheckbox: 'button.d-icon-left-pencil',
-        clickableField: 'div.cke_contents.cke_reset span',
+        cancelButton: '.rx-action-button_secondary button.btn-secondary',
+        header: '.dp-title',
+        saveButton: '[rx-view-component-id="8b5f78b0-0aa8-40da-8d52-66d5afe1356b"] button',
+        emailTab: 'li.nav-item button[aria-posinset="2"]',
+        editButtonOnEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] button.d-icon-left-pencil',
+        checkBoxEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] .radio__label input',
+        alertSubjectCheckbox: '[rx-view-component-id="54e4673e-6717-4f72-98e2-4251ee72d702"] label.radio__label',
+        editCheckbox: '.d-icon-left-pencil',
+        clickableField: 'div.cke_contents.cke_reset span[contenteditable]',
         cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        defaultNotificationMethodGuid: "911e28fd-89bb-4ee0-bea9-1d22e48f1134",
-        description: '[rx-view-component-id="48a3c0ad-103c-4b1b-a8a0-3e0648ff6ab6"] input',
-        event: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] .ui-select-toggle',
-        addRecipientsBtn: '[rx-view-component-id="9c294d12-1577-44fd-950d-fe7021853558"] button',
-        addLocalizedMessageBtn: '[rx-view-component-id="a93ae1ed-3ae3-42cc-8f2b-6ce26fcc1f91"] button',
-        alertMessageBox: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .d-textfield div',
-        emailSubjectBox: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
-        emailBodyMessageBox: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .d-textfield div',
+        defaultNotificationMethodGuid: "c80f9de5-1a84-46fa-949d-fc073d65ebd8",
+        description: '[rx-view-component-id="73750a2f-4d74-4919-b0e4-fbc8e1b4167a"] textarea',
+        event: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] button',
+        addRecipientsBtn: '[rx-view-component-id="73a718fa-c683-48b0-b211-97b3744d7c3f"] button',
+        addLocalizedMessageBtn: '[rx-view-component-id="92468fc7-a2b9-46b4-8ad9-c2cfe12c9d8b"] button',
+        alertMessageBox: 'a.cke_button',
+        emailSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        emailSubjectBox: '[rx-view-component-id="ffb54436-9f83-437a-8606-94deb68c85f3"] input',
+        emailBodyMessageBox: '.cke_contents div',
         cancelEmailSubjectBlade: '[rx-view-component-id="8335618d-2a88-49d1-9002-e5b7601b7674"] button',
         cancelEmailBodyBlade: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        moduleNameText: '[rx-view-component-id="4fd471a8-c2c4-44f3-8c33-57501411df07"] .ui-select-match-text',
-        eventNameText: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] .ui-select-match-text',
-        searchRecipient: 'input[ng-model="searchInput"]',
-        applyButton: '[ng-click="onFilterApply()"]',
-        fieldLabels: '.rx-recipients-assignment-select-label, .modal-footer button',
-        recipientTypeSelect: '.rx-recipients-assignment-select select',
+        moduleNameText: '[rx-view-component-id="bdd94b56-3700-4876-8455-62f1e1b05ff6"] button div',
+        eventNameText: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] button div',
+        searchRecipient: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .adapt-search',
+        applyButton: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .filter-list [btn-type="primary"]',
+        fieldLabels: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .form-control-label span, [rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .bwf-footer button, [rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .border-top button',
+        recipientTypeSelect: '[id="adapt-select-37"] .dropdown-toggle',
         selectRecipient: '.rx-recipients-assignment-person-fullName, .rx-recipients-assignment-person-structure',
-        recipientList: 'div[ng-repeat*="recipient"] .text-wrapper span',
-        recipientsCheckbox: 'div[ng-repeat*="recipient"] .d-checkbox__item',
-        recipientsCheckboxInput: 'div[ng-repeat*="recipient"] input',
-        notificationMethod: '[rx-view-component-id="911e28fd-89bb-4ee0-bea9-1d22e48f1134"] .dropdown',
-        emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] button',
-        emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        recipientList: '.body tr td',
+        unCheckEmailGridvalue: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] input[type="radio"]',
+        recipientsCheckbox: '.body tr td label span input',
+        recipientsCheckboxInput: '.body tr td label span input',
+        notificationMethod: '[rx-view-component-id="c80f9de5-1a84-46fa-949d-fc073d65ebd8"] .dropdown',
+        emailBasedApprovalFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button',
+        emailSubject: '[rx-view-component-id="87825f39-f76b-4a2b-9d04-1e521562dc00"] input',
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
-        emailBasedApplrovalTrueFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] button.d-icon-check' 
+        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary',
+        cancelButtonAddRecipient: '.float-right button.btn-secondary',
+        alertInsertField: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .cke_button__rtfexpressioneditor_icon',
+        searchRecipeint: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .rx-form-control',
+        searchRecipeintList: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .rx-typeahead-popup-content button',
+        saveButtonAddRecipient: '.float-right button.btn-primary',
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
-        await $$(this.selectors.selectCheckBoxEmailTab).get(1).click();
+        await $$(this.selectors.checkBoxEmailTab).get(1).click();
     }
 
     async selectDefaultNotificationMethod(notification: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.defaultNotificationMethodGuid, notification);
+        await utilityCommon.selectDropDown(this.selectors.defaultNotificationMethodGuid, notification);
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await $(this.selectors.cancelButton).click();
+      //  await $(this.selectors.cancelButton).click();
+        await $(this.selectors.cancelButton).isPresent().then(async (result) =>{
+            if(result) await $(this.selectors.cancelButton).click();
+            else console.log("Cancel Button is not present");
+        })
+    }
+
+    async clickCancelButtonAddRecipient(): Promise<void> {
+        await $(this.selectors.cancelButtonAddRecipient).isPresent().then(async (result) =>{
+            if(result) await $(this.selectors.cancelButtonAddRecipient).click();
+            else console.log("Cancel Button is not present");
+        })
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -63,15 +82,16 @@ class EditNotificationTemplate {
     }
 
     async clickOnEmailTab(): Promise<void> {
-        await $(this.selectors.clickOnEmailTab).click();
+        await $(this.selectors.emailTab).click();
     }
 
     async clickOnEditButtonOfEmailTab(): Promise<void> {
         await $(this.selectors.editButtonOnEmailTab).click();
+        await browser.sleep(2000); // After click, edit email tab load takes time
     }
 
     async openAlertEditMessageText(): Promise<void> {
-        await $(this.selectors.selectAlertSubjectCheckbox).click();
+        await $(this.selectors.alertSubjectCheckbox).click();
         await $$(this.selectors.editCheckbox).first().click();
     }
 
@@ -94,8 +114,12 @@ class EditNotificationTemplate {
     }
 
     async openEmailSubjectEditMessageText(): Promise<void> {
-        await $$(this.selectors.selectCheckBoxEmailTab).get(0).click();
+        await $$(this.selectors.checkBoxEmailTab).get(0).click();
         await $$(this.selectors.editCheckbox).last().click();
+    }
+
+    async clickEmailUncheckvalue(): Promise<void> {
+        await $$(this.selectors.unCheckEmailGridvalue).get(0).click();
     }
 
     async isDescriptionFieldDisabled(): Promise<boolean> {
@@ -119,15 +143,15 @@ class EditNotificationTemplate {
     }
 
     async isAlertSubjectMessageDisabled(): Promise<boolean> {
-        return await $(this.selectors.alertMessageBox).getAttribute('class') == 'rtf-read-only';
+        return await $(this.selectors.alertMessageBox).getAttribute('aria-disabled') == 'true';
     }
 
     async isEmailSubjectMessageDisabled(): Promise<boolean> {
-        return await $(this.selectors.emailSubjectBox).getAttribute('readonly') == 'true';
+        return await $(this.selectors.emailSubjectBox).getAttribute('readonly') =='true';
     }
 
     async isEmailBodyMessageDisabled(): Promise<boolean> {
-        return await $(this.selectors.emailBodyMessageBox).getAttribute('class') == 'rtf-read-only';
+        return await $(this.selectors.emailBodyMessageBox).getAttribute('contenteditable') == 'false';
     }
 
     async cancelEmailSubjectBlade(): Promise<void> {
@@ -136,7 +160,7 @@ class EditNotificationTemplate {
 
     async cancelEmailBodyBlade(): Promise<void> {
         await $(this.selectors.cancelEmailBodyBlade).click();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async getModuleName(): Promise<string> {
@@ -167,29 +191,6 @@ class EditNotificationTemplate {
         await element(by.cssContainingText(`${this.selectors.recipientTypeSelect} option`, option)).click();
     }
 
-    async selectDropdownWithName(dropDownName: string, option: string): Promise<void> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$('.rx-recipients-assignment-select').count();
-            return count >= 1;
-        }), 3000);
-        const dropDown: ElementFinder[] = await $$('.rx-recipients-assignment-select');
-        for (let i: number = 0; i < dropDown.length; i++) {
-            await dropDown[i].$('.rx-recipients-assignment-select-label').isPresent().then(async (result) => {
-                if (result) {
-                    let dropDownLabelText: string = await dropDown[i].$('.rx-recipients-assignment-select-label').getText();
-                    if (dropDownLabelText === dropDownName) {
-                        await dropDown[i].$('.d-icon-angle_down').click();
-                        await dropDown[i].$('input').sendKeys(option);
-                        await element(by.cssContainingText("li[ng-repeat*='option']", option)).isPresent().then(async () => {
-                            await browser.sleep(1000);
-                            await element(by.cssContainingText(".is-open li[ng-repeat*='option']", option)).click();
-                        });
-                    }
-                }
-            });
-        }
-    }
-
     async clickApplyButton(): Promise<void> {
         await $(this.selectors.applyButton).click();
     }
@@ -199,7 +200,7 @@ class EditNotificationTemplate {
     }
 
     async saveAddRecipients(): Promise<void> {
-        await element(by.cssContainingText(this.selectors.fieldLabels, 'Save')).click();
+        await $(this.selectors.saveButtonAddRecipient).click();
     }
 
     async clickRecipientsCheckbox(recipientName: string, recipientOption: string) {
@@ -212,15 +213,15 @@ class EditNotificationTemplate {
         }
         switch (recipientOption) {
             case "TO": {
-                checkboxCount = count * 3;
+                checkboxCount = count + 1;
                 break;
             }
             case "CC": {
-                checkboxCount = (count * 3) + 1;
+                checkboxCount = count + 2;
                 break;
             }
             case "BCC": {
-                checkboxCount = (count * 3) + 2;
+                checkboxCount = count + 3;
                 break;
             }
             default: {
@@ -228,7 +229,7 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        await $$(this.selectors.recipientsCheckbox).get(checkboxCount).click();
+        await $$(this.selectors.recipientList).get(checkboxCount).$('[class="checkbox__label"]').click();
     }
 
     async isRecipientsCheckboxChecked(recipientName: string, recipientOption: string): Promise<boolean> {
@@ -241,15 +242,15 @@ class EditNotificationTemplate {
         }
         switch (recipientOption) {
             case "TO": {
-                checkboxCount = count * 3;
+                checkboxCount = count+1;
                 break;
             }
             case "CC": {
-                checkboxCount = (count * 3) + 1;
+                checkboxCount = (count ) + 2;
                 break;
             }
             case "BCC": {
-                checkboxCount = (count * 3) + 2;
+                checkboxCount = (count) + 3;
                 break;
             }
             default: {
@@ -257,16 +258,16 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        return (await $$(this.selectors.recipientsCheckboxInput).get(checkboxCount).getAttribute('class')).includes('ng-not-empty');
+        return (await $$(this.selectors.recipientList).get(checkboxCount).$('[type=checkbox]').getAttribute('aria-checked') =='true');
     }
 
     async isRecipientDisplayed(recipientName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.recipientList, recipientName)).isPresent().then(async (result) => {
-            if(result) 
-            return await element(by.cssContainingText(this.selectors.recipientList, recipientName)).isDisplayed();
+            if (result)
+                return await element(by.cssContainingText(this.selectors.recipientList, recipientName)).isDisplayed();
             else return false;
         });
-    } 
+    }
 
     async isNotificationMethodDisabled(): Promise<boolean> {
         return await $(this.selectors.notificationMethod).getAttribute('disabled') == 'true';
@@ -282,7 +283,7 @@ class EditNotificationTemplate {
     }
 
     async updateAlertEmailMsgs(content: string): Promise<void> {
-        await utilCommon.updateCKEditor(content);
+        await utilityCommon.updateCKEditor(content);
     }
 
     async updateEmailSubject(subject: string): Promise<void> {
@@ -295,26 +296,26 @@ class EditNotificationTemplate {
     }
 
     async getSelectedFieldValue(fieldName: string): Promise<string> {
-        let fieldGuid: string = undefined; 
+        let fieldGuid: string = undefined;
         switch (fieldName) {
             case "Company": {
-                fieldGuid = 'a423a785-aec4-453b-b2b7-d44f534fd2ed';
+                fieldGuid = '0d86e65f-f804-40c4-a955-ff82dd531956';
                 break;
             }
             case "Status": {
-                fieldGuid = 'edadf429-50e9-4867-ab44-d027826932df';
+                fieldGuid = 'da40a967-db52-4c1b-8d69-0c441f290323';
                 break;
             }
             case "Module": {
-                fieldGuid = '4fd471a8-c2c4-44f3-8c33-57501411df07';
+                fieldGuid = 'bdd94b56-3700-4876-8455-62f1e1b05ff6';
                 break;
             }
             case "Default Notification Method": {
-                fieldGuid = '911e28fd-89bb-4ee0-bea9-1d22e48f1134';
+                fieldGuid = 'c80f9de5-1a84-46fa-949d-fc073d65ebd8';
                 break;
             }
             case "Event": {
-                fieldGuid = '15aad4c8-1522-4586-b9d3-6be376cfcaa8';
+                fieldGuid = 'f535976d-f547-460a-8fa6-f959eb485d38';
                 break;
             }
             default: {
@@ -322,7 +323,7 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        return await $(`[rx-view-component-id="${fieldGuid}"] .ui-select-match-text`).getText();
+        return await $(`[rx-view-component-id="${fieldGuid}"] button`).getText();
     }
 
     async isEmailBasedApprovalFlagTrue(): Promise<boolean> {
@@ -338,13 +339,43 @@ class EditNotificationTemplate {
     }
 
     async isEmailBodyContains(value: string): Promise<boolean> {
-        let allLocatorCount:number = (await $$(this.selectors.emailBody)).length;
+        let allLocatorCount: number = (await $$(this.selectors.emailBody)).length;
         let allValues: string = '';
-        for(let i=0; i<allLocatorCount; i++){
-            allValues =  allValues + await $$(this.selectors.emailBody).get(i).getAttribute('innerText');
+        for (let i = 0; i < allLocatorCount; i++) {
+            allValues = allValues + await $$(this.selectors.emailBody).get(i).getAttribute('innerText');
         }
         return (allValues.replace(/\s/g, "")).includes(value.replace(/\s/g, ""));
     }
+    async setDropDownValue(dropDownName: string, dropDownValue: string): Promise<void> {
+        let locator = '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] adapt-rx-select button';
+        //if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        let dropDownElement: ElementFinder;
+        switch (dropDownName) {
+            case "RecipientType": {
+                dropDownElement = await $$(locator).get(0);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(locator).get(1);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
+    }
+    async clickOnInsertFieldOfAlert(): Promise<void> {
+        await $(this.selectors.alertInsertField).click();
+    }
+
+    async searchRecipient(requester: string): Promise<void> {
+        await $(this.selectors.searchRecipeint).clear();
+        await $(this.selectors.searchRecipeint).sendKeys(requester);
+        await $$(this.selectors.searchRecipeintList).first().click();
+    }
+
 
 }
 export default new EditNotificationTemplate();

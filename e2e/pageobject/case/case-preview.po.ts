@@ -1,4 +1,4 @@
-import {element, by, $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import {element, by, $, protractor, ProtractorExpectedConditions, $$, browser } from "protractor";
 
 class CasePreview {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -19,13 +19,13 @@ class CasePreview {
         requesterSite: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .person-site-text',
         caseTemplate: '[rx-view-component-id="ffb8da80-b878-4b11-8aec-3bd146aab6c0"] div[title]',
         description: '[rx-view-component-id="c5be61e7-f05b-4e30-91d0-e67a32125ff9"] .collapse-block div div div',
-        categoryTier1: '[rx-view-component-id="8668462b-3aac-4f43-8793-fc49aafbd5c6"] div[title]',
-        categoryTier2: '[rx-view-component-id="1068f2e1-1d3a-48a4-a0ed-ef1a8631ddc1"] div[title]',
-        categoryTier3: '[rx-view-component-id="1f32a2f6-ed6c-4b73-be36-c2990cb5a882"] div[title]',
-        categoryTier4: '[rx-view-component-id="aa729db3-52a1-45bf-b4ca-1d72f7c4a209"] div[title]',
+        categoryTier1: '[rx-view-component-id="6766318e-f3b3-44ce-b35d-84222675513c"] div[title]',
+        categoryTier2: '[rx-view-component-id="34ba16da-12ec-4871-a6b9-48376aa0e3c2"] div[title]',
+        categoryTier3: '[rx-view-component-id="3c83d732-3139-4a72-8674-f25b8c3adc13"] div[title]',
+        categoryTier4: '[rx-view-component-id="4c0ad2f9-edde-4f60-855a-dae532114d81"] div[title]',
         labelValue: '[rx-view-component-id="ab146574-d991-43bd-8a7b-0be34019164c"] div[title]',
-        assignee: '[rx-view-component-id="7e86cba3-c1f9-4478-bf59-ee986a3ca5dd"]',
-        assignedGroup: '[rx-view-component-id="2dfc8f80-2665-4e87-af2d-3d4d1137144d"] div[title]',
+        assignee: '[rx-view-component-id="2a8e0b48-6afb-4479-a904-35c10612d854"]',
+        assignedDetails: '[rx-view-component-id="2a8e0b48-6afb-4479-a904-35c10612d854"] div[title]',
         assignedCompany: '[rx-view-component-id="3c3eaad4-9b00-48f0-b1d8-f3881e21e3bc"] div[title]',
         createNewCaseButton: '[rx-view-component-id="e8e6eafe-d19c-4eeb-ab37-8ff302505579"] button',
         source: '[rx-view-component-id="669b71fd-6e23-4625-91f6-139208e47538"] div[title]',
@@ -34,6 +34,7 @@ class CasePreview {
         dynamicFieldsName: '[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] label',
         backButton: '[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button',
         showMoreDescription:'.bwf-description-read-state button',
+        lineOfBusiness: '[rx-view-component-id="2c8feca5-233a-4b48-b2bb-8f8d6ea454ad"] div[title]'
     }
 
     async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
@@ -61,7 +62,11 @@ class CasePreview {
     }
 
     async isCaseSiteDisplayed(caseSite: string): Promise<boolean> {
-        return await $(this.selectors.caseSite).getText() == caseSite ? true : false;
+        return await element(by.cssContainingText(this.selectors.caseSite, caseSite)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.caseSite, caseSite)).isDisplayed();
+            } else return false;
+        });
     }
 
     async isTitleDisplayed(): Promise<boolean> {
@@ -161,16 +166,19 @@ class CasePreview {
         } else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
     }
 
+
     async clickGoToCaseButton(): Promise<void> {
-        await $(this.selectors.gotoCaseButton).click();
-    }
-
-    async isAssignedGroupDisplayed(assignedGroup: string): Promise<boolean> {
-        return await $(this.selectors.assignedGroup).getText() == assignedGroup ? true : false;
-    }
-
-    async isAssignedCompanyDisplayed(assignedCompany: string): Promise<boolean> {
-        return await $(this.selectors.assignedCompany).getText() == assignedCompany ? true : false;
+        await $(this.selectors.gotoCaseButton).isPresent().then(async (present) => {
+            if(present) {
+                await $(this.selectors.gotoCaseButton).isDisplayed().then(async (displayed) => {
+                    if(displayed) await $(this.selectors.gotoCaseButton).click();
+                });
+            }
+            else{
+                await browser.sleep(1000);
+                await $(this.selectors.gotoCaseButton).click();
+            }
+        });
     }
 
     async isCreateNewCaseButtonDisplayed(): Promise<boolean> {
@@ -194,6 +202,14 @@ class CasePreview {
 
     async clickBackButton(): Promise<void> {
         await $(this.selectors.backButton).click();
+    }
+
+    async getLineOfBusinessValue(): Promise<string> {
+        return await $(this.selectors.lineOfBusiness).getText();
+    }
+
+    async getAssigneeDetails(): Promise<string> {
+        return await $(this.selectors.assignedDetails).getText();
     }
 }
 

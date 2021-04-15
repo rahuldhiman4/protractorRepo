@@ -1,5 +1,5 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$, Key } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 
 class CreateEmailTemplate {
@@ -9,13 +9,13 @@ class CreateEmailTemplate {
         templateGuid: '310bbc87-54ee-4994-9a1e-93b1982155f2',
         companyGuid: 'd240380a-1de2-4b28-9082-81e96fc21415',
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
-        labelGuid: 'a0774e28-42c2-4132-9da4-0063545e791f',
-        descriptionGuid: '0fab6085-678b-442a-851d-25085b0bde8c',
-        description: '[rx-view-component-id="0fab6085-678b-442a-851d-25085b0bde8c"] input',
-        subjectGuid: '187510cc-9804-46e2-bbda-0cdba1d6c83c',
-        subject: '[rx-view-component-id="187510cc-9804-46e2-bbda-0cdba1d6c83c"] textarea',
+        labelGuid: '7e5f9b4c-9c57-4255-b7b9-651b539dbf92',
+        descriptionGuid: '3cf801e-fc2f-4d74-a57b-77e4ebf2bde6',
+        description: '[rx-view-component-id="13cf801e-fc2f-4d74-a57b-77e4ebf2bde6"] input',
+        subjectGuid: '9e4a103d-82c3-4e2f-aba8-587ff987c98c',
+        subject: '[rx-view-component-id="9e4a103d-82c3-4e2f-aba8-587ff987c98c"] input',
         body: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_editable',
-        insertField: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__expressioneditor_icon',
+        insertField: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__rtfexpressioneditor_icon',
         fieldValueInBody: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_wysiwyg_div span',
         tableIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__table_icon',
         imageIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__image_icon',
@@ -31,7 +31,8 @@ class CreateEmailTemplate {
         fontSize: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__fontsize',
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
-        moduleGuid: '4514a92a-336f-47f7-9b17-02831428d9a8',
+        lineOfBusinessGuid: 'c4638c50-356f-4aa6-8e22-7392e1efd6c9',
+        lobValue: '[rx-view-component-id="c4638c50-356f-4aa6-8e22-7392e1efd6c9"] .rx-select__search-button-title'
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -39,39 +40,39 @@ class CreateEmailTemplate {
     }
 
     async selectCompany(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, value);
     }
 
     async isCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isTemplateRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.templateGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.templateGuid);
     }
 
-    async isModuleRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.moduleGuid);
+    async islineOfBusinessRequiredTextPresent(): Promise<boolean> {
+        return await utilityCommon.isRequiredTagToField(this.selectors.lineOfBusinessGuid);
     }
 
     async isStatusRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusGuid);
     }
 
     async isDescriptionRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.descriptionGuid);
+        return await utilityCommon.isRequiredTagToField('13cf801e-fc2f-4d74-a57b-77e4ebf2bde6');
     }
 
     async isSubjectRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.subjectGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.subjectGuid);
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, value);
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
     async setDescription(value: string): Promise<void> {
@@ -86,6 +87,7 @@ class CreateEmailTemplate {
         await $(this.selectors.body).sendKeys(value);
     }
     async setBody(value: string): Promise<void> {
+        await browser.sleep(1000); // required to load CKE component
         await $(this.selectors.body).sendKeys(Key.chord(Key.CONTROL, Key.END));
         await $(this.selectors.body).sendKeys(Key.ENTER);
         await $(this.selectors.body).sendKeys(value);
@@ -121,17 +123,17 @@ class CreateEmailTemplate {
 
     async clickOnTableIcon(): Promise<void> {
         await $(this.selectors.tableIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Table Pop-up Gets Open.
     }
 
     async clickOnImageIcon(): Promise<void> {
         await $(this.selectors.imageIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Image Pop-up Gets Open.
     }
 
     async clickOnLinkIcon(): Promise<void> {
         await $(this.selectors.linkIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait Until Link Pop-Up Gets Open.
     }
 
     async clickOnBoldIcon(): Promise<void> {
@@ -185,6 +187,10 @@ class CreateEmailTemplate {
         await $(locator).click();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 
 }

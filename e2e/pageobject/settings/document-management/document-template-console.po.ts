@@ -1,18 +1,22 @@
 import { element, by, $, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class DocumentTemplateConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
             gridGuid: '9a22b025-c87e-4ddb-b8ce-472ccbf39a63',
             pageHeader: '.rx-theme-main-text-color h2',
-            deleteButton: '[rx-view-component-id="93f7643a-ab88-41be-9ff4-7a9130dbbff0"] .d-button_small span',
+            deleteButton: '[rx-view-component-id="93f7643a-ab88-41be-9ff4-7a9130dbbff0"] button',
             addDocumentTemplateBtn: '[rx-view-component-id="3acdcc85-9981-433a-84dd-6891fedcc243"] button'
+    }
+
+    async clickCreateDocumentTemplate(): Promise<void> {
+        await $(this.selectors.addDocumentTemplateBtn).click();
     }
 
     async selectCheckBox(record:string): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
-        await utilGrid.searchAndSelectGridRecord(record);
+        await utilityGrid.searchAndSelectGridRecord(record);
     }
 
     async clickOnDeleteButton(): Promise<void> {
@@ -21,7 +25,7 @@ class DocumentTemplateConsolePage {
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
-        await utilGrid.clickOnGridRefreshButton();
+        await utilityGrid.clickRefreshIcon();
     }
 
     async isHeaderDisplayed(headerName:string): Promise<boolean> {
@@ -30,43 +34,43 @@ class DocumentTemplateConsolePage {
     }
 
     async isGridRecordPresent(searchRecord:string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(searchRecord);
+        return await utilityGrid.isGridRecordPresent(searchRecord);
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
-        await utilGrid.searchOnGridConsole(value);
+        await utilityGrid.searchRecord(value);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.addGridColumn(columnHeader);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearGridSearchBox(): Promise<void> {
-        await utilGrid.clearGridSearchBox();
+        await utilityGrid.clearFilter();
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.removeGridColumn(columnHeader);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.gridGuid);
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader);
     }
 
     async areGridColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.areColumnHeaderMatches(columnHeader);
     }
 
     async searchAndOpenDocumentTemplate(value: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(value);
+        await utilityGrid.searchAndOpenHyperlink(value);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 

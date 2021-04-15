@@ -1,8 +1,11 @@
 import { resolve } from "path";
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilityCommon from '../../utils/utility.common';
-import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
+import changeAssignmentBladePo from "../common/change-assignment.po";
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
+import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
+import manageTaskBladePo from "./manage-task-blade.po";
 
 class CreateAdhocTaskTemplatePage {
 
@@ -11,27 +14,31 @@ class CreateAdhocTaskTemplatePage {
         descriptionGuid: '84ebb434-1cf8-4363-94d2-c77d9c9e2f68',
         taskSummary: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] input',
         priority: 'fe14bbd7-3b72-4e88-b224-b58d3a0eb132',
-        label: '156b3220-56a1-4349-b595-670961ff215c',
-        categoryTier1: '67d80ff1-f2b1-4ebc-ba87-8f60c8b56213',
-        categoryTier2: 'de41a8b5-6db3-4ae9-b8f1-5268dfd464b3',
-        categoryTier3: 'f6c05c79-5859-4651-8d44-56e83670944a',
-        categoryTier4: '10c2b8c0-3171-49c7-b27e-95d123fb5d9a',
-        assignToMeButton: '[rx-view-component-id="92301e09-2079-4181-b80c-e18536f9dc6e"] button',
+        label: '4fa18764-42fe-415a-a0b5-b5529428932f',
+        categoryTier1: 'd4ef7224-b54b-48bb-b180-103a1f8e0086',
+        categoryTier2: 'cf0b83a7-b47d-4947-9046-2c63674c841e',
+        categoryTier3: '50e1c4ab-7ce2-4f8a-bf08-0f172eec713f',
+        categoryTier4: 'b0a2be68-aaf0-4a7f-9b70-27020f5b32e7',
+        assignToMeButton: '[rx-view-component-id="0d11a862-c378-49cc-bda8-2d6efbd2beeb"] .d-icon-left-user_plus',
         changeAssignmentButton: '[rx-view-component-id="1b94ca7a-b3e0-49b7-94a3-70c1aff3c8a4"] button',
         saveAdhocTask: '[rx-view-component-id="e971ed74-8ded-44a4-945f-338067be3df9"] button',
         canceladhocTask: '[rx-view-component-id="73fcc0fa-3282-42a2-bf5d-0e4e4de5fcac"] button',
         status: '[rx-view-component-id="5c6f476e-c95c-4b24-b202-b4029c94ec02"] .dropdown-toggle',
         attachmentLink: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] [type=button]',
         attachmentLimitWarning: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .bwf-attachment-limit-warning',
-        assignCompany: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .dropdown-toggle',
         buisnessUnit: '[rx-view-component-id="d290526a-893e-40c8-bbce-0a8e30c934c0"] .dropdown-toggle',
         assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .dropdown-toggle',
         department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .dropdown-toggle',
         assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .dropdown-toggle',
         taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
-        assignedCompanyRequiredText: '359f0c65-e48c-458d-8f14-3c2fc85c5cf6',
         assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
         attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
+        description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"]',
+        adHocTaskTextArea: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_editable_themed',
+        numberIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__numberedlist_icon',
+        bulletIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__bulletedlist_icon',
+        lineOfBussiness: '[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] input',
+        assignmentGuid: '0d11a862-c378-49cc-bda8-2d6efbd2beeb'
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
@@ -44,39 +51,39 @@ class CreateAdhocTaskTemplatePage {
         await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
-    async updateTaskDescription(description:string):Promise<void>{
+    async updateTaskDescription(description: string): Promise<void> {
         await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
     }
 
-    async clickOnLeftAlignIcon():Promise<void>{
+    async clickOnLeftAlignIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnLeftAlignIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnRightAlignIcon():Promise<void>{
+    async clickOnRightAlignIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnRightAlignIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnCenterAlignIcon():Promise<void>{
+    async clickOnCenterAlignIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnCenterAlignIcon(this.selectors.descriptionGuid);
     }
 
-    async selectColor(value:string):Promise<void>{
-        await ckeditorOpsPo.selectColor(value,this.selectors.descriptionGuid);
+    async selectColor(value: string): Promise<void> {
+        await ckeditorOpsPo.selectColor(value, this.selectors.descriptionGuid);
     }
 
-    async enterNewLineInCKE():Promise<void>{
+    async enterNewLineInCKE(): Promise<void> {
         await ckeditorOpsPo.enterNewLineInCKE(this.selectors.descriptionGuid);
     }
 
-    async clickOnBoldIcon():Promise<void>{
+    async clickOnBoldIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnBoldIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnItalicIcon():Promise<void>{
+    async clickOnItalicIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnItalicIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnUnderLineIcon():Promise<void>{
+    async clickOnUnderLineIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnUnderLineIcon(this.selectors.descriptionGuid);
     }
 
@@ -141,11 +148,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async getStatusAttribute(): Promise<string> {
-        return await $(this.selectors.status).getAttribute('disabled');
-    }
-
-    async getAssignCompanyAttribute(): Promise<string> {
-        return await $(this.selectors.assignCompany).getAttribute('class');
+        return await $(this.selectors.status).getAttribute('aria-disabled');
     }
 
     async getBuisnessUnitAttribute(): Promise<string> {
@@ -174,10 +177,6 @@ class CreateAdhocTaskTemplatePage {
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
         return await utilityCommon.isRequiredTagToField(this.selectors.priority);
-    }
-
-    async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.assignedCompanyRequiredText);
     }
 
     async isAssignedGroupRequiredTextPresent(): Promise<boolean> {
@@ -211,6 +210,115 @@ class CreateAdhocTaskTemplatePage {
     async addAttachmentInDescription(fileToUpload: string[]): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
+    }
+
+    async getCategoryTier1(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier1}"] button`).getText();
+    }
+
+    async getCategoryTier2(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier2}"] button`).getText();
+    }
+
+    async getCategoryTier3(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier3}"] button`).getText();
+    }
+
+    async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4}"] button`).getText();
+    }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.label;
+                break;
+            }
+            case "Priority": {
+                guid = this.selectors.priority;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
+    async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        let leftAlignemntElement = await $$('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu div').get(1);
+        return await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement);
+    }
+
+    async setInsertRemoveNumberList(value: string): Promise<void> {
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.numberIcon).click();
+        await $(this.selectors.adHocTaskTextArea).sendKeys(value);
+    }
+
+    async setInsertRemoveBulletedList(value: string): Promise<void> {
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.bulletIcon).click();
+        await $(this.selectors.adHocTaskTextArea).sendKeys(value);
+    }
+
+    async clickMaximizeMinimizeIcon(): Promise<void> {
+        await ckeditorOpsPo.clickMaximizeMinimizeIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnLinkIcon(): Promise<void> {
+        await ckeditorOpsPo.clickOnLinkIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnTableIcon(): Promise<void> {
+        await ckeditorOpsPo.clickOnTableIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnImageIcon(): Promise<void> {
+        await ckeditorOpsPo.clickOnImageIcon(this.selectors.descriptionGuid);
+    }
+
+    async getLineOfBussinessValue(): Promise<string> {
+        let elementPresent = await $(this.selectors.lineOfBussiness).isPresent()
+        if (elementPresent == true) return await $(this.selectors.lineOfBussiness).getAttribute("placeholder");
+        else return await $('[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] .dropdown-toggle').getText();
+
+    }
+
+    async getAssignedGroupText(): Promise<string> {
+        return await changeAssignmentBladePo.getDropDownValue("AssignedGroup", this.selectors.assignmentGuid);
+    }
+
+    async getAssigneeValue(): Promise<string> {
+        return await changeAssignmentBladePo.getDropDownValue("Assignee", this.selectors.assignmentGuid);
+    }
+
+    async isDropDownListSorted(dropdown: string): Promise<boolean> {
+        return await changeAssignmentBladePo.isDropDownListSorted(dropdown, this.selectors.assignmentGuid);
+    }
+
+    async isValuePresentInDropDown(dropdown: string, dropDownValue: string): Promise<boolean> {
+        return await changeAssignmentBladePo.isValuePresentInDropDown(dropdown, dropDownValue, this.selectors.assignmentGuid);
     }
 }
 

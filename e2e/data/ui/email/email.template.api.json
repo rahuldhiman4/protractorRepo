@@ -3,7 +3,7 @@
     "TemplateName": "TemplateName",
     "Company": "Petramco",
     "Status": 1,
-    "Module": "Cases",
+
     "Description": "Leave details",
     "EmailMessageSubject": "Leave summary",
     "EmailMessageBody": "<p>Hi Team ,</p><p></p><p> I am taking leave today. </p><p></p><p> Thanks.</p>"
@@ -35,5 +35,33 @@
     "Description": "Company details",
     "EmailMessageSubject": "Declared Company Holidays",
     "EmailMessageBody": "Hi Team ,Company Financial Calender will be from March. Thanks."
+  },
+  "emailTemplateToComposeEmailGlobal": {
+    "TemplateName": "Company Global Calender",
+    "Company": "- Global -",
+    "Status": 1,
+    "Module": "Cases",
+    "Description": "Company details",
+    "EmailMessageSubject": "Declared Company Holidays",
+    "EmailMessageBody": "Hi Team ,Company Financial Calender will be from March. Thanks."
+  },
+  "emailTemplateDraft": {
+    "TemplateName": "Company Draft",
+    "Company": "Petramco",
+    "Status": 2,
+    "Module": "Cases",
+    "Description": "Company details",
+    "EmailMessageSubject": "Declared Company Holidays",
+    "EmailMessageBody": "Hi Team ,Company Financial Calender will be from March. Thanks."
+  },
+
+  "emailTemplatePsilon": {
+    "TemplateName": "Company Psilon",
+    "Company": "Psilon",
+    "Status": 1,
+    "Module": "Cases",
+    "Description": "Company details",
+    "EmailMessageSubject": "Declared Company Holidays",
+    "EmailMessageBody": "Hi Team ,Psilon Company Financial Calender will be from March. Thanks."
   }
 }

@@ -32,8 +32,7 @@ class ShowApproversBlade {
         closedApproverLabelActivity: 'fieldset.dp-size-rx-md .active .bwf-approver-list-group-list-item-icon-container .d-icon-cross_circle_o + span',
         approvedApproverIconActivity: 'fieldset.dp-size-rx-md .active .bwf-approver-list-group-list-item-icon-container .d-icon-check_circle_o',
         approvedApproverLabelActivity: 'fieldset.dp-size-rx-md .active .bwf-approver-list-group-list-item-icon-container .d-icon-check_circle_o + span',
-
-
+        rejectedApproverLabelActivity: 'fieldset.dp-size-rx-md .active .bwf-approver-list-group-list-item-icon-container .d-icon-cross_circle_o + span',
         backButton: '[rx-view-component-id="56ae39ee-49a3-42b5-94b1-55da3abe4b81"] button',
     }
 
@@ -170,6 +169,11 @@ class ShowApproversBlade {
     async getApprovedApprovalStatusLabelFromActivity(): Promise<string> {
         return await $(this.selectors.approvedApproverLabelActivity).getText();
     }
+
+    async getRejectedApprovalStatusLabelFromActivity(): Promise<string> {
+        return await $(this.selectors.rejectedApproverLabelActivity).getText();
+    }
+
 
     async isApprovedApproverIconDisplayedFromActivity(): Promise<boolean> {
         return await $(this.selectors.approvedApproverIconActivity).isDisplayed();

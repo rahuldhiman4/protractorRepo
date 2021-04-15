@@ -1,20 +1,20 @@
 const fs = require('fs');
 
 var specResult = [];
-var jiraRegx = /\[(\s*DRDMV-\d+\s*,?)+\]/g;
+var testIdRegx = /\[(\s*\d+\s*,?)+\]/g;
 var specJsonReporter = {
     specDone: function (result) {
-        let jiraIdMatches = result.description.match(jiraRegx);
-        let jiraIdPattern = null;
-        if (jiraIdMatches && jiraIdMatches.length) {
-            jiraIdPattern = jiraIdMatches[0].replace('[', '').replace(']', '');
+        let testIdMatches = result.description.match(testIdRegx);
+        let testIdPattern = null;
+        if (testIdMatches && testIdMatches.length) {
+            testIdPattern = testIdMatches[0].replace('[', '').replace(']', '');
         } else {
-            jiraIdPattern = ''
+            testIdPattern = ''
         }
-        let jiraIds = jiraIdPattern.split(',');
-        jiraIds.forEach((id) => {
+        let testIds = testIdPattern.split(',');
+        testIds.forEach((id) => {
             specResult.push({
-                jiraId: id.trim(),
+                testId: id.trim(),
                 description: result.description,
                 status: result.status
             });

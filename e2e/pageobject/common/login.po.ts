@@ -15,7 +15,6 @@ class LoginPage {
         rssoUserName: 'input[id="user_login"]',
         rssoPassword: 'input[id="login_user_password"]',
         rssoSignInButton: 'button[id="login-jsp-btn"]',
-        settingsButton: 'button.d-icon-gear',
     }
 
     async login(userName: string, password?: string): Promise<void> {
@@ -52,7 +51,7 @@ class LoginPage {
         await browser.wait(this.EC.elementToBeClickable($(userLocator)), 30000).then(async () => {
             await $(userLocator).clear();
             await $(userLocator).sendKeys(user);
-        })
+        });
         console.log(`Login to BWF with ${user}`);
         await $(passwordLocator).clear();
         await $(passwordLocator).sendKeys(password);
@@ -63,8 +62,8 @@ class LoginPage {
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
         await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 30000);
+        console.log(' === Login Successful === ');
     }
-
 }
 
 export default new LoginPage();

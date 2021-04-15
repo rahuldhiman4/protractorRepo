@@ -5,6 +5,8 @@ import quickCase from "../../pageobject/case/quick-case.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
+import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';
 import tablePropertiesPo from '../../pageobject/common/ck-editor/table-properties.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -21,19 +23,15 @@ import copyNotificationTemplatePo from '../../pageobject/settings/notification-c
 import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from "../../utils/util.common";
-import utilGrid from '../../utils/util.grid';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
-const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 
 describe("Compose Email", () => {
-    let emailGuid;
-    let incomingGUID, outgoingGUID, emailconfigGUID;
     let imageUrlFieldIndex = 0;
     let imageWidthFieldIndex = 2;
     let tableRowFieldIndex = 0;
@@ -45,33 +43,157 @@ describe("Compose Email", () => {
     let linkTargetDropDownIndex = 4;
     let cellCaption: number = 7;
     let cellSummary: number = 8;
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteAllEmailConfiguration();
-        emailGuid = await apiHelper.createEmailConfiguration();
-        incomingGUID = await emailGuid.incomingMailGUID;
-        outgoingGUID = await emailGuid.outGoingMailGUID;
-        emailconfigGUID = await emailGuid.emailConfigurationEmailGUID;
+        await apiHelper.createEmailBox('outgoing');
     });
 
     afterAll(async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteAllEmailConfiguration();
         await utilityCommon.closeAllBlades();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await navigationPage.signOut();
     });
 
+    describe('[3758,3756]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase;
+        beforeAll(async () => {
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "Test case for 3758 RandVal" + randomString,
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[3758,3756]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndSelectGridRecord('Case Status Change');
+            await consoleNotificationTemplatePo.clickCopyTemplate();
+            await copyNotificationTemplatePo.setCompanyValue('Petramco');
+            await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+            await consoleNotificationTemplatePo.UnselectGridValue();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Company", 'Petramco', "text");
+            await utilityGrid.searchAndOpenHyperlinkWithoutRemovingFilter('Case Status Change');
+
+            await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
+            await editNotificationTemplatePo.clickOnEmailTab();
+            await editNotificationTemplatePo.selectCheckBoxOfBody();
+            await editNotificationTemplatePo.clickOnEditButtonOfEmailTab();
+            await editMessageTextBladePo.setMessageBody('new');
+            await editMessageTextBladePo.clickOnImageIcon();
+            await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
+            await editMessageTextBladePo.setMessageBody('this is link ');
+            await editMessageTextBladePo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnTargetTab();
+            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            await editMessageTextBladePo.setMessageBody('this is table');
+            await editMessageTextBladePo.clickOnTableIcon();
+            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('NotiFicationT', cellSummary);
+            await tablePropertiesPo.clickOnOkButton();
+            //bold
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 1, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnBoldIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 1, 'FirstBold', 'NotiFicationT');
+            //italic
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 2, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnItalicIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 2, 'FirstItalic', 'NotiFicationT');
+            //underline
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 3, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnUnderLineIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 3, 'FirstUnderLine', 'NotiFicationT');
+            //left Align
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 1, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnLeftAlignIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 1, 'FirstLeftAlign', 'NotiFicationT');
+            //Right Align
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 2, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnRightAlignIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 2, 'FirstRightAlign', 'NotiFicationT');
+            //Center Align
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 3, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnCenterAlignIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 3, 'FirstCenterAlign', 'NotiFicationT');
+            //set color
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 1, 'NotiFicationT');
+            await editMessageTextBladePo.selectColor('Bright Blue');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 1, 'SettingColor', 'NotiFicationT');
+            //set font
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 2, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnFontSizeIcon();
+            await editMessageTextBladePo.selectFontTypeOrSize('18');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 2, 'SettingFontSize', 'NotiFicationT');
+            await editMessageTextBladePo.setMessageBody('');
+            await editMessageTextBladePo.clickOnSaveButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+        });
+        it('[3758,3756]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await updateStatusBladePo.changeStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            let subject = `Qadim Katawazi changed the status of ${newCase.displayId} to In Progress`;
+            console.log("Subject of the email: ", subject);
+            await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
+            await apiHelper.apiLogin('tadmin');
+            let body = await apiHelper.getHTMLBodyOfEmail(subject, 'qheroux@petramco.com');
+            console.log('body:', body);
+            //color span
+            await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
+            //table width size attaribute
+            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height:200px;width:500px;">')).toBeTruthy('Table properties not displayed');
+            //image
+            await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
+            //font 
+            await expect(body.includes('<td><span style="font-size:18px;">SettingFon</span><span style="font-size:18px;">SettingFontSize</span><span style="font-size:18px;">tSize</span></td>')).toBeTruthy('Font Size is not present');
+            //right allign
+            await expect(body.includes('<td>FirFirstRightAlignstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
+            //center align
+            await expect(body.includes('<td>FirstCenterAlignFirstCenterAlign</td>')).toBeTruthy('Center Alignment is not present');
+            //italic
+            await expect(body.includes('<td><em>FirstItalic</em>FirstItalic</td>')).toBeTruthy('Italic Font is not present');
+            //underline
+            await expect(body.includes('<td>FirsFirstUnderLinetUnderLine</td>')).toBeTruthy('Underline Font is not present');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login("qtao");
+        });
+    });
+
     //kgaikwad
-    describe('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {
+    describe('[5515]: UI validation Email Option via Create New Case', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         beforeAll(async () => {
             let caseData = {
                 "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-8377RandVal" + randomString,
+                "Summary": "Test case for 5515RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -80,7 +202,7 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {
+        it('[5515]: UI validation Email Option via Create New Case', async () => {
             await navigationPage.gotoCaseConsole();
             let caseId: string = newCase.displayId;
             await caseConsole.searchAndOpenCase(caseId);
@@ -103,8 +225,8 @@ describe("Compose Email", () => {
             await quickCase.selectRequesterName('adam');
             await quickCase.setCaseSummary('new case');
             await quickCase.createCaseButton();
-            await utilCommon.closePopUpMessage();
-            await quickCase.gotoCaseButton();
+            await utilityCommon.closePopUpMessage();
+            await casePreviewPo.clickGoToCaseButton();
             let quickCaseId: string = await viewCasePo.getCaseID();
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
@@ -125,13 +247,13 @@ describe("Compose Email", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-8391]: Negative:Compose email discard changes validation', async () => {
-        it('[DRDMV-8391]: Negative:Compose email discard changes validation', async () => {
+    describe('[5506]: Negative:Compose email discard changes validation', async () => {
+        it('[5506]: Negative:Compose email discard changes validation', async () => {
             await navigationPage.gotoCaseConsole();
             let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseData = {
                 "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-8377RandVal" + randomString,
+                "Summary": "Test case for 5515RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -152,44 +274,14 @@ describe("Compose Email", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10453]: Email Template grid columns', async () => {
-        it('[DRDMV-10453]: Email Template grid columns', async () => {
-            await navigationPage.gotoCaseConsole();
-            let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseData = {
-                "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-8377RandVal" + randomString,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('qtao');
-            let newCase = await apiHelper.createCase(caseData);
-            let caseId: string = newCase.displayId;
-            await caseConsole.searchAndOpenCase(caseId);
-            expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
-            await viewCasePo.clickOnEmailLink();
-            await composeMail.clickOnSelectEmailTemplateLink();
-            let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale"];
-            expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
-            await selectEmailTemplateBladePo.clickOnCancelButton();
-        });
-        afterAll(async () => {
-            await composeMail.clickOnDiscardButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        });
-    });
-
-    //kgaikwad
-    describe('[DRDMV-10390]: Visible Columns on Email Template Grid on Compose Email UI', async () => {
-        it('[DRDMV-10390]: Visible Columns on Email Template Grid on Compose Email UI', async () => {
+    describe('[5288]: Visible Columns on Email Template Grid on Compose Email UI', async () => {
+        it('[5288]: Visible Columns on Email Template Grid on Compose Email UI', async () => {
             await navigationPage.gotoCaseConsole();
             let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseData =
             {
                 "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-8377RandVal" + randomString,
+                "Summary": "Test case for 5515RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -216,13 +308,13 @@ describe("Compose Email", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10409, DRDMV-9033]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
-        it('[DRDMV-10409, DRDMV-9033]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
+    describe('[5274, 5384]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
+        it('[5274, 5384]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
             await navigationPage.gotoCaseConsole();
             let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseData = {
                 "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-8377RandVal" + randomString,
+                "Summary": "Test case for 5515RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -251,7 +343,7 @@ describe("Compose Email", () => {
 
     //kgaikwad
     //Failed due to application issue...defect logged DRDMV-21883
-    describe('[DRDMV-10394,DRDMV-10397]: Apply Email Template', async () => {
+    describe('[5284,5281]: Apply Email Template', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
@@ -260,8 +352,8 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
-                "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-10394 RandVal" + randomString,
+                "Requester": "qdu",
+                "Summary": "Test case for 5284 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -270,17 +362,16 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-10394,DRDMV-10397]: Apply Email Template', async () => {
+        it('[5284,5281]: Apply Email Template', async () => {
             await navigationPage.gotoCaseConsole();
             let caseId: string = newCase.displayId;
-            await utilityGrid.clearFilter();
-            await caseConsole.searchAndOpenCase(caseId);
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -301,7 +392,7 @@ describe("Compose Email", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
+    describe('[5278,5285]: Email Body override with template details', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
@@ -311,7 +402,7 @@ describe("Compose Email", () => {
             await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-10401 RandVal" + randomString,
+                "Summary": "Test case for 5278 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -320,21 +411,19 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
+        it('[5278,5285]: Email Body override with template details', async () => {
             let caseId: string = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
-            await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
-            expect(await composeMail.getSubject()).toContain(caseId); ////part of DRDMV-10393
+            expect(await composeMail.getSubject()).toContain(caseId); ////part of 5285
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
             expect((await composeMail.isTextPresentInEmailBody('qtao@petramco.com'))).toBeFalsy();
             expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
@@ -348,7 +437,7 @@ describe("Compose Email", () => {
     });
 
     //ptidke
-    describe('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
+    describe('[5282,5277]:Email Template name in header', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
@@ -358,7 +447,7 @@ describe("Compose Email", () => {
             await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Test case for DRDMV-10398 RandVal" + randomString,
+                "Summary": "Test case for 5280 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -367,17 +456,16 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
+        it('[5282,5277]:Email Template name in header', async () => {
             let caseId: string = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnRequestersEmail();
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -398,20 +486,21 @@ describe("Compose Email", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10395]: Email template Update', async () => {
+    describe('[5283]: Email template Update', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateDataForTest1, emailTemplateDataForTest2;
         beforeAll(async () => {
             emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
-            emailTemplateDataForTest1.TemplateName = 'TemplateWithMandatoryField' + randomString;
+            emailTemplateDataForTest1.TemplateName = randomString+'TemplateWithMandatoryField' ;
             emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
-            emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomString;
+            emailTemplateDataForTest2.TemplateName = randomString1+'TemplateForSalary' ;
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
             await apiHelper.createEmailTemplate(emailTemplateDataForTest2);
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Test case for DRDMV-10395 RandVal" + randomString,
+                "Summary": "Test case for 5283 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -420,19 +509,17 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-10395]: Email template Update', async () => {
+        it('[5283]: Email template Update', async () => {
             await navigationPage.gotoCaseConsole();
             let caseId: string = newCase.displayId;
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
-            await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('I am taking leave today.', 'Email Body 1 does not match');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest1.EmailMessageSubject, 'Subject value 1 does not match');
@@ -454,13 +541,13 @@ describe("Compose Email", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
+    describe('[5505]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         beforeAll(async () => {
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Test case for DRDMV-8392 RandVal" + randomString,
+                "Summary": "Test case for 5505 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -469,31 +556,27 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
+        it('[5505]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
             let caseId: string = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
-            await composeMail.isSelectEmailTemplateButtonPresent();
             expect(await composeMail.isUserPopulatedInToOrCc('To', 'xyxd')).toBeFalsy();
             expect(await composeMail.isUserPopulatedInToOrCc('Cc', 'xyxd')).toBeFalsy();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.setToOrCCInputTetxbox('Cc', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('Cc', 'fritz.schulz@petramco.com');
             expect(await composeMail.getCcEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.clickOnDiscardButton();
-            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         afterAll(async () => {
             await composeMail.clickOnDiscardButton();
+            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?', 'Warning Email message is missing');
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });
 
-    describe('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
+    describe('[3757]: Verify able to apply email template with images tables and hyperlinks ', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, caseTemplateName, sourceValue1;
         beforeAll(async () => {
@@ -507,25 +590,25 @@ describe("Compose Email", () => {
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qheroux');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Test case for DRDMV-20369 RandVal" + randomString,
+                "Summary": "Test case for 3757 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qheroux');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
+        it('[3757]: Verify able to apply email template with images tables and hyperlinks ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName("templateName" + randomString);
             console.log("templateName" + randomString);
@@ -534,7 +617,7 @@ describe("Compose Email", () => {
             await createEmailTemplatePo.setDescription(randomString);
             await createEmailTemplatePo.setSubject("templateRandomString" + randomString);
         });
-        it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
+        it('[3757]: Verify able to apply email template with images tables and hyperlinks ', async () => {
             //adding dynamic fields
             await createEmailTemplatePo.setBody('Setting Body');
             await createEmailTemplatePo.clickOnImageIcon();
@@ -606,13 +689,12 @@ describe("Compose Email", () => {
             await createEmailTemplatePo.setBody('Ending Email');
             await createEmailTemplatePo.clickOnSaveButton();
         });
-        it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
+        it('[3757]: Verify able to apply email template with images tables and hyperlinks ', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate("templateName" + randomString);
             await selectEmailTemplateBladePo.clickOnApplyButton();
@@ -621,7 +703,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.getFirstPostContent()).toContain('Fritz Schulz sent an email', 'not');
+            expect(await activityTabPo.getFirstPostContent()).toContain('Quigley Heroux sent an email', 'not');
             expect(await activityTabPo.isLinkDisplayedInActivity('http://www.google.com')).toBeTruthy('Link is not displayed');
             expect(await activityTabPo.getTextOfTD('strong')).toContain('FirstBold');
             expect(await activityTabPo.getTextOfTD('em')).toContain('FirstItalic');
@@ -636,154 +718,32 @@ describe("Compose Email", () => {
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qkatawazi');
         });
     });
 
-    describe('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
-        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase;
-        beforeAll(async () => {
-            let caseData = {
-                "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('fritz');
-            newCase = await apiHelper.createCase(caseData);
-        });
-        it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndSelectGridRecord('Case Status Change');
-            await consoleNotificationTemplatePo.clickCopyTemplate();
-            await copyNotificationTemplatePo.setCompanyValue('Petramco');
-            await copyNotificationTemplatePo.clickOnCreateCopyButton();
-            await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
-            await editNotificationTemplatePo.clickOnEmailTab();
-            await editNotificationTemplatePo.selectCheckBoxOfBody();
-            await editNotificationTemplatePo.clickOnEditButtonOfEmailTab();
-            await editMessageTextBladePo.setMessageBody('new');
-            await editMessageTextBladePo.clickOnImageIcon();
-            await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
-            await editMessageTextBladePo.setMessageBody('this is link ');
-            await editMessageTextBladePo.clickOnLinkIcon();
-            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
-            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
-            await linkPropertiesPo.clickOnTargetTab();
-            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
-            await linkPropertiesPo.clickOnOkBtn();
-            await editMessageTextBladePo.setMessageBody('this is table');
-            await editMessageTextBladePo.clickOnTableIcon();
-            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
-            await tablePropertiesPo.setValueOfTableProperties('NotiFicationT', cellSummary);
-            await tablePropertiesPo.clickOnOkButton();
-            //bold
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 1, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnBoldIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 1, 'FirstBold', 'NotiFicationT');
-            //italic
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 2, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnItalicIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 2, 'FirstItalic', 'NotiFicationT');
-            //underline
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 3, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnUnderLineIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 3, 'FirstUnderLine', 'NotiFicationT');
-            //left Align
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 1, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnLeftAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 1, 'FirstLeftAlign', 'NotiFicationT');
-            //Right Align
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 2, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnRightAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 2, 'FirstRightAlign', 'NotiFicationT');
-            //Center Align
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 3, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnCenterAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 3, 'FirstCenterAlign', 'NotiFicationT');
-            //set color
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 1, 'NotiFicationT');
-            await editMessageTextBladePo.selectColor('Bright Blue');
-            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 1, 'SettingColor', 'NotiFicationT');
-            //set font
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 2, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnFontSizeIcon();
-            await editMessageTextBladePo.selectFontTypeOrSize('18');
-            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 2, 'SettingFontSize', 'NotiFicationT');
-            await editMessageTextBladePo.setMessageBody('');
-            await editMessageTextBladePo.clickOnSaveButton();
-            await editNotificationTemplatePo.clickOnCancelButton();
-        });
-        it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await caseConsole.searchAndOpenCase(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
-            console.log("Subject of the email: ", subject);
-            await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
-            await apiHelper.apiLogin('tadmin');
-            let body = await apiHelper.getHTMLBodyOfEmail(subject);
-            console.log('body:', body);
-            //color span
-            await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
-            //table width size attaribute
-            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height:200px;width:500px;">')).toBeTruthy('Table properties not displayed');
-            //image
-            await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
-            //font 
-            await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
-            //right allign
-            await expect(body.includes('<td style="text-align: right;">FirstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
-            //center align
-            await expect(body.includes('<td style="text-align: center;">FirstCenterAlign</td>')).toBeTruthy('Center Alignment is not present');
-            //italic
-            await expect(body.includes('<td><em>FirstItalic</em></td>')).toBeTruthy('Italic Font is not present');
-            //underline
-            await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy('Underline Font is not present');
-        });
-        afterAll(async () => {
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
-            await navigationPage.signOut();
-            await loginPage.login("qtao");
-        });
-    });
-
-    describe('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
+    describe('[3761,3760]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let sourceValue, newCase;
         beforeAll(async () => {
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Test case for DRDMV-20365 RandVal" + randomString,
+                "Summary": "Test case for 3761 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
-            await utilityGrid.clearFilter();
+        it('[3761,3760]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
+            await composeMail.clickOnSelectEmailTemplateLink();
+            await selectEmailTemplateBladePo.clickOnCancelButton();
+            let values: string[] = ["PlusOne", "PlusTwo", "PlusThree"];
+            await composeMail.setNumberList(values);
             await composeMail.setEmailBody('Uploading Image through Browsing');
             await composeMail.clickOnImageIcon();
             sourceValue = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
@@ -792,6 +752,7 @@ describe("Compose Email", () => {
             await imagePropertiesPo.setInputBoxValue(uploadURL, imageUrlFieldIndex);
             await imagePropertiesPo.setInputBoxValue('200', imageWidthFieldIndex);
             await imagePropertiesPo.clickOnOkButton();
+
             await composeMail.setEmailBody("Adding a Link: ");
             await composeMail.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
@@ -801,60 +762,55 @@ describe("Compose Email", () => {
             await linkPropertiesPo.clickOnOkBtn();
             await composeMail.setEmailBody("Table: ");
             await composeMail.clickOnTableIcon();
-            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
             await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
             await tablePropertiesPo.clickOnOkButton();
             //bold
-            await composeMail.clickInTableCell(1, 1, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 1, 'tableSummary');
             await composeMail.clickOnBoldIcon();
-            await composeMail.setDataInTable(1, 1, 'FirstBold', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(1, 1, 'FirstBold', 'tableSummary');
             //italic
-            await composeMail.clickInTableCell(1, 2, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
             await composeMail.clickOnItalicIcon();
-            await composeMail.setDataInTable(1, 2, 'FirstItalic', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(1, 2, 'FirstItalic', 'tableSummary');
             //underline
-            await composeMail.clickInTableCell(1, 3, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 3, 'tableSummary');
             await composeMail.clickOnUnderLineIcon();
-            await composeMail.setDataInTable(1, 3, 'FirstUnderLine', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(1, 3, 'FirstUnderLine', 'tableSummary');
             //left Align
-            await composeMail.clickInTableCell(1, 4, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(2, 1, 'tableSummary');
             await composeMail.clickOnLeftAlignIcon();
-            await composeMail.setDataInTable(1, 4, 'FirstLeftAlign', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(2, 1, 'FirstLeftAlign', 'tableSummary');
             //Right Align
-            await composeMail.clickInTableCell(1, 5, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(2, 2, 'tableSummary');
             await composeMail.clickOnRightAlignIcon();
-            await composeMail.setDataInTable(1, 5, 'FirstRightAlign', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(2, 2, 'FirstRightAlign', 'tableSummary');
             //Center Align
-            await composeMail.clickInTableCell(1, 6, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(2, 3, 'tableSummary');
             await composeMail.clickOnCenterAlignIcon();
-            await composeMail.setDataInTable(1, 6, 'FirstCenterAlign', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(2, 3, 'FirstCenterAlign', 'tableSummary');
             //set color
-            await composeMail.clickInTableCell(1, 7, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(3, 1, 'tableSummary');
             await composeMail.selectColor('Bright Blue');
-            await composeMail.setDataInTable(1, 7, 'SettingColor', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(3, 1, 'SettingColor', 'tableSummary');
             //set font
-            await composeMail.clickInTableCell(1, 8, 'tableSummary');
-            await composeMail.clickOnFontSizeIcon();
-            await composeMail.selectFontTypeOrSize('18');
-            await composeMail.setDataInTable(1, 8, 'SettingFontSize', 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(3, 2, 'tableSummary');
+            await ckeditorOpsPo.selectFontTypeOrSize('18', 'FontSize');
+            await ckeditorOpsPo.setDataInTable(3, 2, 'SettingFontSize', 'tableSummary');
             //set fontType
-            await composeMail.clickInTableCell(1, 9, 'tableSummary');
-            await composeMail.clickOnFontTypeIcon();
-            await composeMail.selectFontTypeOrSize('Courier New');
-            await composeMail.setDataInTable(1, 9, 'SettingFontType', 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(3, 3, 'tableSummary');
+            await ckeditorOpsPo.selectFontTypeOrSize('Courier New', 'FontType');
+            await ckeditorOpsPo.setDataInTable(3, 3, 'SettingFontType', 'tableSummary');
             //checking number and bullot points and setting values for them
-            await composeMail.setBulletPointAndNumer('PlusOne');
-            await composeMail.setBulletPointAndNumer('PlusTwo');
-            await composeMail.setBulletPointAndNumer('PlusThree');
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'qkatawazi@petramco.com');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
+        it('[3761,3760]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
             //activity verify
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isImageDisplayedInActivity(sourceValue)).toBeTruthy('Image is not displayed');
@@ -863,13 +819,15 @@ describe("Compose Email", () => {
             expect(await activityTabPo.getTextOfTD('strong')).toContain('FirstBold');
             expect(await activityTabPo.getTextOfTD('em')).toContain('FirstItalic');
             expect(await activityTabPo.getTextOfTD('u')).toContain('FirstUnderLine');
-            expect(await activityTabPo.getTextOnActivityTable(1, 4)).toContain('FirstLeftAlign');
-            expect(await activityTabPo.getTextOnActivityTable(1, 5)).toContain('FirstRightAlign');
-            expect(await activityTabPo.getTextOnActivityTable(1, 6)).toContain('FirstCenterAlign');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 7, "color:#3498db;")).toContain('SettingColor');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 8, "font-size:18px;")).toContain('SettingFontSize');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 9, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
-            await activityTabPo.clickOnHyperlink('http://www.google.com');
+            expect(await activityTabPo.getTextOnActivityTable(2, 1)).toContain('FirstLeftAlign');
+            expect(await activityTabPo.getTextOnActivityTable(2, 2)).toContain('FirstRightAlign');
+            expect(await activityTabPo.getTextOnActivityTable(2, 3)).toContain('FirstCenterAlign');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 1, "color:#3498db;")).toContain('SettingColor');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 2, "font-size:18px;")).toContain('SettingFontSize');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 3, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            //expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            await activityTabPo.clickOnHyperlink('Google');
             await utilityCommon.switchToNewTab(1);
             await browser.waitForAngularEnabled(false);
             expect(await browser.getTitle()).toContain('Google');
@@ -878,43 +836,45 @@ describe("Compose Email", () => {
             expect(await browser.getTitle()).toContain('Business Workflows');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnReplyAll();
-            expect(await composeMail.isImageDisplayedComposeEmail(uploadURL)).toBeTruthy('Image is not displayed');
-            expect(await composeMail.isLinkDisplayedComposeEmail('http://www.google.com')).toBeTruthy('Image is not displayed');
-            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-family:Courier New,Courier,monospace;')).toContain('SettingFontType');
-            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-size:18px;')).toContain('SettingFontSize');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image is not displayed1');
+            expect(await ckeditorValidationPo.isHyperLinkDisplayedInCkEditorTextArea('http://www.google.com')).toBeTruthy('Image is not displayed');
+            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-family:Courier New,Courier,monospace;', composeMail.selectors.commonGuid)).toContain('SettingFontType');
+            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-size:18px;', composeMail.selectors.commonGuid)).toContain('SettingFontSize');
             await composeMail.clickOnImageIcon();
             let sourceValue2 = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
-            expect(await composeMail.isImageDisplayedComposeEmail(sourceValue2)).toBeTruthy('Image is not displayed');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(sourceValue2)).toBeTruthy('Image is not displayed2');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image not displayed');
+            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image not displayed3');
         });
         afterAll(async () => {
+            await imagePropertiesPo.clickOnCrossIcon()
             await utilityCommon.closeAllBlades();
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qkatawazi');
         });
     });
 
     //tzope
-    describe('[DRDMV-21499]: Compose email using email template and check attachments are added', async () => {
+    describe('[3600]: Compose email using email template and check attachments are added', async () => {
         let filePath1 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData, newCase, publishDocData, emailTemplateName;
         beforeAll(async () => {
             caseData = {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-21499RandVal" + summary,
+                "Summary": "Test case for 3600RandVal" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
             publishDocData = {
-                docLibTitle: 'Holiday Calender',
+                docLibTitle: summary+'Calender',
                 company: 'Petramco',
                 businessUnit: "United States Support",
                 ownerGroup: "US Support 3",
@@ -932,18 +892,16 @@ describe("Compose Email", () => {
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateToComposeEmail']);
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-21499]: Compose email using email template and check attachments are added', async () => {
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
+        it('[3600]: Compose email using email template and check attachments are added', async () => {
             //link doc to email template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             await editEmailTemplatePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
             await editEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             //Create a Case and compose email and send it
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
@@ -952,7 +910,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,Company Financial Calender will be from March. Thanks.');
             expect(await composeMail.getSubject()).toContain(newCase.displayId);
             expect(await composeMail.getSubjectInputValue()).toContain('Declared Company Holidays');
@@ -971,7 +929,7 @@ describe("Compose Email", () => {
 
     //radhiman
     //Bug-21778
-    describe('[DRDMV-10388]: Search on Email Template Grid on Compose Email UI', async () => {
+    describe('[5289]: Search on Email Template Grid on Compose Email UI', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
@@ -983,14 +941,13 @@ describe("Compose Email", () => {
             await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": "Test case for DRDMV-10388 RandVal" + randomString
+                "Summary": "Test case for 5289 RandVal" + randomString
             }
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-10388]: Search on Email Template Grid on Compose Email UI', async () => {
+        it('[5289]: Search on Email Template Grid on Compose Email UI', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
@@ -1011,13 +968,13 @@ describe("Compose Email", () => {
         });
     });
 
-    describe('[DRDMV-8388]: Compose and Send Email to Requester', async () => {
+    describe('[5508]: Compose and Send Email to Requester', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData, newCase;
         beforeAll(async () => {
             caseData = {
                 "Requester": "fritz",
-                "Summary": "TC DRDMV-8388 " + randomString,
+                "Summary": "TC 5508 " + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1027,18 +984,17 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-8388]: Compose and Send Email to Requester', async () => {
+        it('[5508]: Compose and Send Email to Requester', async () => {
             await navigationPage.gotoCaseConsole();
             let caseId: string = newCase.displayId;
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnRequestersEmail();
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
             expect(await composeMail.getSubject()).toBe(caseId + ":");
             expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.setToOrCCInputTetxbox('Cc', 'qtao@petramco.com');
+            await composeMail.setToOrCCInputTextbox('Cc', 'qtao@petramco.com');
             expect(await composeMail.getCcEmailPerson()).toContain('Qianru Tao');
-            await composeMail.setEmailBody('Text added for DRDMV-8388');
+            await composeMail.setEmailBody('Text added for 5508');
             expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
             await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
             expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
@@ -1050,7 +1006,7 @@ describe("Compose Email", () => {
             expect(await activityTabPo.getRecipientInCc()).toContain('CC: Qianru Tao');
             expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + caseData.Summary);
             expect(await activityTabPo.isFileAttachedOnActivity()).toBeTruthy('file is not attached on activity');
-            expect(await activityTabPo.getEmailBody()).toContain('Text added for DRDMV-8388');
+            expect(await activityTabPo.getEmailBody()).toContain('Text added for 5508');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -1059,61 +1015,13 @@ describe("Compose Email", () => {
         });
     });
 
-    //radhiman
-    //@Bug(DRDMV-21808)
-    describe('[DRDMV-10387]: Filters on Email Template Grid on Compose Email UI', async () => {
-        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, emailTemplateDataForTest;
-        beforeAll(async () => {
-            emailTemplateDataForTest = await emailTemplateData['emailTemplateWithMandatoryField'];
-            emailTemplateDataForTest.TemplateName = 'TemplateWithMandatoryField' + randomString;
-            emailTemplateDataForTest.Description = 'MandatoryFieldDescription' + randomString;
-            emailTemplateDataForTest.EmailMessageSubject = 'MandatoryFieldSubject' + randomString;
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createEmailTemplate(emailTemplateDataForTest);
-            let caseData = {
-                "Requester": "apavlik",
-                "Summary": "Test case for DRDMV-10387 RandVal" + randomString,
-            }
-            await apiHelper.apiLogin('qtao');
-            newCase = await apiHelper.createCase(caseData);
-        });
-        it('[DRDMV-10387]: Filters on Email Template Grid on Compose Email UI', async () => {
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await caseConsole.searchAndOpenCase(newCase.displayId);
-            await viewCasePo.clickOnEmailLink();
-            await composeMail.clickOnSelectEmailTemplateLink();
-            await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.addFilter("Template Name", emailTemplateDataForTest.TemplateName, "searchbox");
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
-            await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.addFilter("Message Subject", emailTemplateDataForTest.EmailMessageSubject, "searchbox");
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
-            await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.addFilter("Description", emailTemplateDataForTest.Description, "searchbox");
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
-            await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.addFilter("Company", "Petramco", "searchbox");
-            //Searching and validating with filtering to company as, there can be multiple records for 1 company
-            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateDataForTest.TemplateName);
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
-            await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.clickOnCancelButton();
-        });
-        afterAll(async () => {
-            await composeMail.clickOnDiscardButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        });
-    });
-
-    describe('[DRDMV-10399]: Compose email UI changes via different way', async () => {
+    describe('[5279]: Compose email UI changes via different way', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         beforeAll(async () => {
             let caseData = {
                 "Requester": "fritz",
-                "Summary": "TC DRDMV-10399 " + randomString,
+                "Summary": "TC 5279 " + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1123,9 +1031,8 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-10399]: Compose email UI changes via different way', async () => {
+        it('[5279]: Compose email UI changes via different way', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnRequestersEmail();
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
@@ -1151,4 +1058,53 @@ describe("Compose Email", () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });
+
+    //radhiman
+    //@Bug(DRDMV-21808)
+    describe('[5290]: Filters on Email Template Grid on Compose Email UI', async () => {
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase, emailTemplateDataForTest;
+        beforeAll(async () => {
+            emailTemplateDataForTest = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest.TemplateName = 'TemplateWithMandatoryField' + randomString;
+            emailTemplateDataForTest.Description = 'MandatoryFieldDescription' + randomString;
+            emailTemplateDataForTest.EmailMessageSubject = 'MandatoryFieldSubject' + randomString;
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest);
+            let caseData = {
+                "Requester": "apavlik",
+                "Summary": "Test case for 5290 RandVal" + randomString,
+            }
+            await apiHelper.apiLogin('qtao');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[5290]: Filters on Email Template Grid on Compose Email UI', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMail.clickOnSelectEmailTemplateLink();
+            await selectEmailTemplateBladePo.clearFilter();
+            await selectEmailTemplateBladePo.addFilter("Template Name", emailTemplateDataForTest.TemplateName, "searchbox");
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
+            await selectEmailTemplateBladePo.clearFilter();
+            await selectEmailTemplateBladePo.addFilter("Message Subject", emailTemplateDataForTest.EmailMessageSubject, "searchbox");
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
+            await selectEmailTemplateBladePo.clearFilter();
+            await selectEmailTemplateBladePo.addFilter("Description", emailTemplateDataForTest.Description, "searchbox");
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
+            await selectEmailTemplateBladePo.clearFilter();
+            await selectEmailTemplateBladePo.addFilter("Company", "Petramco", "searchbox");
+            //Searching and validating with filtering to company as, there can be multiple records for 1 company
+            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateDataForTest.TemplateName);
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
+            await selectEmailTemplateBladePo.clearFilter();
+            await selectEmailTemplateBladePo.clickOnCancelButton();
+        });
+        afterAll(async () => {
+            await composeMail.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+    })
+
+
 });

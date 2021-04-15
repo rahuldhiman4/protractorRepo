@@ -1,13 +1,13 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
+
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
         row: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] .at-row',
         gridGuid: 'adb9ac10-3732-4fd9-8af3-29bec77272b4',
-        columnnHeader: '.c-header-container .c-header-name',
+        columnnHeader: '.c-header__separator',
         selectCheckbox: '.ui-chkbox-box',
         download: '.bwf-case-attachment__footer-button  .btn-primary',
         close: '.bwf-case-attachment__footer-button  .btn-secondary',
@@ -34,7 +34,7 @@ class AttachmentBlade {
         for (let i: number = 0; i < 5; i++) {
             let isFilePresent: boolean = await element(by.cssContainingText(this.selectors.attachmentName, attachment)).isPresent();
             if (isFilePresent == false) {
-                await browser.sleep(5000);
+                await browser.sleep(5000); // To Wait For Attachment gets Display On Grid.
                 await this.searchAttachmentOnGrid(attachment);
             } else {
                 break;
@@ -59,7 +59,13 @@ class AttachmentBlade {
     }
 
     async clickColumnHeader(columnHeader: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).click();
+        let getCountHeaders = await $$('.c-header__separator').count();
+        for(let i = 0; i<getCountHeaders; i++){
+            let getTextColumnHeader = await $$('.c-header__separator').get(i).getText();
+            if (columnHeader == getTextColumnHeader){
+                await $$('.ui-sortable-column').get(i).click();
+            }
+        }
     }
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {
@@ -88,7 +94,6 @@ class AttachmentBlade {
         for (let i: number = 0; i < allAttachmentRows.length; i++) {
             let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-view-thumbnail__title-text');
             if ((await attachmentName.getText()).trim() === record) {
-                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
                 return await allAttachmentRows[i].$('.ui-chkbox-box').isSelected();
             }
         }
@@ -129,11 +134,13 @@ class AttachmentBlade {
     }
 
     async clickCloseButton(): Promise<void> {
-        await $(this.selectors.close).click();
+        await $(this.selectors.close).isPresent().then(async (present) => {
+            if (present) await $(this.selectors.close).click();
+        });
     }
 
-    async getTextOfColumnHeader(columnHeader: string): Promise<string> {
-        return await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).getText();
+    async isColumnHeaderPresent(columnHeader: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).isDisplayed();
     }
 
     async isDownloadButtonDisplayed(): Promise<boolean> {
@@ -142,6 +149,10 @@ class AttachmentBlade {
 
     async isCloseButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.close).isDisplayed();
+    }
+
+    async selectCheckBox(numberCheckbox: number): Promise<void> {
+        await $$(this.selectors.selectCheckbox).get(numberCheckbox - 1).click();
     }
 }
 

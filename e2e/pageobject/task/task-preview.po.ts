@@ -9,8 +9,8 @@ class TaskPreview {
         taskIdOrPriorityLabel: '[rx-view-component-id="dee7b1d7-5381-42af-a7c5-f975a5a9dac7"] .bwf-info-bar div',
         taskStatus: '.status-transition span',
         priority: '[rx-view-component-id="e417b17e-4cc4-4f36-85e4-fb2420eb1fee"] div',
-        assigneeName: '[rx-view-component-id="ac4d2a47-868b-4545-b42b-0626004a3051"] .person-name a',
-        assignedGroup: '[rx-view-component-id="4fbc8956-6c5b-4074-95dd-c946dd7913d4"] .read-only-content',
+        assigneeName: '[rx-view-component-id="3187fbb2-3e83-459e-a37c-3d1f6a0712c4"] .person-name',
+        assignedGroup: '[rx-view-component-id="3187fbb2-3e83-459e-a37c-3d1f6a0712c4"] .read-only-content',
         assignedCompany: '[rx-view-component-id="38b5060b-199d-4641-ac03-102b5ee93701"] .read-only-content',
         gotoTaskButton: '[rx-view-component-id="f617e99e-45fa-4b54-9bc7-6d0595c74923"] button',
         taskDescription: '[rx-view-component-id="ddbcb40a-5a36-4936-a627-51833b951d59"] .collapse-block div'

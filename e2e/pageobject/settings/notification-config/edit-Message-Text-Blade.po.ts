@@ -1,4 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, Key, browser } from "protractor";
+
 class EditMessageTextBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -21,17 +22,17 @@ class EditMessageTextBlade {
 
     async clickOnTableIcon(): Promise<void> {
         await $(this.selectors.tableIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Table Pop-up Gets Open.
     }
 
     async clickOnImageIcon(): Promise<void> {
         await $(this.selectors.imageIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Image Pop-up Gets Open.
     }
 
     async clickOnLinkIcon(): Promise<void> {
         await $(this.selectors.linkIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Link Pop-Up Gets Open.
     }
 
     async clickOnBoldIcon(): Promise<void> {
@@ -88,6 +89,7 @@ class EditMessageTextBlade {
     }
 
     async setMessageBody(value:string): Promise<void> {
+        await browser.sleep(2000);
         await $(this.selectors.messageBody).sendKeys(Key.chord(Key.CONTROL, Key.END));
         await $(this.selectors.messageBody).sendKeys(Key.ENTER);
         await $(this.selectors.messageBody).sendKeys(value);
@@ -96,6 +98,10 @@ class EditMessageTextBlade {
 
     async clickOnSaveButton():Promise<void>{
         await $(this.selectors.saveButton).click();
+    }
+
+    async getMessageBody(): Promise<string> {
+        return await $(this.selectors.messageBody).getText();
     }
 
 }
